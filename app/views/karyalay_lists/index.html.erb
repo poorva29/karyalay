@@ -1,0 +1,151 @@
+<html lang="en" ng-app="KaryalayApp" id="top">
+  <head>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css" />
+    <!-- JS Files -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-flash-alert/dist/angular-flash.min.js"></script>
+    <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
+    <script type="text/javascript" src="/karyalay/karyalay_create.js"></script>
+  </head>
+  <body>
+    <div id="layoutKaryalay">
+      <div flash-message="5000" ></div>
+    </div>
+    <div id="karyalayCreate" ng-controller="karyalayCreateCtrl" class="container-fluid">
+      <div class="row">
+        <accordion close-others="oneAtATime">
+          <accordion-group is-open="status.openKaryalay">
+            <accordion-heading>
+              Create Karyalay <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalay, 'glyphicon-chevron-right': !status.openKaryalay}"></i>
+            </accordion-heading>
+            <fieldset id="karyalayCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalay">
+              <form name="karyalayCreateFormValidate" class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="email">Name:</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="email" ng-model="karyalayCreateForm.name" placeholder="Enter Name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="pwd">Address:</label>
+                  <div class="col-sm-6">
+                    <textarea class="form-control" id="pwd" ng-model="karyalayCreateForm.address" placeholder="Enter Address"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="pwd">Lankmark:</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="pwd" ng-model="karyalayCreateForm.location" placeholder="Enter Landmark">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="pwd">Description:</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" id="pwd" ng-model="karyalayCreateForm.description" placeholder="Enter Description">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="pwd">Ph. Number:</label>
+                  <div class="col-sm-6">
+                    <input type="number" class="form-control" id="pwd" ng-model="karyalayCreateForm.phone_number" placeholder="Enter Number">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="pwd">Email:</label>
+                  <div class="col-sm-6">
+                    <input type="email" class="form-control" id="pwd" ng-model="karyalayCreateForm.email" placeholder="Enter Karyalay Email">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-6">
+                    <button type="submit" class="btn btn-default" ng-click="createKaryalay()">Save</button>
+                  </div>
+                </div>
+              </form>
+            </fieldset>
+          </accordion-group>
+          <accordion-group is-open="status.openKaryalayAttr" ng-show="saveStatus.saveKaryalay">
+            <accordion-heading>
+              Karyalay Attributes <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayAttr, 'glyphicon-chevron-right': !status.openKaryalayAttr}"></i>
+            </accordion-heading>
+            <fieldset id="karyalayAttrCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayAttr">
+              <form name="karyalayAttrCreateFormValidity" class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="email">Accomodate People:</label>
+                  <div class="col-sm-3">
+                    <input type="number" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_people" placeholder="People Count">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="pwd">No. Of Rooms:</label>
+                  <div class="col-sm-3">
+                    <input type="number" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_rooms" placeholder="Room Count">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="pwd">Size In Sq. Feet:</label>
+                  <div class="col-sm-3">
+                    <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.size_in_sq" placeholder="Size Of Hall">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="pwd">Price Half Day:</label>
+                  <div class="col-sm-3">
+                    <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_half_day" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="pwd">Price Full Day:</label>
+                  <div class="col-sm-3">
+                    <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_full_day" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="pwd">Provide Offers:</label>
+                  <div class="col-sm-1">
+                    <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.provide_offers"></checkbox>
+                  </div>
+                  <label class="control-label col-sm-2" for="pwd">Provide Samagri:</label>
+                  <div class="col-sm-1">
+                    <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_samagri"></checkbox>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="pwd">Has A/C:</label>
+                  <div class="col-sm-1">
+                    <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_ac"></checkbox>
+                  </div>
+                  <label class="control-label col-sm-2" for="pwd">Has Pandit:</label>
+                  <div class="col-sm-1">
+                    <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_pandit"></checkbox>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3" for="pwd">Has Caterer:</label>
+                  <div class="col-sm-1">
+                    <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_caterer"></checkbox>
+                  </div>
+                  <label class="control-label col-sm-2" for="pwd">Has Garden:</label>
+                  <div class="col-sm-1">
+                    <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_garden"></checkbox>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-3 col-sm-3">
+                    <button type="submit" class="btn btn-default" ng-click="createKaryalayAttr()">Save</button>
+                  </div>
+                </div>
+              </form>
+            </fieldset>
+          </accordion-group>
+        </accordion>
+      </div>
+    </div>
+  </body>
+</html>

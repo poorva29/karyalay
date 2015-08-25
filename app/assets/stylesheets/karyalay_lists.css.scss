@@ -1,0 +1,22 @@
+// Place all the styles related to the KaryalayLists controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#layoutKaryalay {
+  margin-top: 2%;
+}
+
+#karyalayCreate {
+  width: 80%;
+
+  #karyalayCreateForm {
+    margin-top: 5%;
+  }
+
+  #karyalayAttrCreateForm {
+    .align-checkbox {
+      margin-top: 10%;
+    }
+  }
+}
+

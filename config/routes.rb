@@ -1,4 +1,14 @@
 Karyalay::Application.routes.draw do
+  resources :karyalay_attributes
+
+  # comfy_route :cms_admin, :path => '/admin'
+
+  # Make sure this routeset is defined last
+  # comfy_route :cms, :path => '/', :sitemap => false
+
+  resources :karyalay_lists
+  root :to => 'karyalay_lists#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -39,7 +49,7 @@ Karyalay::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'

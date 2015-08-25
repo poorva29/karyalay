@@ -44,4 +44,10 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+# Database adapter
 gem 'pg'
+
+# For CMS
+gem 'comfortable_mexican_sofa', '~> 1.12.0'
+
+gem 'angular_rails_csrf'

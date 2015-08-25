@@ -1,0 +1,17 @@
+<%= form_for(@karyalay_list) do |f| %>
+  <% if @karyalay_list.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@karyalay_list.errors.count, "error") %> prohibited this karyalay_list from being saved:</h2>
+
+      <ul>
+      <% @karyalay_list.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

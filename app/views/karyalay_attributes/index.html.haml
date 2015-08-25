@@ -1,0 +1,17 @@
+%h1 Listing karyalay_attributes
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @karyalay_attributes.each do |karyalay_attribute|
+    %tr
+      %td= link_to 'Show', karyalay_attribute
+      %td= link_to 'Edit', edit_karyalay_attribute_path(karyalay_attribute)
+      %td= link_to 'Destroy', karyalay_attribute, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Karyalay attribute', new_karyalay_attribute_path
