@@ -23,25 +23,22 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     };
 
     $scope.createKaryalay = function(){
-      response = true;
-      // var data = {karyalay_list: $scope.karyalayCreateForm};
-      // var url_to_post = '/karyalay_lists';
-      // $http.post(url_to_post, data)
-      //   .success(function (response) {
+      var data = {karyalay_list: $scope.karyalayCreateForm};
+      var url_to_post = '/karyalay_lists';
+      $http.post(url_to_post, data)
+        .success(function (response) {
           if(response){
-            // $scope.karyalayAttrCreateForm.karyalay_lists_id = response.id;
-            $scope.karyalayAttrCreateForm.karyalay_lists_id = 4;
+            $scope.karyalayAttrCreateForm.karyalay_lists_id = response.id;
             $scope.createSuccess();
             $scope.saveStatus.saveKaryalay = true;
             $scope.status.openKaryalayAttr = true;
           }else{
             $scope.createFailure();
           }
-      // });
+      });
     };
 
     $scope.createKaryalayAttr = function(){
-      response = true;
       var data = {karyalay_attr_list: $scope.karyalayAttrCreateForm};
       var url_to_post = '/karyalay_attributes';
       $http.post(url_to_post, data)
