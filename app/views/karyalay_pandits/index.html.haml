@@ -1,0 +1,17 @@
+%h1 Listing karyalay_pandits
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @karyalay_pandits.each do |karyalay_pandit|
+    %tr
+      %td= link_to 'Show', karyalay_pandit
+      %td= link_to 'Edit', edit_karyalay_pandit_path(karyalay_pandit)
+      %td= link_to 'Destroy', karyalay_pandit, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Karyalay pandit', new_karyalay_pandit_path

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825181936) do
+ActiveRecord::Schema.define(version: 20150829183601) do
 
   create_table "comfy_cms_blocks", force: true do |t|
     t.string   "identifier",     null: false
@@ -153,12 +153,63 @@ ActiveRecord::Schema.define(version: 20150825181936) do
 
   add_index "karyalay_attributes", ["karyalay_list_id"], name: "index_karyalay_attributes_on_karyalay_list_id", using: :btree
 
+  create_table "karyalay_caterers", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone_numner"
+    t.text     "specialites",  default: [], array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email"
+  end
+
+  create_table "karyalay_caterers_lists", force: true do |t|
+    t.integer "karyalay_caterer_id"
+    t.integer "karyalay_list_id"
+  end
+
+  add_index "karyalay_caterers_lists", ["karyalay_caterer_id"], name: "index_karyalay_caterers_lists_on_karyalay_caterer_id", using: :btree
+  add_index "karyalay_caterers_lists", ["karyalay_list_id"], name: "index_karyalay_caterers_lists_on_karyalay_list_id", using: :btree
+
   create_table "karyalay_lists", force: true do |t|
     t.text     "name"
     t.text     "address"
     t.text     "description"
     t.text     "location"
     t.text     "phone_number"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "karyalay_lists_caterers", force: true do |t|
+    t.integer "karyalay_caterer_id"
+    t.integer "karyalay_list_id"
+  end
+
+  add_index "karyalay_lists_caterers", ["karyalay_caterer_id"], name: "index_karyalay_lists_caterers_on_karyalay_caterer_id", using: :btree
+  add_index "karyalay_lists_caterers", ["karyalay_list_id"], name: "index_karyalay_lists_caterers_on_karyalay_list_id", using: :btree
+
+  create_table "karyalay_lists_karyalay_pandits", force: true do |t|
+    t.integer "karyalay_pandit_id"
+    t.integer "karyalay_list_id"
+  end
+
+  add_index "karyalay_lists_karyalay_pandits", ["karyalay_list_id"], name: "index_karyalay_lists_karyalay_pandits_on_karyalay_list_id", using: :btree
+  add_index "karyalay_lists_karyalay_pandits", ["karyalay_pandit_id"], name: "index_karyalay_lists_karyalay_pandits_on_karyalay_pandit_id", using: :btree
+
+  create_table "karyalay_lists_pandits", force: true do |t|
+    t.integer "karyalay_pandit_id"
+    t.integer "karyalay_list_id"
+  end
+
+  add_index "karyalay_lists_pandits", ["karyalay_list_id"], name: "index_karyalay_lists_pandits_on_karyalay_list_id", using: :btree
+  add_index "karyalay_lists_pandits", ["karyalay_pandit_id"], name: "index_karyalay_lists_pandits_on_karyalay_pandit_id", using: :btree
+
+  create_table "karyalay_pandits", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone_numner"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"

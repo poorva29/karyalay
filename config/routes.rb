@@ -1,4 +1,8 @@
 Karyalay::Application.routes.draw do
+  resources :karyalay_caterers
+
+  resources :karyalay_pandits
+
   resources :karyalay_attributes
 
   # comfy_route :cms_admin, :path => '/admin'

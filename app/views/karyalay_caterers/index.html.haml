@@ -1,0 +1,17 @@
+%h1 Listing karyalay_caterers
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @karyalay_caterers.each do |karyalay_caterer|
+    %tr
+      %td= link_to 'Show', karyalay_caterer
+      %td= link_to 'Edit', edit_karyalay_caterer_path(karyalay_caterer)
+      %td= link_to 'Destroy', karyalay_caterer, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Karyalay caterer', new_karyalay_caterer_path

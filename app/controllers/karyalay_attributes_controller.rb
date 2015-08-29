@@ -32,7 +32,7 @@ class KaryalayAttributesController < ApplicationController
       if @karyalay_attribute.save
         render json: @karyalay_attribute
       else
-        render json: { id: nil, message: 'Karyalay Not Creared, Try Again' }
+        render json: { id: nil, message: 'Karyalay Attributes Not Saved, Try Again' }
       end
     else
       render json: { id: nil, message: 'Karyalay Not Found, Try Again' }

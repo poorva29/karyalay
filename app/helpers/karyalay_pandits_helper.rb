@@ -1,0 +1,2 @@
+module KaryalayPanditsHelper
+end

@@ -11,6 +11,8 @@
     <script src="/bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-flash-alert/dist/angular-flash.min.js"></script>
     <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
+    <script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-underscore/angular-underscore.min.js"></script>
     <script type="text/javascript" src="/karyalay/karyalay_create.js"></script>
   </head>
   <body>
@@ -18,6 +20,78 @@
       <div flash-message="5000" ></div>
     </div>
     <div id="karyalayCreate" ng-controller="karyalayCreateCtrl" class="container-fluid">
+      <script type="text/ng-template" id="addPandit.html">
+        <div class="" id="karyalayPandit">
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="first_name">First Name:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="first_name" ng-model="subitem.first_name" placeholder="First Name">
+            </div>
+            <div class="col-sm-1">
+              <button type="button" class="btn btn-default btn-danger" aria-label="Left Align" ng-click="removePandit($index)">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="last_name" ng-model="subitem.last_name" placeholder="Surname Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="last_name">Ph. Number:</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="phone_number" ng-model="subitem.phone_number" placeholder="Phone Number">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="last_name">Email:</label>
+            <div class="col-sm-6 pandit-email">
+              <input type="text" class="form-control" id="email" ng-model="subitem.email" placeholder="pandit@karyalay.com">
+            </div>
+          </div>
+        </div>
+      </script>
+      <script type="text/ng-template" id="addCaterer.html">
+        <div class="" id="karyalayCaterer">
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="first_name">First Name:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="first_name" ng-model="subitem.first_name" placeholder="First Name">
+            </div>
+            <div class="col-sm-1">
+              <button type="button" class="btn btn-default btn-danger" aria-label="Left Align" ng-click="removeCaterer($index)">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="last_name" ng-model="subitem.last_name" placeholder="Surname Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="last_name">Ph. Number:</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="phone_number" ng-model="subitem.phone_number" placeholder="Phone Number">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="last_name">Email:</label>
+            <div class="col-sm-6 pandit-email">
+              <input type="text" class="form-control" id="email" ng-model="subitem.email" placeholder="caterer@karyalay.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="last_name">Speciality:</label>
+            <div class="col-sm-6 pandit-email">
+              <input type="text" class="form-control" id="email" ng-model="subitem.speciality" placeholder="caterer@karyalay.com">
+            </div>
+          </div>
+        </div>
+      </script>
       <div class="row">
         <accordion close-others="oneAtATime">
           <accordion-group is-open="status.openKaryalay">
@@ -139,6 +213,53 @@
                 <div class="form-group">
                   <div class="col-sm-offset-3 col-sm-3">
                     <button type="submit" class="btn btn-default" ng-click="createKaryalayAttr()">Save</button>
+                  </div>
+                </div>
+              </form>
+            </fieldset>
+          </accordion-group>
+          <accordion-group is-open="status.openKaryalayDependents" ng-show="saveStatus.saveKaryalayAttr && (karyalayAttrCreateForm.has_samagri || karyalayAttrCreateForm.has_caterer || karyalayAttrCreateForm.has_pandit)">
+            <accordion-heading>
+              Karyalay Attributes <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayDependents, 'glyphicon-chevron-right': !status.openKaryalayDependents}"></i>
+            </accordion-heading>
+            <fieldset id="karyalayDependentCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayDependents">
+              <form name="karyalaySaveCreateFormValidity" class="form-horizontal" role="form">
+                <div ng-show="karyalayAttrCreateForm.has_samagri && saveStatus.saveKaryalayAttr">
+
+                </div>
+                <div ng-show="karyalayAttrCreateForm.has_caterer && saveStatus.saveKaryalayAttr">
+                  <div class="text-center karyalay-label">
+                    <legend> Create Caterer </legend>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-1">
+                      <button type="button" class="btn btn-default btn-success" aria-label="Left Align" ng-click="addCaterer()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Caterer
+                      </button>
+                    </div>
+                  </div>
+                  <div ng-repeat="subitem in selectCatererDetails.subitems track by $index">
+                    <sub-caterer-item-partial></sub-item-partial>
+                  </div>
+                </div>
+                <div ng-show="karyalayAttrCreateForm.has_pandit && saveStatus.saveKaryalayAttr">
+                  <div class="text-center karyalay-label">
+                    <legend> Create Pandit </legend>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-1">
+                      <button type="button" class="btn btn-default btn-success" aria-label="Left Align" ng-click="addPandit()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Pandit
+                      </button>
+                    </div>
+                  </div>
+                  <div ng-repeat="subitem in selectPanditDetails.subitems track by $index">
+                    <sub-pandit-item-partial></sub-item-partial>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-3">
+                    <button type="submit" class="btn btn-default" ng-click="createKaryalayDependency()">Save</button>
                   </div>
                 </div>
               </form>
