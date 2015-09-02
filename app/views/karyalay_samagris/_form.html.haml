@@ -1,0 +1,10 @@
+= form_for @karyalay_samagri do |f|
+  - if @karyalay_samagri.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@karyalay_samagri.errors.count, "error")} prohibited this karyalay_samagri from being saved:"
+      %ul
+        - @karyalay_samagri.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'

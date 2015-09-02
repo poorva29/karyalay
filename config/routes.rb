@@ -1,4 +1,6 @@
 Karyalay::Application.routes.draw do
+  resources :karyalay_samagris
+
   resources :karyalay_caterers
 
   resources :karyalay_pandits
@@ -12,6 +14,9 @@ Karyalay::Application.routes.draw do
 
   resources :karyalay_lists
   root :to => 'karyalay_lists#index'
+
+  get 'fetch_selected_category' => 'karyalay_samagris#fetch_selected_category'
+  post 'create_add_tag' => 'karyalay_samagris#create_add_tag'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

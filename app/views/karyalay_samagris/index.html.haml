@@ -1,0 +1,17 @@
+%h1 Listing karyalay_samagris
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @karyalay_samagris.each do |karyalay_samagri|
+    %tr
+      %td= link_to 'Show', karyalay_samagri
+      %td= link_to 'Edit', edit_karyalay_samagri_path(karyalay_samagri)
+      %td= link_to 'Destroy', karyalay_samagri, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Karyalay samagri', new_karyalay_samagri_path

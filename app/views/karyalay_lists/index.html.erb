@@ -3,16 +3,20 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css" />
+    <link href="bower_components/ui-select/dist/select.css" rel="stylesheet" />
     <!-- JS Files -->
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-flash-alert/dist/angular-flash.min.js"></script>
     <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
     <script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
     <script type="text/javascript" src="bower_components/angular-underscore/angular-underscore.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="bower_components/ui-select/dist/select.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap-dropdown/dist/bsDropdown.min.js"></script>
     <script type="text/javascript" src="/karyalay/karyalay_create.js"></script>
   </head>
   <body>
@@ -47,7 +51,7 @@
           </div>
           <div class="form-group">
             <label class="control-label col-sm-2" for="last_name">Email:</label>
-            <div class="col-sm-6 pandit-email">
+            <div class="col-sm-6 dependent-last-field">
               <input type="text" class="form-control" id="email" ng-model="subitem.email" placeholder="pandit@karyalay.com">
             </div>
           </div>
@@ -80,11 +84,11 @@
           </div>
           <div class="form-group">
             <label class="control-label col-sm-2" for="last_name">Email:</label>
-            <div class="col-sm-6 pandit-email">
+            <div class="col-sm-6">
               <input type="text" class="form-control" id="email" ng-model="subitem.email" placeholder="caterer@karyalay.com">
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group dependent-last-field">
             <label class="control-label col-sm-2" for="last_name">Speciality:</label>
             <div class="col-sm-6 pandit-email">
               <input type="text" class="form-control" id="email" ng-model="subitem.speciality" placeholder="caterer@karyalay.com">
@@ -220,12 +224,44 @@
           </accordion-group>
           <accordion-group is-open="status.openKaryalayDependents" ng-show="saveStatus.saveKaryalayAttr && (karyalayAttrCreateForm.has_samagri || karyalayAttrCreateForm.has_caterer || karyalayAttrCreateForm.has_pandit)">
             <accordion-heading>
-              Karyalay Attributes <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayDependents, 'glyphicon-chevron-right': !status.openKaryalayDependents}"></i>
+              Karyalay Dependency <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayDependents, 'glyphicon-chevron-right': !status.openKaryalayDependents}"></i>
             </accordion-heading>
             <fieldset id="karyalayDependentCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayDependents">
               <form name="karyalaySaveCreateFormValidity" class="form-horizontal" role="form">
                 <div ng-show="karyalayAttrCreateForm.has_samagri && saveStatus.saveKaryalayAttr">
-
+                  <div class="text-center karyalay-label">
+                    <legend> Add Samagri </legend>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="category">Add Category:</label>
+                    <div class="col-sm-6">
+                      <ui-select ng-model="category.selected" ng-disabled="disabled" on-select="fetchTags()">
+                        <ui-select-match placeholder="Select Category">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="category in categoryItems | propsFilter: {name: $select.search, id: $select.search}">
+                          <div ng-bind-html="category.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                      </ui-select>
+                    </div>
+                  </div>
+                  <div ng-show="category.hasSelected">
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="tags">Add Items:</label>
+                      <div class="col-sm-6">
+                        <ui-select multiple ng-model="multipleItmes.selectedItem" ng-disabled="disabled" on-select="selectItem($item, $model)">
+                          <ui-select-match placeholder="Select item...">{{$item.name}} &#40;{{$item.quantity}}&#41;</ui-select-match>
+                          <ui-select-choices repeat="item in items | propsFilter: {name: $select.search, id: $select.search}" refresh="refreshTagNames($select.search)" refresh-delay="0">
+                            <div ng-bind-html="item.name | highlight: $select.search"></div>
+                          </ui-select-choices>
+                        </ui-select>
+                      </div>
+                      <label class="control-label col-sm-1" for="tags">Quantity:</label>
+                      <div class="col-sm-2">
+                        <div class="btn-group" dropdown keyboard-nav>
+                          <select class="form-control" ng-model="quantity" ng-options="count for count in quantites" ng-change="updateQuantity(quantity)">{{count}}</select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div ng-show="karyalayAttrCreateForm.has_caterer && saveStatus.saveKaryalayAttr">
                   <div class="text-center karyalay-label">
