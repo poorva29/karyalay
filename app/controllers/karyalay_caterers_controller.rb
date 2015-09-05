@@ -5,6 +5,7 @@ class KaryalayCaterersController < ApplicationController
   # GET /karyalay_caterers.json
   def index
     @karyalay_caterers = KaryalayCaterer.all
+    render json: @karyalay_caterers
   end
 
   # GET /karyalay_caterers/1
@@ -27,12 +28,13 @@ class KaryalayCaterersController < ApplicationController
     karyalay_lists_id = params[:karyalay_caterer_params][:karyalay_lists_id]
     kl = KaryalayList.find_by_id(karyalay_lists_id)
     if !kl.nil?
-      @karyalay_pandit = KaryalayCaterer.new(karyalay_caterer_params)
+      @karyalay_pandit = KaryalayCaterer.find_or_create_by(karyalay_caterer_params)
       @karyalay_pandit.karyalay_lists << kl
       if @karyalay_pandit.save
         render json: @karyalay_pandit
       else
-        render json: { id: nil, message: 'Karyalay Pandit Not Created Try Again' }
+        render json: { id: nil,
+                       message: 'Karyalay Pandit Not Created Try Again' }
       end
     else
       render json: { id: nil, message: 'Karyalay Not Found, Try Again' }
@@ -72,6 +74,6 @@ class KaryalayCaterersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def karyalay_caterer_params
       params.require(:karyalay_caterer_params)
-        .permit(:first_name, :last_name, :phone_numner, :email, :specialites)
+        .permit(:first_name, :last_name, :phone_number, :email, :specialites => [])
     end
 end

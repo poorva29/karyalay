@@ -49,6 +49,13 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
       openKaryalayDependents: false
     };
 
+    $scope.showNewPandit = true;
+    $scope.showNewCaterer = true;
+
+    $scope.availableSpecialites = [
+      'Maharashtrian', 'South Indian', 'Chineese'
+    ]
+
     $scope.category = {};
     $scope.categoryItems = [
       {id: 1, name: "birthday"},
@@ -58,6 +65,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
       {id: 5, name: "others"},
     ];
 
+    // Fetch Category wise samagri
     $scope.item = {};
     $scope.items = null;
     $scope.fetchTags = function(){
@@ -73,7 +81,39 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
 
           }
       });
-    }
+    };
+
+    // Fetch Pandits
+    $scope.person = {};
+    $scope.panditList = [];
+    $scope.fetchPandits = function(){
+      var url_to_get = '/karyalay_pandits';
+      $http.get(url_to_get)
+        .success(function (response) {
+          if(response){
+            $scope.panditList = response;
+          }else{
+            // do something
+          }
+      });
+    };
+    $scope.fetchPandits();
+
+    // Fetch Caterer
+    $scope.catererSel = {};
+    $scope.catererList = [];
+    $scope.fetchCaterers = function(){
+      var url_to_get = '/karyalay_caterers';
+      $http.get(url_to_get)
+        .success(function (response) {
+          if(response){
+            $scope.catererList = response;
+          }else{
+            // do something
+          }
+      });
+    };
+    $scope.fetchCaterers();
 
     $scope.refreshTagNames = function(name){
       if($scope.items){
@@ -86,8 +126,11 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
       }
     };
 
-    $scope.multipleItmes = {};
-    $scope.multipleItmes.selectedItem = [];
+    $scope.multipleItmes = {
+      selectedItem: [],
+      selectedPeople: [],
+      selectedCaterer: []
+    };
     $scope.quantity = 1;
     $scope.quantites = [1, 2, 3, 4, 5]
 
@@ -163,10 +206,23 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
       $scope.selectCatererDetails.subitems.splice(index, 1);
     };
 
+    $scope.changePanditType = function(){
+      $scope.showNewPandit = !$scope.showNewPandit;
+    };
+
+    $scope.changeCatererType = function(){
+      $scope.showNewCaterer = !$scope.showNewCaterer;
+    }
+
     $scope.createKaryalayDependency = function(){
 
       // add pandit
-      $scope.each($scope.selectPanditDetails.subitems, function(pandit){
+      var merged_pandits = $scope.union($scope.selectPanditDetails.subitems, $scope.multipleItmes.selectedPeople);
+      merged_pandits = $scope.reject(merged_pandits, function(x){ return $scope.isEmpty(x)});
+      merged_pandits = $scope.map(merged_pandits, function(o) {
+        return $scope.omit(o, 'created_at', 'updated_at', '$$hashKey');
+      });
+      $scope.each(merged_pandits, function(pandit){
         var data = {karyalay_pandit_params: $scope.extend(pandit, {karyalay_lists_id: $scope.karyalay_lists_id})};
         var url_to_post = '/karyalay_pandits';
         $http.post(url_to_post, data)
@@ -180,7 +236,12 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
       });
 
       //add caterer
-      $scope.each($scope.selectCatererDetails.subitems, function(caterer){
+      var merged_caterers = $scope.union($scope.selectCatererDetails.subitems, $scope.multipleItmes.selectedCaterer);
+      merged_caterers = $scope.reject(merged_caterers, function(x){ return $scope.isEmpty(x)});
+      merged_caterers = $scope.map(merged_caterers, function(o) {
+        return $scope.omit(o, 'created_at', 'updated_at', '$$hashKey');
+      });
+      $scope.each(merged_caterers, function(caterer){
         var data = {karyalay_caterer_params: $scope.extend(caterer, {karyalay_lists_id: $scope.karyalay_lists_id})};
         var url_to_post = '/karyalay_caterers';
         $http.post(url_to_post, data)

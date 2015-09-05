@@ -47,6 +47,9 @@ end
 # Database adapter
 gem 'pg'
 
+# Extension for compatiblity between postgres types and activerecord
+gem 'postgres_ext'
+
 # For CMS
 gem 'comfortable_mexican_sofa', '~> 1.12.0'
 

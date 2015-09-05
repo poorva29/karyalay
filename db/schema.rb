@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150830091759) do
+ActiveRecord::Schema.define(version: 20150903170357) do
 
   create_table "comfy_cms_blocks", force: true do |t|
     t.string   "identifier",     null: false
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(version: 20150830091759) do
   create_table "karyalay_caterers", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "phone_numner"
+    t.string   "phone_number"
     t.text     "specialites",  default: [], array: true
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(version: 20150830091759) do
   create_table "karyalay_pandits", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "phone_numner"
+    t.string   "phone_number"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
