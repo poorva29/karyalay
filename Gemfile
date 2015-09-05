@@ -53,4 +53,9 @@ gem 'postgres_ext'
 # For CMS
 gem 'comfortable_mexican_sofa', '~> 1.12.0'
 
+# for athentication
+gem 'devise'
+
 gem 'angular_rails_csrf'
+
+gem 'bootstrap_form'

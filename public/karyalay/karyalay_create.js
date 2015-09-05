@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 'ui.checkbox', 'angular-underscore',
-                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown']);
+                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise']);
   app.filter('propsFilter', function() {
     return function(items, props) {
       var out = [];
@@ -27,7 +27,34 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     };
   });
 
-  app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash) {
+  app.config(function(AuthProvider) {
+    AuthProvider.loginPath('sign_in.json');
+    AuthProvider.resourceName('');
+    AuthProvider.logoutPath('sign_out.json');
+    AuthProvider.logoutMethod('GET');
+  })
+
+  app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window) {
+    $scope.logout = function(){
+      var config = {
+        headers: {
+            'X-HTTP-Method-Override': 'GET'
+        }
+      };
+      Auth.logout(config).then(function(oldUser) {
+          $window.location = '/sign_out';
+      }, function(error) {
+          // An error occurred logging out.
+      });
+    }
+
+    Auth.currentUser().then(function(user) {
+        $scope.user = user;
+        $scope.userToShow = user.first_name + ' ' + user.last_name
+    }, function(error) {
+        // unauthenticated error
+    });
+
     $scope.selectPanditDetails = {
       subitems: []
     };
@@ -155,7 +182,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
 
     $scope.createKaryalay = function(){
       response = {id: 5};
-      var data = {karyalay_list: $scope.karyalayCreateForm};
+      var data = {karyalay_list: $scope.extend($scope.karyalayCreateForm, {user_id: $scope.user.id})};
       var url_to_post = '/karyalay_lists';
       $http.post(url_to_post, data)
         .success(function (response) {

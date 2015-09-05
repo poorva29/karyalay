@@ -1,4 +1,8 @@
 Karyalay::Application.routes.draw do
+  devise_for :users, path: '', path_names: { sign_in: 'sign_in', sign_out: 'sign_out' }
+
+  resources :users
+
   resources :karyalay_samagris
 
   resources :karyalay_caterers
@@ -13,10 +17,11 @@ Karyalay::Application.routes.draw do
   # comfy_route :cms, :path => '/', :sitemap => false
 
   resources :karyalay_lists
-  root :to => 'karyalay_lists#index'
+  root to: 'karyalay_lists#index'
 
   get 'fetch_selected_category' => 'karyalay_samagris#fetch_selected_category'
   post 'create_add_tag' => 'karyalay_samagris#create_add_tag'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

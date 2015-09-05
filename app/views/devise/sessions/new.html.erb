@@ -1,0 +1,37 @@
+<div class="user-login">
+  <div class="container voffset3">
+    <div class="col-lg-6 col-lg-offset-3">
+      <div class="panel login_form_panel">
+        <legend align="center">Secure Login</legend>
+        <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name), layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-8") do |f| %>
+          <%= f.email_field :email, autofocus: true, placeholder: 'Username', icon: "user" %>
+          <%= f.password_field :password, autocomplete: "off", placeholder: 'Password', icon: 'lock' %>
+          <% if devise_mapping.rememberable? -%>
+            <%= f.form_group do %>
+              <%= f.check_box :remember_me %>
+            <% end %>
+          <% end -%>
+          <%= f.form_group do %>
+            <%= f.submit "Log in", class: "btn btn-success" %>
+          <% end %>
+        <% end %>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-xs-3 col-xs-offset-3">
+              <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+                <%= link_to "Sign up", new_registration_path(resource_name) %><br />
+              <% end -%>
+            </div>
+            <div class="col-xs-4">
+              <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+              <% end -%>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

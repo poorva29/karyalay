@@ -1,0 +1,19 @@
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.user-login {
+  .voffset1 { margin-top: 1%; }
+  .voffset2 { margin-top: 5%; }
+  .voffset3 { margin-top: 10%; }
+  .voffset4 { margin-top: 15%; }
+
+  .login_form_panel {
+    color: #5c5c5c;
+    background-color: #FFFFFF;
+    border-color: #D6D6D6;
+    box-shadow: 4px 4px 6px 2px #D6D6D6;
+    border-radius: 5px;
+  }
+}
+

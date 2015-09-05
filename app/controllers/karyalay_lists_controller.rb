@@ -24,8 +24,9 @@ class KaryalayListsController < ApplicationController
   # POST /karyalay_lists
   # POST /karyalay_lists.json
   def create
+    user_id = params[:karyalay_list][:user_id]
     @karyalay_list = KaryalayList.new(karyalay_list_params)
-
+    @karyalay_list.user = User.find_by(id: user_id)
     if @karyalay_list.save
       render json: @karyalay_list
     else
