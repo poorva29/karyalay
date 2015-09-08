@@ -1,0 +1,342 @@
+<div id="layoutKaryalay">
+  <div flash-message="5000" ></div>
+</div>
+<div id="karyalayCreate" class="container-fluid">
+  <!-- <button type="button" class="btn btn-default btn-sm" ng-click="foo()">Logout</button> -->
+  <script type="text/ng-template" id="addPandit.html">
+    <div class="" id="karyalayPandit">
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="first_name">First Name:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="first_name" ng-model="subitem.first_name" placeholder="First Name">
+        </div>
+        <div class="col-sm-1">
+          <button type="button" class="btn btn-default btn-danger" aria-label="Left Align" ng-click="removePandit($index)">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="last_name" ng-model="subitem.last_name" placeholder="Surname Name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="last_name">Ph. Number:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="phone_number" ng-model="subitem.phone_number" placeholder="Phone Number">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="last_name">Email:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="email" ng-model="subitem.email" placeholder="pandit@karyalay.com">
+        </div>
+      </div>
+      <hr class="template-seperator">
+    </div>
+  </script>
+  <script type="text/ng-template" id="addCaterer.html">
+    <div class="" id="karyalayCaterer">
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="first_name">First Name:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="first_name" ng-model="subitem.first_name" placeholder="First Name">
+        </div>
+        <div class="col-sm-1">
+          <button type="button" class="btn btn-default btn-danger" aria-label="Left Align" ng-click="removeCaterer($index)">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="last_name" ng-model="subitem.last_name" placeholder="Surname Name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="last_name">Ph. Number:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="phone_number" ng-model="subitem.phone_number" placeholder="Phone Number">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="last_name">Email:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="email" ng-model="subitem.email" placeholder="caterer@karyalay.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="last_name">Speciality:</label>
+        <div class="col-sm-6 pandit-email">
+          <ui-select multiple ng-model="subitem.specialites" ng-disabled="disabled">
+            <ui-select-match placeholder="Select specials...">{{$item}}</ui-select-match>
+            <ui-select-choices repeat="specials in availableSpecialites | filter:$select.search">
+              {{specials}}
+            </ui-select-choices>
+          </ui-select>
+        </div>
+      </div>
+      <hr class="template-seperator">
+    </div>
+  </script>
+  <div class="row">
+    <accordion close-others="oneAtATime">
+      <accordion-group is-open="status.openKaryalay">
+        <accordion-heading>
+          Create Karyalay <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalay, 'glyphicon-chevron-right': !status.openKaryalay}"></i>
+        </accordion-heading>
+        <fieldset id="karyalayCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalay">
+          <form name="karyalayCreateFormValidate" class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="email">Name:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="email" ng-model="karyalayCreateForm.name" placeholder="Enter Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="pwd">Address:</label>
+              <div class="col-sm-6">
+                <textarea class="form-control" id="pwd" ng-model="karyalayCreateForm.address" placeholder="Enter Address"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="pwd">Lankmark:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="pwd" ng-model="karyalayCreateForm.location" placeholder="Enter Landmark">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="pwd">Description:</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="pwd" ng-model="karyalayCreateForm.description" placeholder="Enter Description">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="pwd">Ph. Number:</label>
+              <div class="col-sm-6">
+                <input type="number" class="form-control" id="pwd" ng-model="karyalayCreateForm.phone_number" placeholder="Enter Number">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="pwd">Email:</label>
+              <div class="col-sm-6">
+                <input type="email" class="form-control" id="pwd" ng-model="karyalayCreateForm.email" placeholder="Enter Karyalay Email">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-6">
+                <button type="submit" class="btn btn-default" ng-click="createKaryalay()">Save</button>
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </accordion-group>
+      <accordion-group is-open="status.openKaryalayAttr" ng-show="saveStatus.saveKaryalay">
+        <accordion-heading>
+          Karyalay Attributes <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayAttr, 'glyphicon-chevron-right': !status.openKaryalayAttr}"></i>
+        </accordion-heading>
+        <fieldset id="karyalayAttrCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayAttr">
+          <form name="karyalayAttrCreateFormValidity" class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="email">Accomodate People:</label>
+              <div class="col-sm-3">
+                <input type="number" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_people" placeholder="People Count">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">No. Of Rooms:</label>
+              <div class="col-sm-3">
+                <input type="number" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_rooms" placeholder="Room Count">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Size In Sq. Feet:</label>
+              <div class="col-sm-3">
+                <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.size_in_sq" placeholder="Size Of Hall">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Price Half Day:</label>
+              <div class="col-sm-3">
+                <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_half_day" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Price Full Day:</label>
+              <div class="col-sm-3">
+                <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_full_day" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Provide Offers:</label>
+              <div class="col-sm-1">
+                <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.provide_offers"></checkbox>
+              </div>
+              <label class="control-label col-sm-2" for="pwd">Provide Samagri:</label>
+              <div class="col-sm-1">
+                <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_samagri"></checkbox>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Has A/C:</label>
+              <div class="col-sm-1">
+                <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_ac"></checkbox>
+              </div>
+              <label class="control-label col-sm-2" for="pwd">Has Pandit:</label>
+              <div class="col-sm-1">
+                <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_pandit"></checkbox>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Has Caterer:</label>
+              <div class="col-sm-1">
+                <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_caterer"></checkbox>
+              </div>
+              <label class="control-label col-sm-2" for="pwd">Has Garden:</label>
+              <div class="col-sm-1">
+                <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_garden"></checkbox>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" class="btn btn-default" ng-click="createKaryalayAttr()">Save</button>
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </accordion-group>
+      <accordion-group is-open="status.openKaryalayDependents" ng-show="saveStatus.saveKaryalayAttr && (karyalayAttrCreateForm.has_samagri || karyalayAttrCreateForm.has_caterer || karyalayAttrCreateForm.has_pandit)">
+        <accordion-heading>
+          Karyalay Dependency <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayDependents, 'glyphicon-chevron-right': !status.openKaryalayDependents}"></i>
+        </accordion-heading>
+        <fieldset id="karyalayDependentCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayDependents">
+          <form name="karyalaySaveCreateFormValidity" class="form-horizontal" role="form">
+            <div ng-show="karyalayAttrCreateForm.has_samagri && saveStatus.saveKaryalayAttr">
+              <div class="text-center karyalay-label">
+                <legend> Add Samagri </legend>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="category">Add Category:</label>
+                <div class="col-sm-6">
+                  <ui-select ng-model="category.selected" ng-disabled="disabled" on-select="fetchTags()">
+                    <ui-select-match placeholder="Select Category">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="category in categoryItems | propsFilter: {name: $select.search, id: $select.search}">
+                      <div ng-bind-html="category.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                  </ui-select>
+                </div>
+              </div>
+              <div ng-show="category.hasSelected">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="tags">Add Items:</label>
+                  <div class="col-sm-6">
+                    <ui-select multiple ng-model="multipleItmes.selectedItem" ng-disabled="disabled" on-select="selectItem($item, $model)">
+                      <ui-select-match placeholder="Select item...">{{$item.name}} &#40;{{$item.quantity}}&#41;</ui-select-match>
+                      <ui-select-choices repeat="item in items | propsFilter: {name: $select.search, id: $select.search}" refresh="refreshTagNames($select.search)" refresh-delay="0">
+                        <div ng-bind-html="item.name | highlight: $select.search"></div>
+                      </ui-select-choices>
+                    </ui-select>
+                  </div>
+                  <label class="control-label col-sm-1" for="tags">Quantity:</label>
+                  <div class="col-sm-2">
+                    <div class="btn-group" dropdown keyboard-nav>
+                      <select class="form-control" ng-model="quantity" ng-options="count for count in quantites" ng-change="updateQuantity(quantity)">{{count}}</select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-show="karyalayAttrCreateForm.has_caterer && saveStatus.saveKaryalayAttr">
+              <div class="text-center karyalay-label">
+                <legend> Create Caterer </legend>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Select Caterer:</label>
+                <div class="col-sm-6">
+                  <label class="radio-inline"> <input type="radio" ng-model="radioAppointment.selected_caterer_type" ng-init="radioAppointment.selected_caterer_type = 2" ng-value=2 ng-change="changeCatererType()"> New </label>
+                  <label class="radio-inline"> <input type="radio" ng-model="radioAppointment.selected_caterer_type" ng-value=1 ng-change="changeCatererType()"> Existing </label>
+                </div>
+              </div>
+              <div ng-show="showNewCaterer">
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-1">
+                    <button type="button" class="btn btn-default btn-success" aria-label="Left Align" ng-click="addCaterer()">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Caterer
+                    </button>
+                  </div>
+                </div>
+                <div ng-repeat="subitem in selectCatererDetails.subitems track by $index">
+                  <sub-caterer-item-partial></sub-item-partial>
+                </div>
+              </div>
+              <div ng-hide="showNewCaterer">
+                <div class="form-group">
+                  <div class="col-sm-6 col-sm-offset-2">
+                    <ui-select multiple ng-model="multipleItmes.selectedCaterer" ng-disabled="disabled">
+                      <ui-select-match placeholder="Select caterer...">{{$item.first_name}} {{$item.last_name}}</ui-select-match>
+                      <ui-select-choices repeat="catererSel in catererList | propsFilter: {first_name: $select.search, last_name: $select.search}">
+                        <div ng-bind-html="catererSel.first_name + ' ' + catererSel.last_name| highlight: $select.search"></div>
+                        <small>
+                          email: {{catererSel.email}}
+                          phone: <span ng-bind-html="''+catererSel.phone_number | highlight: $select.search"></span>
+                        </small>
+                      </ui-select-choices>
+                    </ui-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-show="karyalayAttrCreateForm.has_pandit && saveStatus.saveKaryalayAttr">
+              <div class="text-center karyalay-label">
+                <legend> Create Pandit </legend>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Select Pandit:</label>
+                <div class="col-sm-6">
+                  <label class="radio-inline"> <input type="radio" ng-model="radioAppointment.selected_pandit_type" ng-init="radioAppointment.selected_pandit_type = 2" ng-value=2 ng-change="changePanditType()"> New </label>
+                  <label class="radio-inline"> <input type="radio" ng-model="radioAppointment.selected_pandit_type" ng-value=1 ng-change="changePanditType()"> Existing </label>
+                </div>
+              </div>
+              <div ng-show="showNewPandit">
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-1">
+                    <button type="button" class="btn btn-default btn-success" aria-label="Left Align" ng-click="addPandit()">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Pandit
+                    </button>
+                  </div>
+                </div>
+                <div ng-repeat="subitem in selectPanditDetails.subitems track by $index">
+                  <sub-pandit-item-partial></sub-item-partial>
+                </div>
+              </div>
+              <div ng-hide="showNewPandit">
+                <div class="form-group">
+                  <div class="col-sm-6 col-sm-offset-2">
+                    <ui-select multiple ng-model="multipleItmes.selectedPeople" ng-disabled="disabled">
+                      <ui-select-match placeholder="Select pandit...">{{$item.first_name}} {{$item.last_name}}</ui-select-match>
+                      <ui-select-choices repeat="person in panditList | propsFilter: {first_name: $select.search, last_name: $select.search}">
+                        <div ng-bind-html="person.first_name + ' ' + person.last_name| highlight: $select.search"></div>
+                        <small>
+                          email: {{person.email}}
+                          phone: <span ng-bind-html="''+person.phone_number | highlight: $select.search"></span>
+                        </small>
+                      </ui-select-choices>
+                    </ui-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-3">
+                <button type="submit" class="btn btn-default" ng-click="createKaryalayDependency()">Save</button>
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </accordion-group>
+    </accordion>
+  </div>
+</div>
