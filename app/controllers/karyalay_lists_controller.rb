@@ -4,7 +4,6 @@ class KaryalayListsController < ApplicationController
   # GET /karyalay_lists
   # GET /karyalay_lists.json
   def index
-    @karyalay_lists = KaryalayList.all
   end
 
   # GET /karyalay_lists/1
@@ -51,11 +50,14 @@ class KaryalayListsController < ApplicationController
   # DELETE /karyalay_lists/1
   # DELETE /karyalay_lists/1.json
   def destroy
-    @karyalay_list.destroy
-    respond_to do |format|
-      format.html { redirect_to karyalay_lists_url }
-      format.json { head :no_content }
+    karyalay_list_id = params[:id]
+    kl = KaryalayList.find_by(id: karyalay_list_id)
+    if !kl.nil? && kl.destroy
+      result = { message: 'Deleted successfully', status: true }
+    else
+      result = { message: 'Please try again later', status: false }
     end
+    render json: result
   end
 
   def fetch_karyalay_info

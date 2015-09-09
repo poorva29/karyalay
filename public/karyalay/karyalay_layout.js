@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 'ui.checkbox', 'angular-underscore',
-                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngRoute']);
+                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngRoute', 'ngStorage']);
   // ui-select filter
   app.filter('propsFilter', function() {
     return function(items, props) {
@@ -47,6 +47,9 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
           templateUrl: 'templates/karyalay_lists/karyalay-create.html',
           controller: 'karyalayCreateCtrl'
         }).
+        when('/karyalay_update', {
+          templateUrl: 'templates/karyalay_lists/karyalay-update.html',
+        }).
         otherwise({
           redirectTo: function(current, path, search) {
             if(search.goto) {
@@ -62,6 +65,21 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
           requireBase: false
         });
     }]);
+
+
+  app.factory('storeKaryalayInfo', function($localStorage) {
+    $storage = $localStorage;$localStorage;
+    function setKaryalayInfo(data) {
+      $storage.karyalay_id = data;
+    }
+    function getKaryalayInfo() {
+     return $localStorage.karyalay_id;
+    }
+    return {
+     setKaryalayInfo: setKaryalayInfo,
+     getKaryalayInfo: getKaryalayInfo
+    }
+  });
 
   //layout controller
   app.controller('karyalayLayoutCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window) {

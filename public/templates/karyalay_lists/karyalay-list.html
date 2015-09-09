@@ -22,12 +22,10 @@
         <td class="text-center">{{ karyalayInfo.karyalay.phone_number }}</td>
         <td class="text-center">{{ karyalayInfo.karyalay.address }}</td>
         <td class="text-center">
-          <button class="btn" ng-click="editUser(user.id)">
-            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
-          </button>
-          <button class="btn" ng-click="editUser(user.id)">
-            <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete
-          </button>
+          <a href="karyalay_update" class="btn btn-default" role="button" ng-click="editKaryalay(karyalayInfo.karyalay.id)">
+          <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
+          <a class="btn btn-default" role="button" ng-click="deleteKaryalay(karyalayInfo.karyalay.id)">
+          <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a>
         </td>
       </tr></tbody>
     </table>

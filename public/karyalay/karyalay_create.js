@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window) {
+  app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, $location) {
 
     $scope.selectPanditDetails = {
       subitems: []
@@ -151,12 +151,18 @@ var app = angular.module('KaryalayApp');
       $http.post(url_to_post, data)
         .success(function (response) {
           if(response){
-            $scope.karyalayAttrCreateForm.karyalay_attr_id = response.id;
-            $scope.createSuccess();
-            $scope.saveStatus.saveKaryalayAttr = true;
-            $scope.status.openKaryalayDependents = true;
-            $scope.addPandit();
-            $scope.addCaterer();
+            if($scope.karyalayAttrCreateForm.has_samagri ||
+               $scope.karyalayAttrCreateForm.has_caterer ||
+               $scope.karyalayAttrCreateForm.has_pandit) {
+                 $scope.karyalayAttrCreateForm.karyalay_attr_id = response.id;
+                 $scope.createSuccess();
+                 $scope.saveStatus.saveKaryalayAttr = true;
+                 $scope.status.openKaryalayDependents = true;
+                 $scope.addPandit();
+                 $scope.addCaterer();
+            }else{
+              $location.url('/');
+            }
           }else{
             $scope.createFailure();
           }
@@ -238,6 +244,7 @@ var app = angular.module('KaryalayApp');
             $scope.createFailure();
           }
       });
+      $location.url('/');
     };
   });
 
