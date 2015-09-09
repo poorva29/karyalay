@@ -22,6 +22,8 @@ Karyalay::Application.routes.draw do
   get 'fetch_selected_category' => 'karyalay_samagris#fetch_selected_category'
   post 'create_add_tag' => 'karyalay_samagris#create_add_tag'
 
+  get 'fetch_karyalay_info' => 'karyalay_lists#fetch_karyalay_info'
+
   get "*path" => "karyalay_lists#index"
 
   # The priority is based upon order of creation: first created -> highest priority.

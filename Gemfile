@@ -59,3 +59,5 @@ gem 'devise'
 gem 'angular_rails_csrf'
 
 gem 'bootstrap_form'
+
+gem 'passenger'

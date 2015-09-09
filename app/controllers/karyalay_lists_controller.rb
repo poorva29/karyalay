@@ -58,6 +58,17 @@ class KaryalayListsController < ApplicationController
     end
   end
 
+  def fetch_karyalay_info
+    result = KaryalayList.includes(:karyalay_attribute)
+             .where(user_id: current_user.id).map do |kl|
+               {
+                 karyalay: kl,
+                 karyalay_attribute: kl.karyalay_attribute
+               }
+             end
+    render json: result
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_karyalay_list

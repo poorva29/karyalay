@@ -41,8 +41,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     function($routeProvider, $locationProvider) {
       $routeProvider.
         when('/', {
-          templateUrl: 'templates/karyalay_lists/karyalay-list.html',
-          controller: 'karyalayListCtrl'
+          templateUrl: 'templates/karyalay_lists/karyalay-list.html'
         }).
         when('/karyalay_create', {
           templateUrl: 'templates/karyalay_lists/karyalay-create.html',
