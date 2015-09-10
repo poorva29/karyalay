@@ -103,3 +103,18 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
       // unauthenticated error
     });
   });
+
+  // for adding/removing of caterer/pandit
+  app.directive('subPanditItemPartial', function(){
+    return {
+      restrict: "E",
+      templateUrl: "addPandit.html"
+    };
+  });
+
+  app.directive('subCatererItemPartial', function(){
+    return {
+      restrict: "E",
+      templateUrl: "addCaterer.html"
+    };
+  });

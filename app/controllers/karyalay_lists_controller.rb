@@ -18,6 +18,16 @@ class KaryalayListsController < ApplicationController
 
   # GET /karyalay_lists/1/edit
   def edit
+    kl = KaryalayList.includes(:karyalay_attribute,
+                               :karyalay_pandits, :karyalay_caterers,
+                               :karyalay_samagris).where(id: params[:id]).first
+    render json: {
+      karyalay: kl,
+      karyalay_attribute: kl.karyalay_attribute,
+      karyalay_pandits: kl.karyalay_pandits,
+      karyalay_caterers: kl.karyalay_caterers,
+      karyalay_samagris: kl.karyalay_samagris
+    }
   end
 
   # POST /karyalay_lists
@@ -36,23 +46,19 @@ class KaryalayListsController < ApplicationController
   # PATCH/PUT /karyalay_lists/1
   # PATCH/PUT /karyalay_lists/1.json
   def update
-    respond_to do |format|
-      if @karyalay_list.update(karyalay_list_params)
-        format.html { redirect_to @karyalay_list, notice: 'Karyalay list was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @karyalay_list.errors, status: :unprocessable_entity }
-      end
+    if @karyalay_list.update(karyalay_list_params)
+      result = { notice: 'Karyalay list was successfully updated.',
+                 status: true }
+    else
+      result = { errors: @karyalay_list.errors, status: :unprocessable_entity }
     end
+    render json: result
   end
 
   # DELETE /karyalay_lists/1
   # DELETE /karyalay_lists/1.json
   def destroy
-    karyalay_list_id = params[:id]
-    kl = KaryalayList.find_by(id: karyalay_list_id)
-    if !kl.nil? && kl.destroy
+    if !@karyalay_list.nil? && @karyalay_list.destroy
       result = { message: 'Deleted successfully', status: true }
     else
       result = { message: 'Please try again later', status: false }
@@ -60,9 +66,16 @@ class KaryalayListsController < ApplicationController
     render json: result
   end
 
+  def fetch_karyalay_list
+    result = KaryalayList.where(user_id: current_user.id)
+             .order('updated_at DESC')
+    render json: result
+  end
+
   def fetch_karyalay_info
     result = KaryalayList.includes(:karyalay_attribute)
-             .where(user_id: current_user.id).map do |kl|
+             .where(user_id: current_user.id)
+             .order('updated_at DESC').map do |kl|
                {
                  karyalay: kl,
                  karyalay_attribute: kl.karyalay_attribute

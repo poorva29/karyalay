@@ -28,10 +28,12 @@ class KaryalayCaterersController < ApplicationController
     karyalay_lists_id = params[:karyalay_caterer_params][:karyalay_lists_id]
     kl = KaryalayList.find_by_id(karyalay_lists_id)
     if !kl.nil?
-      @karyalay_pandit = KaryalayCaterer.find_or_create_by(karyalay_caterer_params)
-      @karyalay_pandit.karyalay_lists << kl
-      if @karyalay_pandit.save
-        render json: @karyalay_pandit
+      @karyalay_caterer = KaryalayCaterer.find_or_create_by(karyalay_caterer_params)
+      unless @karyalay_caterer.karyalay_lists.map(&:id).include? karyalay_lists_id
+        @karyalay_caterer.karyalay_lists << kl
+      end
+      if @karyalay_caterer.save
+        render json: @karyalay_caterer
       else
         render json: { id: nil,
                        message: 'Karyalay Pandit Not Created Try Again' }

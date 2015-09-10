@@ -29,7 +29,9 @@ class KaryalayPanditsController < ApplicationController
     kl = KaryalayList.find_by_id(karyalay_lists_id)
     if !kl.nil?
       @karyalay_pandit = KaryalayPandit.find_or_create_by(karyalay_pandit_params)
-      @karyalay_pandit.karyalay_lists << kl
+      unless @karyalay_pandit.karyalay_lists.map(&:id).include? karyalay_lists_id
+        @karyalay_pandit.karyalay_lists << kl
+      end
       if @karyalay_pandit.save
         render json: @karyalay_pandit
       else

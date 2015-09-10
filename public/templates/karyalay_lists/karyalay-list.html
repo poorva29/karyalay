@@ -2,7 +2,7 @@
   <div id="layoutKaryalay">
     <div flash-message="5000" ></div>
   </div>
-  <div class="container">
+  <div class="container karyalay-lists">
     <div class="row">
       <a href="karyalay_create" class="btn btn-success pull-right" role="button">
       <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Create Karyalay</a>
@@ -17,14 +17,17 @@
         <th class="text-center">Action</th>
       </tr></thead>
       <tbody><tr ng-repeat="karyalayInfo in karyalayList">
-        <td class="text-center">{{ karyalayInfo.karyalay.name }}</td>
-        <td class="text-center">{{ karyalayInfo.karyalay.email }}</td>
-        <td class="text-center">{{ karyalayInfo.karyalay.phone_number }}</td>
-        <td class="text-center">{{ karyalayInfo.karyalay.address }}</td>
-        <td class="text-center">
-          <a href="karyalay_update" class="btn btn-default" role="button" ng-click="editKaryalay(karyalayInfo.karyalay.id)">
-          <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
-          <a class="btn btn-default" role="button" ng-click="deleteKaryalay(karyalayInfo.karyalay.id)">
+        <td class="text-center karyalay-lists-name">
+          <a href="karyalay_update" class="btn btn-link" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
+          {{karyalayInfo.name}}&nbsp;&nbsp;<span class="glyphicon glyphicon-pencil"></span></a>
+        </td>
+        <td class="text-center">{{ karyalayInfo.email }}</td>
+        <td class="text-center">{{ karyalayInfo.phone_number }}</td>
+        <td class="text-center">{{ karyalayInfo.address }}</td>
+        <td class="text-center karyalay-lists-book">
+          <a href="karyalay_book" class="btn btn-default" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
+          <span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Book</a>
+          <a class="btn btn-default" role="button" ng-click="deleteKaryalay(karyalayInfo.id)">
           <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a>
         </td>
       </tr></tbody>

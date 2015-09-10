@@ -32,7 +32,8 @@ class KaryalayAttributesController < ApplicationController
       if @karyalay_attribute.save
         render json: @karyalay_attribute
       else
-        render json: { id: nil, message: 'Karyalay Attributes Not Saved, Try Again' }
+        render json: { id: nil,
+                       message: 'Karyalay Attributes Not Saved, Try Again' }
       end
     else
       render json: { id: nil, message: 'Karyalay Not Found, Try Again' }
@@ -42,15 +43,14 @@ class KaryalayAttributesController < ApplicationController
   # PATCH/PUT /karyalay_attributes/1
   # PATCH/PUT /karyalay_attributes/1.json
   def update
-    respond_to do |format|
-      if @karyalay_attribute.update(karyalay_attribute_params)
-        format.html { redirect_to @karyalay_attribute, notice: 'Karyalay attribute was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @karyalay_attribute.errors, status: :unprocessable_entity }
-      end
+    if @karyalay_attribute.update(karyalay_attribute_params)
+      result = { notice: 'Karyalay attribute was successfully updated.',
+                 status: true }
+    else
+      result = { errors: @karyalay_attribute.errors,
+                 status: :unprocessable_entity }
     end
+    render json: result
   end
 
   # DELETE /karyalay_attributes/1

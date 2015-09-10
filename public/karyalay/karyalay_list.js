@@ -11,7 +11,7 @@ var app = angular.module('KaryalayApp');
       Flash.create('danger', message);
     };
 
-    var url_to_post = '/fetch_karyalay_info';
+    var url_to_post = '/fetch_karyalay_list';
     $http.get(url_to_post)
       .success(function (response) {
         if(response){
@@ -21,14 +21,12 @@ var app = angular.module('KaryalayApp');
         }
     });
 
-    $scope.editKaryalay = function(karyalay_id) {
+    $scope.setKaryalayId = function(karyalay_id) {
       storeKaryalayInfo.setKaryalayInfo(karyalay_id);
     };
 
     $scope.deleteKaryalay = function(karyalay_id) {
-      $scope.karyalayList = $scope.filter($scope.karyalayList, function(karyalayInfo) {
-        return karyalayInfo.karyalay.id !== karyalay_id
-      });
+      $scope.karyalayList = $scope.reject($scope.karyalayList, {id: karyalay_id});
       url_delete = '/karyalay_lists/';
       $http.delete(url_delete + karyalay_id)
         .success(function (response) {

@@ -29,6 +29,7 @@ var app = angular.module('KaryalayApp');
       'Maharashtrian', 'South Indian', 'Chineese'
     ]
 
+    // Available categories for samagri
     $scope.category = {};
     $scope.categoryItems = [
       {id: 1, name: "birthday"},
@@ -169,6 +170,8 @@ var app = angular.module('KaryalayApp');
       });
     };
 
+
+    // For adding/removing and new/existing , pandit/caterer
     $scope.addPandit = function(){
       $scope.selectPanditDetails.subitems.push({});
     };
@@ -248,16 +251,3 @@ var app = angular.module('KaryalayApp');
     };
   });
 
-  app.directive('subPanditItemPartial', function(){
-    return {
-      restrict: "E",
-      templateUrl: "addPandit.html"
-    };
-  });
-
-  app.directive('subCatererItemPartial', function(){
-    return {
-      restrict: "E",
-      templateUrl: "addCaterer.html"
-    };
-  });
