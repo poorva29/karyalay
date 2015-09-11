@@ -1,6 +1,5 @@
 var app = angular.module('KaryalayApp');
   app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, $location) {
-
     $scope.selectPanditDetails = {
       subitems: []
     };
@@ -110,12 +109,12 @@ var app = angular.module('KaryalayApp');
 
     $scope.updateQuantity = function(count){
       $scope.quantity = count;
-    }
+    };
 
     $scope.selectItem = function(item, model){
       $scope.extend($scope.findWhere($scope.items, {id: item.id}), {quantity: $scope.quantity});
       $scope.extend(item, {quantity: $scope.quantity});
-    }
+    };
 
     $scope.createSuccess = function () {
       var message = '<strong>Data Saved!</strong> Please proceded to create other attributes.';

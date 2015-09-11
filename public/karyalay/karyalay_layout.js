@@ -1,5 +1,6 @@
 var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 'ui.checkbox', 'angular-underscore',
-                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngRoute', 'ngStorage']);
+                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngRoute', 'ngStorage',
+                                          'ui.calendar', 'dnTimepicker']);
   // ui-select filter
   app.filter('propsFilter', function() {
     return function(items, props) {
@@ -45,10 +46,13 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
         }).
         when('/karyalay_create', {
           templateUrl: 'templates/karyalay_lists/karyalay-create.html',
-          controller: 'karyalayCreateCtrl'
         }).
         when('/karyalay_update', {
           templateUrl: 'templates/karyalay_lists/karyalay-update.html',
+        }).
+        when('/karyalay_book', {
+          templateUrl: 'templates/karyalay_lists/karyalay-book.html',
+          controller: 'karyalayBookCtrl'
         }).
         otherwise({
           redirectTo: function(current, path, search) {

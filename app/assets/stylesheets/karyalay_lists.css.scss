@@ -49,3 +49,23 @@
     }
   }
 }
+
+.karyalay-book-modal {
+  .align-checkbox {
+    margin-top: 70%;
+  }
+
+  .text-align-to {
+    text-align: center !important;
+  }
+
+  .datepicker-size {
+    width:88%;
+    float: left;
+  }
+
+  .timepicker-div ul {
+    height: 400%;
+    overflow-y: auto !important;
+  }
+}
