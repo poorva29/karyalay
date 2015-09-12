@@ -85,7 +85,7 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.today = function() {
-      $scope.packageDetails.dt = new Date();
+      $scope.packageDetails.from_date = new Date();
     };
     $scope.today();
 
@@ -106,8 +106,8 @@ var app = angular.module('KaryalayApp');
     $scope.fetchTags = function(){
       $scope.category.hasSelected = true;
       var data = {category: $scope.category.selected.name};
-      var url_to_post = '/fetch_selected_category';
-      $http.get(url_to_post, {params: data})
+      var url_to_get = '/fetch_selected_category';
+      $http.get(url_to_get, {params: data})
         .success(function (response) {
           if(response){
             $scope.items = response;
@@ -142,34 +142,31 @@ var app = angular.module('KaryalayApp');
     }
 
     $scope.fetchKaryalayInfo = function() {
-      var url_to_post = '/karyalay_lists/' + $scope.karyalay_lists_id + '/edit';
-      $http.get(url_to_post)
+      var url_to_get = '/karyalay_lists/' + $scope.karyalay_lists_id + '/edit';
+      $http.get(url_to_get)
         .success(function (response) {
           $scope.karyalayInfo = response.karyalay;
           $scope.karyalayAttrInfo = response.karyalay_attribute;
           $scope.panditList = response.karyalay_pandits;
           $scope.catererList = response.karyalay_caterers;
           $scope.karyalaySamagri = response.karyalay_samagris;
-          if(response){
-            // $scope.extend($scope.karyalayUpdateForm, $scope.karyalayInfo);
-            // $scope.extend($scope.karyalayAttrUpdateForm, $scope.karyalayAttrInfo);
-            // if($scope.karyalayAttrUpdateForm.has_samagri ||
-            //    $scope.karyalayAttrUpdateForm.has_caterer ||
-            //    $scope.karyalayAttrUpdateForm.has_pandit) {
-            //      $scope.addPandit();
-            //      $scope.addCaterer();
-            // }
-          }else{
-
-          }
       });
     };
 
     $scope.fetchKaryalayInfo();
 
     $scope.ok = function () {
-      console.log($scope.packageDetails);
-      $modalInstance.close($scope.packageDetails);
+      var data = {karyalay_package: $scope.extend($scope.packageDetails, {karyalay_lists_id: items.karyalay_lists_id})};
+      var url_to_post = '/karyalay_packages';
+      $http.post(url_to_post, data)
+        .success(function (response) {
+          if(response){
+            // console.log(response);
+          }else{
+
+          }
+      });
+      // $modalInstance.close($scope.packageDetails);
     };
 
     $scope.cancel = function () {

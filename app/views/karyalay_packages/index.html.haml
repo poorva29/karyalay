@@ -1,0 +1,17 @@
+%h1 Listing karyalay_packages
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @karyalay_packages.each do |karyalay_package|
+    %tr
+      %td= link_to 'Show', karyalay_package
+      %td= link_to 'Edit', edit_karyalay_package_path(karyalay_package)
+      %td= link_to 'Destroy', karyalay_package, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Karyalay package', new_karyalay_package_path

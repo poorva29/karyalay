@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150905141824) do
+ActiveRecord::Schema.define(version: 20150912133620) do
 
   create_table "comfy_cms_blocks", force: true do |t|
     t.string   "identifier",     null: false
@@ -171,6 +171,14 @@ ActiveRecord::Schema.define(version: 20150905141824) do
   add_index "karyalay_caterers_lists", ["karyalay_caterer_id"], name: "index_karyalay_caterers_lists_on_karyalay_caterer_id", using: :btree
   add_index "karyalay_caterers_lists", ["karyalay_list_id"], name: "index_karyalay_caterers_lists_on_karyalay_list_id", using: :btree
 
+  create_table "karyalay_caterers_packages", force: true do |t|
+    t.integer "karyalay_package_id"
+    t.integer "karyalay_caterer_id"
+  end
+
+  add_index "karyalay_caterers_packages", ["karyalay_caterer_id"], name: "index_karyalay_caterers_packages_on_karyalay_caterer_id", using: :btree
+  add_index "karyalay_caterers_packages", ["karyalay_package_id"], name: "index_karyalay_caterers_packages_on_karyalay_package_id", using: :btree
+
   create_table "karyalay_lists", force: true do |t|
     t.text     "name"
     t.text     "address"
@@ -217,6 +225,31 @@ ActiveRecord::Schema.define(version: 20150905141824) do
 
   add_index "karyalay_lists_samagris", ["karyalay_list_id"], name: "index_karyalay_lists_samagris_on_karyalay_list_id", using: :btree
   add_index "karyalay_lists_samagris", ["karyalay_samagri_id"], name: "index_karyalay_lists_samagris_on_karyalay_samagri_id", using: :btree
+
+  create_table "karyalay_packages", force: true do |t|
+    t.string   "subject"
+    t.date     "from_date"
+    t.time     "from_time"
+    t.time     "to_time"
+    t.boolean  "has_ac"
+    t.boolean  "has_garden"
+    t.integer  "num_rooms"
+    t.string   "ref_name"
+    t.string   "ref_phone_number"
+    t.integer  "karyalay_list_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "karyalay_packages", ["karyalay_list_id"], name: "index_karyalay_packages_on_karyalay_list_id", using: :btree
+
+  create_table "karyalay_packages_pandits", force: true do |t|
+    t.integer "karyalay_package_id"
+    t.integer "karyalay_pandit_id"
+  end
+
+  add_index "karyalay_packages_pandits", ["karyalay_package_id"], name: "index_karyalay_packages_pandits_on_karyalay_package_id", using: :btree
+  add_index "karyalay_packages_pandits", ["karyalay_pandit_id"], name: "index_karyalay_packages_pandits_on_karyalay_pandit_id", using: :btree
 
   create_table "karyalay_pandits", force: true do |t|
     t.string   "first_name"

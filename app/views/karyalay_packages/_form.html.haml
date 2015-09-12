@@ -1,0 +1,10 @@
+= form_for @karyalay_package do |f|
+  - if @karyalay_package.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@karyalay_package.errors.count, "error")} prohibited this karyalay_package from being saved:"
+      %ul
+        - @karyalay_package.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'
