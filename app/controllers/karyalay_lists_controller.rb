@@ -16,18 +16,23 @@ class KaryalayListsController < ApplicationController
     @karyalay_list = KaryalayList.new
   end
 
+  def fetch_karyalay_list_data
+    {
+      karyalay: @karyalay_list,
+      karyalay_attribute: @karyalay_list.karyalay_attribute,
+      karyalay_pandits: @karyalay_list.karyalay_pandits,
+      karyalay_caterers: @karyalay_list.karyalay_caterers,
+      karyalay_samagris: @karyalay_list.karyalay_samagris
+    }
+  end
+
   # GET /karyalay_lists/1/edit
   def edit
-    kl = KaryalayList.includes(:karyalay_attribute,
-                               :karyalay_pandits, :karyalay_caterers,
-                               :karyalay_samagris).where(id: params[:id]).first
-    render json: {
-      karyalay: kl,
-      karyalay_attribute: kl.karyalay_attribute,
-      karyalay_pandits: kl.karyalay_pandits,
-      karyalay_caterers: kl.karyalay_caterers,
-      karyalay_samagris: kl.karyalay_samagris
-    }
+    @karyalay_list = KaryalayList
+                     .includes(:karyalay_attribute, :karyalay_pandits,
+                               :karyalay_caterers, :karyalay_samagris)
+                     .where(id: params[:id]).first
+    render json: fetch_karyalay_list_data
   end
 
   # POST /karyalay_lists
@@ -82,6 +87,12 @@ class KaryalayListsController < ApplicationController
                }
              end
     render json: result
+  end
+
+  def fetch_karyalay_package
+    @karyalay_list = KaryalayList.includes(:karyalay_packages)
+                     .where(id: params[:id]).first
+    render json: @karyalay_list.karyalay_packages
   end
 
   private

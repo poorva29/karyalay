@@ -26,6 +26,7 @@ Karyalay::Application.routes.draw do
 
   get 'fetch_karyalay_list' => 'karyalay_lists#fetch_karyalay_list'
   get 'fetch_karyalay_info' => 'karyalay_lists#fetch_karyalay_info'
+  get 'fetch_karyalay_package' => 'karyalay_lists#fetch_karyalay_package'
 
   get "*path" => "karyalay_lists#index"
 

@@ -2,6 +2,9 @@
   <script type="text/ng-template" id="karyalayBooking.html">
     <div class="karyalay-book-modal">
       <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <h4 class="modal-title text-align-to">Select Package</h4>
       </div>
       <div class="modal-body">
@@ -130,13 +133,13 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-success" type="button" ng-click="ok()">Save</button>
+        <button class="btn btn-danger" type="button" ng-click="delete()" ng-if="isEdit">Delete</button>
       </div>
     </div>
   </script>
   <div id="layoutKaryalay">
     <div flash-message="5000" ></div>
   </div>
-  <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+  <div ui-calendar="uiConfig.calendar" ng-model="eventSources" id="calendar"></div>
 </div>

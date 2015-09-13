@@ -2,13 +2,88 @@ var app = angular.module('KaryalayApp');
   app.controller('karyalayBookCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo) {
     $scope.karyalay_lists_id = storeKaryalayInfo.getKaryalayInfo();
     $scope.animationsEnabled = true;
+    $scope.events = [];
+
+    $scope.createSuccess = function () {
+      var message = '<strong>Package Created!</strong>';
+      Flash.create('success', message);
+    };
 
     $scope.slotSelected = function(start, end, jsEvent, view){
       $scope.open(start, end, jsEvent, view, 'lg');
     };
 
-    $scope.open = function (start, end, jsEvent, view, size) {
+    $scope.alertOnEventClick = function(event, jsEvent, view) {
+      $scope.openEdit(event, jsEvent, view, 'lg');
+    };
 
+    $scope.uiConfig = {
+      calendar:{
+        firstDay: new Date().getDay(),
+        defaultView: 'agendaWeek',
+        height: 'auto',
+        slotDuration: '01:00:00',
+        selectable: true,
+        header:{
+          left: 'agendaDay agendaWeek month',
+          center: 'title',
+          right: 'today prev,next'
+        },
+        views: {
+          agendaWeek: {
+            titleFormat: 'MMMM DD, YYYY',
+          }
+        },
+        editable: true,
+        timezone: 'local',
+        select: $scope.slotSelected,
+        eventClick: $scope.alertOnEventClick,
+      }
+    };
+
+    $scope.openEdit = function (event, jsEvent, view, size) {
+      var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'karyalayBooking.html',
+        controller: 'BookEditKaryalayModalInstanceCtrl',
+        size: size,
+        backdrop: 'static',
+        resolve: {
+          items: function () {
+            var items = {
+              'event': event,
+              'jsEvent': jsEvent,
+              'view': view,
+              'karyalay_lists_id': $scope.karyalay_lists_id
+            };
+            return items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+        var data = {karyalay_package: $scope.extend($scope.selected, {from_date: moment($scope.selected.from_date).format()})};
+        var url_to_post = '/karyalay_packages/' + event.id;
+        $http.put(url_to_post, data)
+          .success(function (response) {
+            if(response.status){
+              if($scope.selected.subject){
+                event.title = $scope.selected.subject
+              }
+              event.start = moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.from_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm'),
+              event.end = moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.to_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm')
+              $('#calendar').fullCalendar('updateEvent', event);
+            }else{
+
+            }
+        });
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+
+    $scope.open = function (start, end, jsEvent, view, size) {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'karyalayBooking.html',
@@ -31,145 +106,41 @@ var app = angular.module('KaryalayApp');
 
       modalInstance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
+        var data = {karyalay_package: $scope.extend($scope.selected, {karyalay_lists_id: $scope.karyalay_lists_id})};
+        var url_to_post = '/karyalay_packages';
+        $http.post(url_to_post, data)
+          .success(function (response) {
+            if(response){
+              var eventSource = $scope.extend($scope.formatEvent(selectedItem), {id: response.id});
+              $scope.events.push(eventSource);
+              $scope.createSuccess();
+            }else{
+
+            }
+        });
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
       });
     };
 
-    $scope.uiConfig = {
-      calendar:{
-        firstDay: new Date().getDay(),
-        defaultView: 'agendaWeek',
-        height: 'auto',
-        selectable: true,
-        header:{
-          left: 'agendaDay agendaWeek month',
-          center: 'title',
-          right: 'today prev,next'
-        },
-        views: {
-          agendaWeek: {
-            titleFormat: 'MMMM DD, YYYY',
-          }
-        },
-        editable: true,
-        timezone: 'local',
-        select: $scope.slotSelected
-      }
-    };
-    $scope.eventSources = [];
-  });
-
-  app.controller('BookKaryalayModalInstanceCtrl', function ($scope, $modalInstance, items, $http) {
-    $scope.packageDetails = {
-      selectedItem: [],
-      selectedPeople: [],
-      selectedCaterer: []
-    };
-    $scope.packageDetails.from_time = new Date();
-    $scope.packageDetails.to_time = new Date();
-
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-    $scope.status = {
-      opened: false
+    $scope.formatEvent = function(event){
+      $scope.extend(event,{
+                            id: event.id,
+                            title: event.subject,
+                            stick: true,
+                            start: moment(moment(event.from_date).format('YYYY-MM-DD') + 'T' + moment(event.from_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm'),
+                            end: moment(moment(event.from_date).format('YYYY-MM-DD') + 'T' + moment(event.to_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm')
+                          });
+      return event;
     };
 
-    $scope.dateOptions = {
-      formatYear: 'yy',
-      startingDay: 1
-    };
-
-    $scope.open = function($event) {
-      $scope.status.opened = true;
-    };
-
-    $scope.today = function() {
-      $scope.packageDetails.from_date = new Date();
-    };
-    $scope.today();
-
-    // Available categories for samagri
-    $scope.karyalay_lists_id = items.karyalay_lists_id;
-    $scope.category = {};
-    $scope.categoryItems = [
-      {id: 1, name: "birthday"},
-      {id: 2, name: "marriage"},
-      {id: 3, name: "function"},
-      {id: 4, name: "pooja"},
-      {id: 5, name: "others"},
-    ];
-
-    // Fetch Category wise samagri
-    $scope.item = {};
-    $scope.items = null;
-    $scope.fetchTags = function(){
-      $scope.category.hasSelected = true;
-      var data = {category: $scope.category.selected.name};
-      var url_to_get = '/fetch_selected_category';
-      $http.get(url_to_get, {params: data})
-        .success(function (response) {
-          if(response){
-            $scope.items = response;
-            $scope.itemsSize = $scope.items.length;
-          }else{
-
-          }
+    $http.get('fetch_karyalay_package', {params: {id: $scope.karyalay_lists_id}})
+      .success(function (response) {
+        $scope.each(response, function(event){
+          $scope.events.push($scope.formatEvent(event));
+        });
       });
-    };
 
-    $scope.refreshTagNames = function(name){
-      if($scope.items){
-        $scope.items[$scope.itemsSize + 1] = {
-          id: '-1',
-          name: name,
-          category: $scope.category.selected.name,
-          quantity: $scope.quantity
-        };
-      }
-    };
+    $scope.eventSources = [$scope.events];
 
-    $scope.quantity = 1;
-    $scope.quantites = [1, 2, 3, 4, 5]
-
-    $scope.updateQuantity = function(count){
-      $scope.quantity = count;
-    }
-
-    $scope.selectItem = function(item, model){
-      $scope.extend($scope.findWhere($scope.items, {id: item.id}), {quantity: $scope.quantity});
-      $scope.extend(item, {quantity: $scope.quantity});
-    }
-
-    $scope.fetchKaryalayInfo = function() {
-      var url_to_get = '/karyalay_lists/' + $scope.karyalay_lists_id + '/edit';
-      $http.get(url_to_get)
-        .success(function (response) {
-          $scope.karyalayInfo = response.karyalay;
-          $scope.karyalayAttrInfo = response.karyalay_attribute;
-          $scope.panditList = response.karyalay_pandits;
-          $scope.catererList = response.karyalay_caterers;
-          $scope.karyalaySamagri = response.karyalay_samagris;
-      });
-    };
-
-    $scope.fetchKaryalayInfo();
-
-    $scope.ok = function () {
-      var data = {karyalay_package: $scope.extend($scope.packageDetails, {karyalay_lists_id: items.karyalay_lists_id})};
-      var url_to_post = '/karyalay_packages';
-      $http.post(url_to_post, data)
-        .success(function (response) {
-          if(response){
-            // console.log(response);
-          }else{
-
-          }
-      });
-      // $modalInstance.close($scope.packageDetails);
-    };
-
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
   });
