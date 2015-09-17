@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayListCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo) {
+  app.controller('karyalayListCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $ngBootbox) {
 
     $scope.deleteSuccess = function () {
       var message = '<strong>Karyalay Deleted!</strong> karyalay related other attributes are removed.';
@@ -26,15 +26,29 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.deleteKaryalay = function(karyalay_id) {
-      $scope.karyalayList = $scope.reject($scope.karyalayList, {id: karyalay_id});
-      url_delete = '/karyalay_lists/';
-      $http.delete(url_delete + karyalay_id)
-        .success(function (response) {
-          if(response.status){
-            $scope.deleteSuccess();
-          }else{
-            $scope.deleteFailure();
-          };
-      });
+      var options = {
+      message: 'Are you sure Karyalay is to be deleted ?',
+      title: 'Delete Karyalay',
+      className: 'test-class',
+      buttons: {
+        success: {
+          label: "Yes",
+          className: "btn-success",
+          callback: function() {
+            $scope.karyalayList = $scope.reject($scope.karyalayList, {id: karyalay_id});
+            url_delete = '/karyalay_lists/';
+            $http.delete(url_delete + karyalay_id)
+              .success(function (response) {
+                if(response.status){
+                  $scope.deleteSuccess();
+                }else{
+                  $scope.deleteFailure();
+                };
+            });
+          }
+        }
+      }
+    };
+    $ngBootbox.customDialog(options);
     }
   });

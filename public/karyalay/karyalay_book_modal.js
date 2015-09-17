@@ -105,7 +105,7 @@ app.controller('BookKaryalayModalInstanceCtrl', function ($scope, $modalInstance
   };
 });
 
-app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInstance, items, $http, $q) {
+app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInstance, items, $http, $q, $ngBootbox) {
   $scope.isEdit = true;
   $scope.packageDetails = {
     selectedItem: [],
@@ -230,6 +230,24 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInst
        });
       $scope.packageDetails.selectedCaterer = $scope.compact(caterers);
     });
+
+  $scope.delete = function(){
+    var options = {
+      message: 'Are you sure package is to be deleted ?',
+      title: 'Delete Package',
+      className: 'test-class',
+      buttons: {
+        success: {
+          label: "Yes",
+          className: "btn-success",
+          callback: function() {
+            console.log('Confirmed');
+          }
+        }
+      }
+    };
+    $ngBootbox.customDialog(options);
+  };
 
   $scope.ok = function () {
     $modalInstance.close($scope.packageDetails);

@@ -9,13 +9,52 @@ var app = angular.module('KaryalayApp');
       Flash.create('success', message);
     };
 
+    $scope.createFailure = function () {
+      var message = '<strong>Cannot Create Package!</strong> Past Date Package Cannot Be Created';
+      Flash.create('danger', message);
+    };
+
+    $scope.updateSuccess = function () {
+      var message = '<strong>Package Updated!</strong>';
+      Flash.create('success', message);
+    };
+
+    $scope.updateFailure = function () {
+      var message = '<strong>Package Not Updated!</strong> Past Date Package Cannot Be Updated';
+      Flash.create('danger', message);
+    };
+
     $scope.slotSelected = function(start, end, jsEvent, view){
-      $scope.open(start, end, jsEvent, view, 'lg');
+      if(start.diff(moment()) < 0){
+        $scope.createFailure();
+      }else {
+        $scope.open(start, end, jsEvent, view, 'lg');
+      }
     };
 
     $scope.alertOnEventClick = function(event, jsEvent, view) {
       $scope.openEdit(event, jsEvent, view, 'lg');
     };
+
+    $scope.alertOnEventDrop = function(event, delta, revertFunc) {
+      var start_date = event.start;
+      if(start_date.diff(moment()) < 0){
+        revertFunc();
+        $scope.updateFailure();
+      }else{
+        var change_dates = {
+          from_date: start_date.format(),
+          from_time: start_date.toDate(),
+          to_time: event.end.toDate()
+        }
+        var data = {karyalay_package: change_dates};
+        var url_to_post = '/karyalay_packages/' + event.id;
+        $http.put(url_to_post, data)
+          .success(function (response) {
+            $scope.updateSuccess();
+        });
+      }
+    }
 
     $scope.uiConfig = {
       calendar:{
@@ -38,6 +77,8 @@ var app = angular.module('KaryalayApp');
         timezone: 'local',
         select: $scope.slotSelected,
         eventClick: $scope.alertOnEventClick,
+        eventDrop: $scope.alertOnEventDrop,
+        eventResize: $scope.alertOnEventDrop
       }
     };
 
@@ -106,7 +147,8 @@ var app = angular.module('KaryalayApp');
 
       modalInstance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
-        var data = {karyalay_package: $scope.extend($scope.selected, {karyalay_lists_id: $scope.karyalay_lists_id})};
+        var data = {karyalay_package: $scope.extend($scope.selected, {karyalay_lists_id: $scope.karyalay_lists_id,
+                                                    from_date: moment($scope.selected.from_date).format()})};
         var url_to_post = '/karyalay_packages';
         $http.post(url_to_post, data)
           .success(function (response) {

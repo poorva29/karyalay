@@ -1,6 +1,6 @@
 var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 'ui.checkbox', 'angular-underscore',
                                           'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngRoute', 'ngStorage',
-                                          'ui.calendar', 'dnTimepicker']);
+                                          'ui.calendar', 'dnTimepicker', 'ngBootbox']);
   // ui-select filter
   app.filter('propsFilter', function() {
     return function(items, props) {

@@ -39,7 +39,7 @@ class KaryalayPackagesController < ApplicationController
       unless kp.nil? || kps.include?(kp.id)
         @karyalay_package.karyalay_pandit << kp
       end
-    end unless karyalay_pandits.nil?
+    end if karyalay_pandits.any?
   end
 
   def add_caterer(kcs, karyalay_caterers)
@@ -48,7 +48,7 @@ class KaryalayPackagesController < ApplicationController
       unless kc.nil? || kcs.include?(kc.id)
         @karyalay_package.karyalay_caterer << kc
       end
-    end unless karyalay_caterers.nil?
+    end if karyalay_caterers.any?
   end
 
   def add_karyalay
