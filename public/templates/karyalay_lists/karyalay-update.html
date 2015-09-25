@@ -2,7 +2,21 @@
   <div id="layoutKaryalay">
     <div flash-message="5000" ></div>
   </div>
-  <div id="karyalayCreate" class="container-fluid">
+  <div id="karyalayUpdate" class="container-fluid">
+
+    <script type="text/ng-template" id="removeDependency.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Remove {{items.label}}</h3>
+        </div>
+        <div class="modal-body">
+            {{items.message}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
     <!-- <button type="button" class="btn btn-default btn-sm" ng-click="foo()">Logout</button> -->
     <script type="text/ng-template" id="addPandit.html">
       <div class="" id="karyalayPandit">
@@ -92,15 +106,21 @@
           <fieldset id="karyalayUpdateForm1" class="col-md-11 col-md-offset-2">
             <form name="karyalayUpdateFormValidate" class="form-horizontal" role="form">
               <div class="form-group">
-                <label class="control-label col-sm-2" for="email">Name:</label>
+                <label class="control-label col-sm-2" for="email">Name: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" id="email" ng-model="karyalayUpdateForm.name" placeholder="Enter Name">
+                  <input type="text" class="form-control" id="email" ng-model="karyalayUpdateForm.name" name="name" placeholder="Enter Name" required>
+                  <span class="validation-color" ng-show="karyalayUpdateFormValidate.name.$dirty && karyalayUpdateFormValidate.name.$invalid">
+                    <span ng-show="karyalayUpdateFormValidate.name.$error.required">Karyalay name is required.</span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="pwd">Address:</label>
+                <label class="control-label col-sm-2" for="pwd">Address: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <textarea class="form-control" id="pwd" ng-model="karyalayUpdateForm.address" placeholder="Enter Address"></textarea>
+                  <textarea class="form-control" id="pwd" ng-model="karyalayUpdateForm.address" placeholder="Enter Address" name="address" required></textarea>
+                  <span class="validation-color" ng-show="karyalayUpdateFormValidate.address.$dirty && karyalayUpdateFormValidate.address.$invalid">
+                    <span ng-show="karyalayUpdateFormValidate.address.$error.required">Karyalay address is required.</span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
@@ -116,20 +136,25 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="pwd">Ph. Number:</label>
+                <label class="control-label col-sm-2" for="pwd">Ph. Number: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" id="pwd" ng-model="karyalayUpdateForm.phone_number" placeholder="Enter Number">
+                  <input type="text" class="form-control" id="pwd" ng-model="karyalayUpdateForm.phone_number" placeholder="Enter Number" name="number" ng-pattern="/^[0-9]+$/" required>
+                  <span class="validation-color" ng-show="karyalayUpdateFormValidate.number.$error.pattern">Invalid number</span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="pwd">Email:</label>
+                <label class="control-label col-sm-2" for="pwd">Email: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <input type="email" class="form-control" id="pwd" ng-model="karyalayUpdateForm.email" placeholder="Enter Karyalay Email">
+                  <input type="email" class="form-control" id="pwd" name="email" ng-model="karyalayUpdateForm.email" placeholder="Enter Karyalay Email" required>
+                  <span class="validation-color" ng-show="karyalayUpdateFormValidate.email.$dirty && karyalayUpdateFormValidate.email.$invalid">
+                    <span ng-show="karyalayUpdateFormValidate.email.$error.required">Email is required.</span>
+                    <span ng-show="karyalayUpdateFormValidate.email.$error.email">Invalid email address.</span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-6">
-                  <button type="submit" class="btn btn-default" ng-click="updateKaryalay()">update</button>
+                  <button type="submit" class="btn btn-default" ng-disabled="karyalayUpdateFormValidate.$invalid" ng-click="updateKaryalay()">update</button>
                 </div>
               </div>
             </form>
@@ -188,13 +213,13 @@
                 </div>
                 <label class="control-label col-sm-2" for="pwd">Has Pandit:</label>
                 <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrUpdateForm.has_pandit"></checkbox>
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrUpdateForm.has_pandit" ng-change="uncheckedPandit()"></checkbox>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="pwd">Has Caterer:</label>
                 <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrUpdateForm.has_caterer"></checkbox>
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrUpdateForm.has_caterer" ng-change="uncheckedCaterer()"></checkbox>
                 </div>
                 <label class="control-label col-sm-2" for="pwd">Has Garden:</label>
                 <div class="col-sm-1">

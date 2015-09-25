@@ -2,8 +2,11 @@ var app = angular.module('KaryalayApp');
   app.controller('karyalayUpdateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $q) {
     $scope.karyalay_lists_id = storeKaryalayInfo.getKaryalayInfo();
     $scope.oneAtATime = true;
+    $scope.change_pandit = false;
+    $scope.change_caterer = false;
     $scope.karyalayUpdateForm = {};
     $scope.karyalayAttrUpdateForm = {};
+    $scope.animationsEnabled = true;
     $scope.status = {
       openKaryalay: true,
       openKaryalayAttr: false,
@@ -144,6 +147,57 @@ var app = angular.module('KaryalayApp');
     $scope.updateSuccess = function(){
       var message = '<strong>Data Saved!</strong> Update other attributes if required.';
       Flash.create('success', message);
+    };
+
+    $scope.openModal = function(items){
+      var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'removeDependency.html',
+        controller: 'RemoveDependencyCtrl',
+        size: 'sm',
+        backdrop: 'static',
+        resolve: {
+          items: function () {
+            return items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+        if(items.type == 'pandit')
+          $scope.karyalayAttrUpdateForm.has_pandit = true;
+        else(items.type == 'caterer')
+          $scope.karyalayAttrUpdateForm.has_caterer = true;
+      });
+    }
+
+    $scope.uncheckedPandit = function() {
+      if($scope.karyalayAttrUpdateForm.has_pandit == false && $scope.change_pandit) {
+        var items = {
+                      type: 'pandit',
+                      label: 'Pandit',
+                      message: 'Are you sure you want to remove all associated pandits ?'
+                    };
+        $scope.openModal(items);
+      } else {
+        $scope.change_pandit = true;
+      }
+    };
+
+    $scope.uncheckedCaterer = function() {
+      if($scope.karyalayAttrUpdateForm.has_caterer == false && $scope.change_caterer) {
+        var items = {
+                      type: 'caterer',
+                      label: 'Caterer',
+                      message: 'Are you sure you want to remove all associated caterers ?'
+                    };
+        $scope.openModal(items);
+      } else {
+        $scope.change_caterer = true;
+      }
     };
 
     $scope.fetchKaryalayInfo = function() {

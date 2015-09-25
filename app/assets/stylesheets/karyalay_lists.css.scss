@@ -2,10 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+
+// Layout for karyalay
 #layoutKaryalay {
   margin-top: 2%;
 }
 
+// Create Karyalay
 #karyalayCreate {
   width: 80%;
 
@@ -17,6 +20,31 @@
     .align-checkbox {
       margin-top: 10%;
     }
+  }
+
+  #karyalayDependentCreateForm {
+    .karyalay-label {
+      width: 80%;
+      margin-bottom: 2%;
+    }
+
+    .dependent-last-field {
+      margin-bottom: 3%;
+    }
+
+    .template-seperator {
+      width: 80%;
+      margin-left: 0%;
+    }
+  }
+}
+
+// Update Karyalay
+#karyalayUpdate {
+  width: 80%;
+
+  .validation-color {
+    color:red;
   }
 
   #karyalayDependentCreateForm {
@@ -50,6 +78,8 @@
   }
 }
 
+
+// Karyalay modal update and create
 .karyalay-book-modal {
   .align-checkbox {
     margin-top: 70%;
