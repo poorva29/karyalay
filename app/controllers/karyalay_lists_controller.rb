@@ -1,5 +1,7 @@
 class KaryalayListsController < ApplicationController
-  before_action :set_karyalay_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_karyalay_list, only: [:show, :edit, :update, :destroy,
+                                           :remove_karyalay_pandits,
+                                           :remove_karyalay_caterers]
 
   # GET /karyalay_lists
   # GET /karyalay_lists.json

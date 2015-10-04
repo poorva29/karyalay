@@ -9,7 +9,8 @@
             <h3 class="modal-title">Remove {{items.label}}</h3>
         </div>
         <div class="modal-body">
-            {{items.message}}
+            {{items.message}} <br>
+            Click OK to delete, change will be updated on save
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
@@ -140,6 +141,9 @@
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="pwd" ng-model="karyalayUpdateForm.phone_number" placeholder="Enter Number" name="number" ng-pattern="/^[0-9]+$/" required>
                   <span class="validation-color" ng-show="karyalayUpdateFormValidate.number.$error.pattern">Invalid number</span>
+                  <span class="validation-color" ng-show="karyalayUpdateFormValidate.number.$dirty && karyalayUpdateFormValidate.number.$invalid">
+                    <span ng-show="karyalayUpdateFormValidate.number.$error.required">Karyalay number is required.</span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">

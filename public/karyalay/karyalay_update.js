@@ -169,7 +169,7 @@ var app = angular.module('KaryalayApp');
         $log.info('Modal dismissed at: ' + new Date());
         if(items.type == 'pandit')
           $scope.karyalayAttrUpdateForm.has_pandit = true;
-        else(items.type == 'caterer')
+        else if (items.type == 'caterer')
           $scope.karyalayAttrUpdateForm.has_caterer = true;
       });
     }
@@ -212,11 +212,9 @@ var app = angular.module('KaryalayApp');
           if(response){
             $scope.extend($scope.karyalayUpdateForm, $scope.karyalayInfo);
             $scope.extend($scope.karyalayAttrUpdateForm, $scope.karyalayAttrInfo);
-            if($scope.karyalayAttrUpdateForm.has_samagri ||
-               $scope.karyalayAttrUpdateForm.has_caterer ||
-               $scope.karyalayAttrUpdateForm.has_pandit) {
-                 $scope.addPandit();
-                 $scope.addCaterer();
+            if($scope.karyalayAttrInfo) {
+              $scope.addPandit();
+              $scope.addCaterer();
             }
           }else{
 
@@ -229,8 +227,8 @@ var app = angular.module('KaryalayApp');
 
     $q.all([$scope.promise1, $scope.promise3])
       .then(function(results) {
-        var pandits = $scope.map($scope.karyalayPandit, function(pandit){
-          if($scope.findIndex($scope.panditList, {id: pandit.id})) {
+        var pandits = $scope.filter($scope.karyalayPandit, function(pandit){
+          if($scope.find($scope.panditList, {id: pandit.id})) {
            return pandit }
          });
         $scope.multipleItmes.selectedPeople = pandits;
@@ -238,8 +236,8 @@ var app = angular.module('KaryalayApp');
 
     $q.all([$scope.promise2, $scope.promise3])
       .then(function(results) {
-        var caterers = $scope.map($scope.karyalayCaterer, function(caterer){
-          if($scope.findIndex($scope.catererList, {id: caterer.id})) {
+        var caterers = $scope.filter($scope.karyalayCaterer, function(caterer){
+          if($scope.find($scope.catererList, {id: caterer.id})) {
            return caterer }
          });
         $scope.multipleItmes.selectedCaterer = caterers;
@@ -258,6 +256,34 @@ var app = angular.module('KaryalayApp');
       });
     };
 
+    $scope.remove_all_pandits = function() {
+      var url_to_post = '/remove_karyalay_pandits';
+      data = {karyalay_lists_id: $scope.karyalay_lists_id};
+      $http.post(url_to_post, {karyalay_pandit_params: data})
+        .success(function (response) {
+          if(response.success){
+            $scope.selectPanditDetails.subitems = [];
+            $scope.multipleItmes.selectedPeople = [];
+          }else{
+            // failure msg
+          }
+        });
+    };
+
+    $scope.remove_all_cateres = function() {
+      var url_to_post = '/remove_karyalay_caterers';
+      data = {karyalay_lists_id: $scope.karyalay_lists_id};
+      $http.post(url_to_post, {karyalay_caterer_params: data})
+        .success(function (response) {
+          if(response.success){
+            $scope.selectCatererDetails.subitems = [];
+            $scope.multipleItmes.selectedCaterer = [];
+          }else{
+            // failure msg
+          }
+        });
+    };
+
     $scope.updateKaryalayAttr = function() {
       var data = {karyalay_attr_list: $scope.karyalayAttrUpdateForm};
       if($scope.karyalayAttrInfo) {
@@ -266,25 +292,23 @@ var app = angular.module('KaryalayApp');
           .success(function (response) {
             if(response){
               $scope.updateSuccess();
+              if(!data.karyalay_attr_list.has_pandit)
+                $scope.remove_all_pandits();
+              if(!data.karyalay_attr_list.has_caterer)
+                $scope.remove_all_cateres();
             }else{
               $scope.createFailure();
             }
-        });
+          });
       }else{
         var url_to_post = '/karyalay_attributes';
         $scope.extend(data.karyalay_attr_list, {karyalay_lists_id: $scope.karyalay_lists_id});
         $http.post(url_to_post, data)
           .success(function (response) {
             if(response){
-              if($scope.karyalayAttrUpdateForm.has_samagri ||
-                 $scope.karyalayAttrUpdateForm.has_caterer ||
-                 $scope.karyalayAttrUpdateForm.has_pandit) {
-                   $scope.updateSuccess();
-                   $scope.addPandit();
-                   $scope.addCaterer();
-              }else{
-                // $location.url('/');
-              }
+              $scope.updateSuccess();
+              $scope.addPandit();
+              $scope.addCaterer();
             }else{
               $scope.updateFailure();
             }

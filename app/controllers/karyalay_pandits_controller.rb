@@ -1,5 +1,6 @@
 class KaryalayPanditsController < ApplicationController
   before_action :set_karyalay_pandit, only: [:show, :edit, :update, :destroy]
+  before_action :set_karyalay_list, only: [:remove_karyalay_pandits]
 
   # GET /karyalay_pandits
   # GET /karyalay_pandits.json
@@ -67,6 +68,18 @@ class KaryalayPanditsController < ApplicationController
     end
   end
 
+  # Removes all associated pandits for karyalay
+  def remove_karyalay_pandits
+    result = { success: false, message: 'Karyalay pandits not deleted' }
+    unless @karyalay_list.nil?
+      @karyalay_list.karyalay_pandit_ids = []
+      if @karyalay_list.save
+        result = { success: true, message: 'Karyalay pandits deleted' }
+      end
+    end
+    render json: result
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_karyalay_pandit
@@ -77,5 +90,10 @@ class KaryalayPanditsController < ApplicationController
     def karyalay_pandit_params
       params.require(:karyalay_pandit_params)
         .permit(:first_name, :last_name, :phone_number, :email)
+    end
+
+    def set_karyalay_list
+      karyalay_lists_id = params[:karyalay_pandit_params][:karyalay_lists_id]
+      @karyalay_list ||= KaryalayList.find_by_id(karyalay_lists_id)
     end
 end

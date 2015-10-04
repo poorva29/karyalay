@@ -21,13 +21,17 @@ Karyalay::Application.routes.draw do
   resources :karyalay_lists
   root to: 'karyalay_lists#index'
 
+  # Karyalay Samagri's
   get 'fetch_selected_category' => 'karyalay_samagris#fetch_selected_category'
   post 'create_add_tag' => 'karyalay_samagris#create_add_tag'
 
+  # Karyalay List's
   get 'fetch_karyalay_list' => 'karyalay_lists#fetch_karyalay_list'
   get 'fetch_karyalay_info' => 'karyalay_lists#fetch_karyalay_info'
   get 'fetch_karyalay_package' => 'karyalay_lists#fetch_karyalay_package'
 
+  post 'remove_karyalay_pandits' => 'karyalay_pandits#remove_karyalay_pandits'
+  post 'remove_karyalay_caterers' => 'karyalay_caterers#remove_karyalay_caterers'
   get "*path" => "karyalay_lists#index"
 
   # The priority is based upon order of creation: first created -> highest priority.

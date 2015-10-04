@@ -1,5 +1,6 @@
 class KaryalayAttributesController < ApplicationController
   before_action :set_karyalay_attribute, only: [:show, :edit, :update, :destroy]
+  before_action :set_karyalay_list, only: [:create]
 
   # GET /karyalay_attributes
   # GET /karyalay_attributes.json
@@ -24,11 +25,9 @@ class KaryalayAttributesController < ApplicationController
   # POST /karyalay_attributes
   # POST /karyalay_attributes.json
   def create
-    karyalay_lists_id = params[:karyalay_attr_list][:karyalay_lists_id]
-    kl = KaryalayList.find_by_id(karyalay_lists_id)
-    if !kl.nil?
+    if !@karyalay_list.nil?
       @karyalay_attribute = KaryalayAttribute.new(karyalay_attribute_params)
-      @karyalay_attribute.karyalay_list = kl
+      @karyalay_attribute.karyalay_list = @karyalay_list
       if @karyalay_attribute.save
         render json: @karyalay_attribute
       else
@@ -67,6 +66,11 @@ class KaryalayAttributesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_karyalay_attribute
       @karyalay_attribute = KaryalayAttribute.find(params[:id])
+    end
+
+    def set_karyalay_list
+      karyalay_lists_id = params[:karyalay_attr_list][:karyalay_lists_id]
+      @karyalay_list ||= KaryalayList.find_by_id(karyalay_lists_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
