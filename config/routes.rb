@@ -31,7 +31,10 @@ Karyalay::Application.routes.draw do
   get 'fetch_karyalay_package' => 'karyalay_lists#fetch_karyalay_package'
 
   post 'remove_karyalay_pandits' => 'karyalay_pandits#remove_karyalay_pandits'
+  post 'pandit_to_keep' => 'karyalay_pandits#pandit_to_keep'
+
   post 'remove_karyalay_caterers' => 'karyalay_caterers#remove_karyalay_caterers'
+  post 'caterer_to_keep' => 'karyalay_caterers#caterer_to_keep'
   get "*path" => "karyalay_lists#index"
 
   # The priority is based upon order of creation: first created -> highest priority.

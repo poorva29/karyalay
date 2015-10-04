@@ -227,18 +227,20 @@ var app = angular.module('KaryalayApp');
 
     $q.all([$scope.promise1, $scope.promise3])
       .then(function(results) {
-        var pandits = $scope.filter($scope.karyalayPandit, function(pandit){
-          if($scope.find($scope.panditList, {id: pandit.id})) {
-           return pandit }
+        var pandits = $scope.map($scope.karyalayPandit, function(pandit){
+          var pandit_index = $scope.findIndex($scope.panditList, {id: pandit.id});
+          if(pandit_index >= 0) {
+           return $scope.panditList[pandit_index] }
          });
         $scope.multipleItmes.selectedPeople = pandits;
       });
 
     $q.all([$scope.promise2, $scope.promise3])
       .then(function(results) {
-        var caterers = $scope.filter($scope.karyalayCaterer, function(caterer){
-          if($scope.find($scope.catererList, {id: caterer.id})) {
-           return caterer }
+        var caterers = $scope.map($scope.karyalayCaterer, function(caterer){
+          var caterer_index = $scope.findIndex($scope.catererList, {id: caterer.id});
+          if(caterer_index >= 0) {
+           return $scope.catererList[caterer_index] }
          });
         $scope.multipleItmes.selectedCaterer = caterers;
       });
@@ -336,6 +338,15 @@ var app = angular.module('KaryalayApp');
         });
       });
 
+      var pandit_to_keep = $scope.pluck(merged_pandits, 'id'),
+      data = { karyalay_pandit_params: {karyalay_lists_id: $scope.karyalay_lists_id },
+               pandit_to_keep: pandit_to_keep},
+      url_to_post = '/pandit_to_keep';
+      $http.post(url_to_post, data)
+        .success(function (response) {
+          console.log(response);
+      });
+
       //add caterer
       var merged_caterers = $scope.union($scope.selectCatererDetails.subitems, $scope.multipleItmes.selectedCaterer);
       merged_caterers = $scope.reject(merged_caterers, function(x){ return $scope.isEmpty(x)});
@@ -353,6 +364,15 @@ var app = angular.module('KaryalayApp');
               $scope.createFailure();
             }
         });
+      });
+
+      var caterer_to_keep = $scope.pluck(merged_caterers, 'id'),
+      data = { karyalay_caterer_params: {karyalay_lists_id: $scope.karyalay_lists_id },
+               caterer_to_keep: caterer_to_keep},
+      url_to_post = '/caterer_to_keep';
+      $http.post(url_to_post, data)
+        .success(function (response) {
+          console.log(response);
       });
     };
   });

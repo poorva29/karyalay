@@ -1,6 +1,7 @@
 class KaryalayPanditsController < ApplicationController
   before_action :set_karyalay_pandit, only: [:show, :edit, :update, :destroy]
-  before_action :set_karyalay_list, only: [:remove_karyalay_pandits]
+  before_action :set_karyalay_list, only: [:remove_karyalay_pandits,
+                                           :pandit_to_keep]
 
   # GET /karyalay_pandits
   # GET /karyalay_pandits.json
@@ -33,6 +34,7 @@ class KaryalayPanditsController < ApplicationController
       unless @karyalay_pandit.karyalay_lists.map(&:id).include? karyalay_lists_id
         @karyalay_pandit.karyalay_lists << kl
       end
+
       if @karyalay_pandit.save
         render json: @karyalay_pandit
       else
@@ -75,6 +77,20 @@ class KaryalayPanditsController < ApplicationController
       @karyalay_list.karyalay_pandit_ids = []
       if @karyalay_list.save
         result = { success: true, message: 'Karyalay pandits deleted' }
+      end
+    end
+    render json: result
+  end
+
+  def pandit_to_keep
+    pandit_to_keep_ids = params[:pandit_to_keep]
+    result = { result: false, message: 'karyalay Pandit List Not Updated' }
+    unless @karyalay_list.nil? || pandit_to_keep_ids.empty?
+      to_keep_pandits = @karyalay_list.karyalay_pandit_ids &
+                        pandit_to_keep_ids
+      @karyalay_list.karyalay_pandit_ids = to_keep_pandits
+      if @karyalay_list.save
+        result = { result: true, message: 'Updated Pandit List' }
       end
     end
     render json: result

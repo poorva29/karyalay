@@ -1,6 +1,7 @@
 class KaryalayCaterersController < ApplicationController
   before_action :set_karyalay_caterer, only: [:show, :edit, :update, :destroy]
-  before_action :set_karyalay_list, only: [:remove_karyalay_caterers]
+  before_action :set_karyalay_list, only: [:remove_karyalay_caterers,
+                                           :caterer_to_keep]
 
   # GET /karyalay_caterers
   # GET /karyalay_caterers.json
@@ -75,6 +76,20 @@ class KaryalayCaterersController < ApplicationController
       @karyalay_list.karyalay_caterer_ids = []
       if @karyalay_list.save
         result = { success: true, message: 'Karyalay cateres deleted' }
+      end
+    end
+    render json: result
+  end
+
+  def caterer_to_keep
+    caterer_to_keep_ids = params[:caterer_to_keep]
+    result = { result: false, message: 'Karyalay Caterer List Not Updated' }
+    unless @karyalay_list.nil? || caterer_to_keep_ids.empty?
+      to_keep_caterers = @karyalay_list.karyalay_caterer_ids &
+                         caterer_to_keep_ids
+      @karyalay_list.karyalay_caterer_ids = to_keep_caterers
+      if @karyalay_list.save
+        result = { result: true, message: 'Updated Pandit List' }
       end
     end
     render json: result
