@@ -92,15 +92,21 @@
           <fieldset id="karyalayCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalay">
             <form name="karyalayCreateFormValidate" class="form-horizontal" role="form">
               <div class="form-group">
-                <label class="control-label col-sm-2" for="email">Name:</label>
+                <label class="control-label col-sm-2" for="email">Name: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" id="email" ng-model="karyalayCreateForm.name" placeholder="Enter Name">
+                  <input type="text" class="form-control" id="email" ng-model="karyalayCreateForm.name" placeholder="Enter Name" name="name" required>
+                  <span class="validation-color" ng-show="karyalayCreateFormValidate.name.$dirty && karyalayCreateFormValidate.name.$invalid">
+                    <span ng-show="karyalayCreateFormValidate.name.$error.required">Karyalay name is required.</span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="pwd">Address:</label>
+                <label class="control-label col-sm-2" for="pwd">Address: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <textarea class="form-control" id="pwd" ng-model="karyalayCreateForm.address" placeholder="Enter Address"></textarea>
+                  <textarea class="form-control" id="pwd" ng-model="karyalayCreateForm.address" placeholder="Enter Address" name="address" required></textarea>
+                  <span class="validation-color" ng-show="karyalayCreateFormValidate.address.$dirty && karyalayCreateFormValidate.address.$invalid">
+                    <span ng-show="karyalayCreateFormValidate.address.$error.required">Karyalay address is required.</span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
@@ -116,20 +122,28 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="pwd">Ph. Number:</label>
+                <label class="control-label col-sm-2" for="pwd">Ph. Number: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <input type="number" class="form-control" id="pwd" ng-model="karyalayCreateForm.phone_number" placeholder="Enter Number">
+                  <input type="number" class="form-control" id="pwd" ng-model="karyalayCreateForm.phone_number" placeholder="Enter Number" name="number" required>
+                  <span class="validation-color" ng-show="karyalayCreateFormValidate.number.$dirty">
+                    <span ng-show="karyalayCreateFormValidate.number.$error.required">Karyalay number is required.</span>
+                    <span ng-show="karyalayCreateFormValidate.number.$error.number"> Please enter a valid number </span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" for="pwd">Email:</label>
+                <label class="control-label col-sm-2" for="pwd">Email: <label class="validation-color">*</label></label>
                 <div class="col-sm-6">
-                  <input type="email" class="form-control" id="pwd" ng-model="karyalayCreateForm.email" placeholder="Enter Karyalay Email">
+                  <input type="email" name="email" class="form-control" id="pwd" ng-model="karyalayCreateForm.email" placeholder="Enter Karyalay Email" required>
+                  <span class="validation-color" ng-show="karyalayCreateFormValidate.email.$dirty && karyalayCreateFormValidate.email.$invalid">
+                    <span ng-show="karyalayCreateFormValidate.email.$error.required">Email is required.</span>
+                    <span ng-show="karyalayCreateFormValidate.email.$error.email">Invalid email address.</span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-6">
-                  <button type="submit" class="btn btn-default" ng-click="createKaryalay()">Save</button>
+                  <button type="submit" class="btn btn-default" ng-disabled="karyalayCreateFormValidate.$invalid" ng-click="createKaryalay()">Save</button>
                 </div>
               </div>
             </form>
@@ -144,78 +158,95 @@
               <div class="form-group">
                 <label class="control-label col-sm-3" for="email">Accomodate People:</label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_people" placeholder="People Count">
+                  <input type="number" name="number_ppl" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_people" placeholder="People Count">
+                  <span class="validation-color" ng-show="karyalayAttrCreateFormValidity.number_ppl.$dirty">
+                    <span ng-show="karyalayAttrCreateFormValidity.number_ppl.$error.number"> Please enter a valid number </span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="pwd">No. Of Rooms:</label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_rooms" placeholder="Room Count">
+                  <input type="number" name="number_rooms" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_rooms" placeholder="Room Count">
+                  <span class="validation-color" ng-show="karyalayAttrCreateFormValidity.number_rooms.$dirty">
+                    <span ng-show="karyalayAttrCreateFormValidity.number_rooms.$error.number"> Please enter a valid number </span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="pwd">Size In Sq. Feet:</label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.size_in_sq" placeholder="Size Of Hall">
+                  <input type="number" name="number_size" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.size_in_sq" placeholder="Size Of Hall">
+                  <span class="validation-color" ng-show="karyalayAttrCreateFormValidity.number_size.$dirty">
+                    <span ng-show="karyalayAttrCreateFormValidity.number_size.$error.number"> Please enter a valid number </span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="pwd">Price Half Day:</label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_half_day" placeholder="">
+                  <input type="number" name="number_half_price" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_half_day" placeholder="">
+                  <span class="validation-color" ng-show="karyalayAttrCreateFormValidity.number_half_price.$dirty">
+                    <span ng-show="karyalayAttrCreateFormValidity.number_half_price.$error.number"> Please enter a valid number </span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-3" for="pwd">Price Full Day:</label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_full_day" placeholder="">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3" for="pwd">Provide Offers:</label>
-                <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.provide_offers"></checkbox>
-                </div>
-                <label class="control-label col-sm-2" for="pwd">Provide Samagri:</label>
-                <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_samagri"></checkbox>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3" for="pwd">Has A/C:</label>
-                <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_ac"></checkbox>
-                </div>
-                <label class="control-label col-sm-2" for="pwd">Has Pandit:</label>
-                <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_pandit"></checkbox>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3" for="pwd">Has Caterer:</label>
-                <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_caterer"></checkbox>
-                </div>
-                <label class="control-label col-sm-2" for="pwd">Has Garden:</label>
-                <div class="col-sm-1">
-                  <checkbox class="btn-info align-checkbox" ng-model="karyalayAttrCreateForm.has_garden"></checkbox>
+                  <input type="number" name="number_full_price" class="form-control" id="pwd" ng-model="karyalayAttrCreateForm.price_full_day" placeholder="">
+                  <span class="validation-color" ng-show="karyalayAttrCreateFormValidity.number_full_price.$dirty">
+                    <span ng-show="karyalayAttrCreateFormValidity.number_full_price.$error.number"> Please enter a valid number </span>
+                  </span>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-3">
-                  <button type="submit" class="btn btn-default" ng-click="createKaryalayAttr()">Save</button>
+                  <button type="submit" class="btn btn-default" ng-disabled="karyalayAttrCreateFormValidity.$invalid" ng-click="createKaryalayAttr()">Save</button>
                 </div>
               </div>
             </form>
           </fieldset>
         </accordion-group>
-        <accordion-group is-open="status.openKaryalayDependents" ng-show="saveStatus.saveKaryalayAttr && (karyalayAttrCreateForm.has_samagri || karyalayAttrCreateForm.has_caterer || karyalayAttrCreateForm.has_pandit)">
+        <accordion-group is-open="status.openKaryalayDependents" ng-show="saveStatus.saveKaryalay">
           <accordion-heading>
             Karyalay Dependency <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayDependents, 'glyphicon-chevron-right': !status.openKaryalayDependents}"></i>
           </accordion-heading>
           <fieldset id="karyalayDependentCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayDependents">
+            <form name="karyalayAttrDepCreateFormValidity" class="form-horizontal" role="form">
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Provide Offers:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.provide_offers"></checkbox>
+                </div>
+                <label class="control-label col-sm-3" for="pwd">Provide Samagri:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_samagri"></checkbox>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Has A/C:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_ac"></checkbox>
+                </div>
+                <label class="control-label col-sm-3" for="pwd">Has Pandit:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_pandit"></checkbox>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Has Caterer:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_caterer"></checkbox>
+                </div>
+                <label class="control-label col-sm-3" for="pwd">Has Garden:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_garden"></checkbox>
+                </div>
+              </div>
+            </form>
             <form name="karyalaySaveCreateFormValidity" class="form-horizontal" role="form">
-              <div ng-show="karyalayAttrCreateForm.has_samagri && saveStatus.saveKaryalayAttr">
+              <div ng-show="karyalayDependentCreateForm.has_samagri">
                 <div class="text-center karyalay-label">
                   <legend> Add Samagri </legend>
                 </div>
@@ -250,7 +281,7 @@
                   </div>
                 </div>
               </div>
-              <div ng-show="karyalayAttrCreateForm.has_caterer && saveStatus.saveKaryalayAttr">
+              <div ng-show="karyalayDependentCreateForm.has_caterer">
                 <div class="text-center karyalay-label">
                   <legend> Create Caterer </legend>
                 </div>
@@ -290,7 +321,7 @@
                   </div>
                 </div>
               </div>
-              <div ng-show="karyalayAttrCreateForm.has_pandit && saveStatus.saveKaryalayAttr">
+              <div ng-show="karyalayDependentCreateForm.has_pandit">
                 <div class="text-center karyalay-label">
                   <legend> Create Pandit </legend>
                 </div>

@@ -9,6 +9,7 @@ var app = angular.module('KaryalayApp');
     $scope.templates = [];
     $scope.karyalayCreateForm = {};
     $scope.karyalayAttrCreateForm = {};
+    $scope.karyalayDependentCreateForm = {};
     $scope.saveStatus = {
       saveKaryalay: false,
       saveKaryalayAttr: false,
@@ -138,6 +139,8 @@ var app = angular.module('KaryalayApp');
             $scope.createSuccess();
             $scope.saveStatus.saveKaryalay = true;
             $scope.status.openKaryalayAttr = true;
+            $scope.addPandit();
+            $scope.addCaterer();
           }else{
             $scope.createFailure();
           }
@@ -151,18 +154,10 @@ var app = angular.module('KaryalayApp');
       $http.post(url_to_post, data)
         .success(function (response) {
           if(response){
-            if($scope.karyalayAttrCreateForm.has_samagri ||
-               $scope.karyalayAttrCreateForm.has_caterer ||
-               $scope.karyalayAttrCreateForm.has_pandit) {
                  $scope.karyalayAttrCreateForm.karyalay_attr_id = response.id;
                  $scope.createSuccess();
                  $scope.saveStatus.saveKaryalayAttr = true;
                  $scope.status.openKaryalayDependents = true;
-                 $scope.addPandit();
-                 $scope.addCaterer();
-            }else{
-              $location.url('/');
-            }
           }else{
             $scope.createFailure();
           }
@@ -197,6 +192,28 @@ var app = angular.module('KaryalayApp');
 
     $scope.createKaryalayDependency = function(){
 
+      if($scope.karyalayAttrCreateForm.karyalay_attr_id) {
+        var data = {karyalay_attr_list: $scope.karyalayDependentCreateForm};
+        var url_to_patch = '/karyalay_attributes/' + $scope.karyalayAttrCreateForm.karyalay_attr_id;
+        $http.put(url_to_patch, data)
+          .success(function (response) {
+            if(response){
+              console.log(response);
+            }else{
+              $scope.createFailure();
+            }
+        });
+      }else{
+        var data = {karyalay_attr_list: $scope.extend($scope.karyalayDependentCreateForm, {karyalay_lists_id: $scope.karyalay_lists_id})};
+        var url_to_post = '/karyalay_attributes';
+        $http.post(url_to_post, data)
+          .success(function (response) {
+            if(response){
+                   $scope.karyalayAttrCreateForm.karyalay_attr_id = response.id;
+                   $scope.saveStatus.saveKaryalayAttr = true;
+            }
+        });
+      }
       // add pandit
       var merged_pandits = $scope.union($scope.selectPanditDetails.subitems, $scope.multipleItmes.selectedPeople);
       merged_pandits = $scope.reject(merged_pandits, function(x){ return $scope.isEmpty(x)});

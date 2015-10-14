@@ -38,7 +38,7 @@ class KaryalayCaterersController < ApplicationController
         render json: @karyalay_caterer
       else
         render json: { id: nil,
-                       message: 'Karyalay Pandit Not Created Try Again' }
+                       message: 'Karyalay Caterer Not Created Try Again' }
       end
     else
       render json: { id: nil, message: 'Karyalay Not Found, Try Again' }
@@ -82,14 +82,14 @@ class KaryalayCaterersController < ApplicationController
   end
 
   def caterer_to_keep
-    caterer_to_keep_ids = params[:caterer_to_keep]
+    caterer_to_keep_ids = params[:caterer_to_keep] || []
     result = { result: false, message: 'Karyalay Caterer List Not Updated' }
-    unless @karyalay_list.nil? || caterer_to_keep_ids.empty?
+    unless @karyalay_list.nil?
       to_keep_caterers = @karyalay_list.karyalay_caterer_ids &
                          caterer_to_keep_ids
       @karyalay_list.karyalay_caterer_ids = to_keep_caterers
       if @karyalay_list.save
-        result = { result: true, message: 'Updated Pandit List' }
+        result = { result: true, message: 'Updated Caterer List' }
       end
     end
     render json: result

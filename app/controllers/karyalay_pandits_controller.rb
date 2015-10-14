@@ -83,9 +83,9 @@ class KaryalayPanditsController < ApplicationController
   end
 
   def pandit_to_keep
-    pandit_to_keep_ids = params[:pandit_to_keep]
+    pandit_to_keep_ids = params[:pandit_to_keep] || []
     result = { result: false, message: 'karyalay Pandit List Not Updated' }
-    unless @karyalay_list.nil? || pandit_to_keep_ids.empty?
+    unless @karyalay_list.nil?
       to_keep_pandits = @karyalay_list.karyalay_pandit_ids &
                         pandit_to_keep_ids
       @karyalay_list.karyalay_pandit_ids = to_keep_pandits

@@ -6,6 +6,8 @@ var app = angular.module('KaryalayApp');
     $scope.change_caterer = false;
     $scope.karyalayUpdateForm = {};
     $scope.karyalayAttrUpdateForm = {};
+    $scope.karyalayAttrDepUpdateForm = {};
+    $scope.karyalayAttrInfo = {}
     $scope.animationsEnabled = true;
     $scope.status = {
       openKaryalay: true,
@@ -165,17 +167,21 @@ var app = angular.module('KaryalayApp');
 
       modalInstance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
+        if($scope.selected == 'pandit')
+          $scope.selectPanditDetails.subitems = $scope.multipleItmes.selectedPeople = [];
+        else if($scope.selected == 'caterer')
+          $scope.selectCatererDetails.subitems = $scope.multipleItmes.selectedCaterer = [];
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
         if(items.type == 'pandit')
-          $scope.karyalayAttrUpdateForm.has_pandit = true;
+          $scope.karyalayAttrDepUpdateForm.has_pandit = true;
         else if (items.type == 'caterer')
-          $scope.karyalayAttrUpdateForm.has_caterer = true;
+          $scope.karyalayAttrDepUpdateForm.has_caterer = true;
       });
     }
 
     $scope.uncheckedPandit = function() {
-      if($scope.karyalayAttrUpdateForm.has_pandit == false && $scope.change_pandit) {
+      if($scope.karyalayAttrDepUpdateForm.has_pandit == false && $scope.change_pandit) {
         var items = {
                       type: 'pandit',
                       label: 'Pandit',
@@ -188,7 +194,7 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.uncheckedCaterer = function() {
-      if($scope.karyalayAttrUpdateForm.has_caterer == false && $scope.change_caterer) {
+      if($scope.karyalayAttrDepUpdateForm.has_caterer == false && $scope.change_caterer) {
         var items = {
                       type: 'caterer',
                       label: 'Caterer',
@@ -212,10 +218,9 @@ var app = angular.module('KaryalayApp');
           if(response){
             $scope.extend($scope.karyalayUpdateForm, $scope.karyalayInfo);
             $scope.extend($scope.karyalayAttrUpdateForm, $scope.karyalayAttrInfo);
-            if($scope.karyalayAttrInfo) {
-              $scope.addPandit();
-              $scope.addCaterer();
-            }
+            $scope.extend($scope.karyalayAttrDepUpdateForm, $scope.karyalayAttrInfo);
+            $scope.addPandit();
+            $scope.addCaterer();
           }else{
 
           }
@@ -288,7 +293,19 @@ var app = angular.module('KaryalayApp');
 
     $scope.updateKaryalayAttr = function() {
       var data = {karyalay_attr_list: $scope.karyalayAttrUpdateForm};
-      if($scope.karyalayAttrInfo) {
+      if($scope.isEmpty($scope.karyalayAttrInfo)) {
+        var url_to_post = '/karyalay_attributes';
+        $scope.extend(data.karyalay_attr_list, {karyalay_lists_id: $scope.karyalay_lists_id});
+        $http.post(url_to_post, data)
+          .success(function (response) {
+            if(response){
+              $scope.karyalayAttrInfo = {id: response.id};
+              $scope.updateSuccess();
+            }else{
+              $scope.updateFailure();
+            }
+        });
+      }else{
         var url_to_post = '/karyalay_attributes/';
         $http.put(url_to_post + $scope.karyalayAttrInfo.id, data)
           .success(function (response) {
@@ -301,24 +318,33 @@ var app = angular.module('KaryalayApp');
             }else{
               $scope.createFailure();
             }
-          });
-      }else{
-        var url_to_post = '/karyalay_attributes';
-        $scope.extend(data.karyalay_attr_list, {karyalay_lists_id: $scope.karyalay_lists_id});
-        $http.post(url_to_post, data)
-          .success(function (response) {
-            if(response){
-              $scope.updateSuccess();
-              $scope.addPandit();
-              $scope.addCaterer();
-            }else{
-              $scope.updateFailure();
-            }
         });
       }
     };
 
     $scope.updateKaryalayDependency = function() {
+      if($scope.isEmpty($scope.karyalayAttrInfo)) {
+        var url_to_post = '/karyalay_attributes',
+        data = $scope.extend($scope.karyalayAttrDepUpdateForm, {karyalay_lists_id: $scope.karyalay_lists_id});
+        $http.post(url_to_post, {karyalay_attr_list: data})
+          .success(function (response) {
+            if(response){
+              $scope.karyalayAttrInfo = {id: response.id};
+            }else{
+              $scope.updateFailure();
+            }
+        });
+      }else {
+        var url_to_post = '/karyalay_attributes/';
+        data = {karyalay_attr_list: $scope.karyalayAttrDepUpdateForm};
+        $http.put(url_to_post + $scope.karyalayAttrInfo.id, data)
+          .success(function (response) {
+            if(response.status)
+              console.log(response);
+            else
+              $scope.createFailure();
+          });
+      }
       // add pandit
       var merged_pandits = $scope.union($scope.selectPanditDetails.subitems, $scope.multipleItmes.selectedPeople);
       merged_pandits = $scope.reject(merged_pandits, function(x){ return $scope.isEmpty(x)});
