@@ -1,7 +1,6 @@
 class KaryalayCaterersController < ApplicationController
   before_action :set_karyalay_caterer, only: [:show, :edit, :update, :destroy]
-  before_action :set_karyalay_list, only: [:remove_karyalay_caterers,
-                                           :caterer_to_keep]
+  before_action :set_karyalay_list, only: [:caterer_to_keep]
 
   # GET /karyalay_caterers
   # GET /karyalay_caterers.json
@@ -67,18 +66,6 @@ class KaryalayCaterersController < ApplicationController
       format.html { redirect_to karyalay_caterers_url }
       format.json { head :no_content }
     end
-  end
-
-  # Removes all associated cateres for karyalay
-  def remove_karyalay_caterers
-    result = { success: false, message: 'Karyalay cateres not deleted' }
-    unless @karyalay_list.nil?
-      @karyalay_list.karyalay_caterer_ids = []
-      if @karyalay_list.save
-        result = { success: true, message: 'Karyalay cateres deleted' }
-      end
-    end
-    render json: result
   end
 
   def caterer_to_keep

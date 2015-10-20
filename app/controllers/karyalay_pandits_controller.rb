@@ -1,7 +1,6 @@
 class KaryalayPanditsController < ApplicationController
   before_action :set_karyalay_pandit, only: [:show, :edit, :update, :destroy]
-  before_action :set_karyalay_list, only: [:remove_karyalay_pandits,
-                                           :pandit_to_keep]
+  before_action :set_karyalay_list, only: [:pandit_to_keep]
 
   # GET /karyalay_pandits
   # GET /karyalay_pandits.json
@@ -68,18 +67,6 @@ class KaryalayPanditsController < ApplicationController
       format.html { redirect_to karyalay_pandits_url }
       format.json { head :no_content }
     end
-  end
-
-  # Removes all associated pandits for karyalay
-  def remove_karyalay_pandits
-    result = { success: false, message: 'Karyalay pandits not deleted' }
-    unless @karyalay_list.nil?
-      @karyalay_list.karyalay_pandit_ids = []
-      if @karyalay_list.save
-        result = { success: true, message: 'Karyalay pandits deleted' }
-      end
-    end
-    render json: result
   end
 
   def pandit_to_keep

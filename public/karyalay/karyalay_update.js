@@ -7,7 +7,8 @@ var app = angular.module('KaryalayApp');
     $scope.karyalayUpdateForm = {};
     $scope.karyalayAttrUpdateForm = {};
     $scope.karyalayAttrDepUpdateForm = {};
-    $scope.karyalayAttrInfo = {}
+    $scope.karyalayAttrInfo = {};
+    $scope.radioAppointment = {};
     $scope.animationsEnabled = true;
     $scope.status = {
       openKaryalay: true,
@@ -215,6 +216,14 @@ var app = angular.module('KaryalayApp');
           $scope.karyalayPandit = response.karyalay_pandits;
           $scope.karyalayCaterer = response.karyalay_caterers;
           $scope.karyalaySamagri = response.karyalay_samagris;
+          if(!_.isEmpty($scope.karyalayPandit)) {
+            $scope.showNewPandit = false;
+            $scope.radioAppointment.selected_pandit_type = 1;
+          }
+          if(!_.isEmpty($scope.karyalayCaterer)){
+            $scope.showNewCaterer = false;
+            $scope.radioAppointment.selected_caterer_type = 1;
+          }
           if(response){
             $scope.extend($scope.karyalayUpdateForm, $scope.karyalayInfo);
             $scope.extend($scope.karyalayAttrUpdateForm, $scope.karyalayAttrInfo);
@@ -263,34 +272,6 @@ var app = angular.module('KaryalayApp');
       });
     };
 
-    $scope.remove_all_pandits = function() {
-      var url_to_post = '/remove_karyalay_pandits';
-      data = {karyalay_lists_id: $scope.karyalay_lists_id};
-      $http.post(url_to_post, {karyalay_pandit_params: data})
-        .success(function (response) {
-          if(response.success){
-            $scope.selectPanditDetails.subitems = [];
-            $scope.multipleItmes.selectedPeople = [];
-          }else{
-            // failure msg
-          }
-        });
-    };
-
-    $scope.remove_all_cateres = function() {
-      var url_to_post = '/remove_karyalay_caterers';
-      data = {karyalay_lists_id: $scope.karyalay_lists_id};
-      $http.post(url_to_post, {karyalay_caterer_params: data})
-        .success(function (response) {
-          if(response.success){
-            $scope.selectCatererDetails.subitems = [];
-            $scope.multipleItmes.selectedCaterer = [];
-          }else{
-            // failure msg
-          }
-        });
-    };
-
     $scope.updateKaryalayAttr = function() {
       var data = {karyalay_attr_list: $scope.karyalayAttrUpdateForm};
       if($scope.isEmpty($scope.karyalayAttrInfo)) {
@@ -311,10 +292,6 @@ var app = angular.module('KaryalayApp');
           .success(function (response) {
             if(response){
               $scope.updateSuccess();
-              if(!data.karyalay_attr_list.has_pandit)
-                $scope.remove_all_pandits();
-              if(!data.karyalay_attr_list.has_caterer)
-                $scope.remove_all_cateres();
             }else{
               $scope.createFailure();
             }
