@@ -1,6 +1,9 @@
 var app = angular.module('KaryalayApp');
   app.controller('karyalayListCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $ngBootbox) {
-
+    $http.get('user_role_name')
+    .success(function (response) {
+      $scope.is_admin = response.user_role;
+    });
     $scope.deleteSuccess = function () {
       var message = '<strong>Karyalay Deleted!</strong> karyalay related other attributes are removed.';
       Flash.create('success', message);

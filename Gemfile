@@ -61,3 +61,5 @@ gem 'angular_rails_csrf'
 gem 'bootstrap_form'
 
 gem 'passenger'
+
+gem 'cancancan', '~> 1.10'

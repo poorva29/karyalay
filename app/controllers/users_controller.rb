@@ -3,6 +3,10 @@ class UsersController < ApplicationController
 
   respond_to :html
 
+  def user_role_name
+    render json: { user_role: current_user.role.name }
+  end
+
   def index
     @users = User.all
     respond_with(@users)

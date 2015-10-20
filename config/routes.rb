@@ -33,7 +33,8 @@ Karyalay::Application.routes.draw do
   post 'pandit_to_keep' => 'karyalay_pandits#pandit_to_keep'
 
   post 'caterer_to_keep' => 'karyalay_caterers#caterer_to_keep'
-  get "*path" => "karyalay_lists#index"
+  get 'user_role_name' => 'users#user_role_name'
+  get '*path' => 'karyalay_lists#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
