@@ -26,4 +26,7 @@ Karyalay::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  # Path for paperclip ImageMagick utility
+  Paperclip.options[:command_path] = '/usr/bin/'
 end

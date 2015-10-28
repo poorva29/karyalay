@@ -164,6 +164,49 @@
             </form>
           </fieldset>
         </accordion-group>
+        <accordion-group is-open="status.openKaryalayGallery">
+          <accordion-heading>
+            Karyalay Photo Gallery <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayGallery, 'glyphicon-chevron-right': !status.openKaryalayGallery}"></i>
+          </accordion-heading>
+          <fieldset id="karyalayGalleryForm" class="col-md-11 col-md-offset-2">
+            <form name="karyalayUpdateGalleryFormValidity" class="form-horizontal" role="form">
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="pwd">Upload Images:</label>
+                <div class="col-sm-3">
+                  <input type="file" ngf-select multiple ng-model="karyalayGalleryUpdateForm.picFile" name="file" accept="image/*" ngf-max-size="2MB">
+                  <!-- <i ng-show="karyalayUpdateGalleryFormValidity.file.$error.required">*required</i><br> -->
+                  <i ng-show="karyalayUpdateGalleryFormValidity.file.$error.maxSize">File too large {{picFile.size / 1000000|number:1}}MB: max 2M</i>
+                  <img ng-show="karyalayUpdateGalleryFormValidity.file.$valid" ngf-thumbnail="karyalayGalleryUpdateForm.picFile" class="thumb">
+                  <button ng-click="picFile = null" ng-show="picFile">Remove</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-3">
+                  <button type="submit" class="btn btn-default" ng-click="updateKaryalayPhotos()">update</button>
+                </div>
+              </div>
+              <div class="text-center karyalay-label">
+                <legend> Uploaded Files </legend>
+              </div>
+              <div class="form-group" ng-if="karyalayPhotos.length > 0">
+                   <h5 class="col-sm-9"> **Select checkbox to remove image and click on remove</h5>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-9">
+                  <div ng-repeat="image in karyalayPhotos" class="col-sm-3">
+                    <checkbox class="btn-primary checkbox-on-image" ng-model='karyalayGalleryUpdateForm.selectedImage[image.id]'></checkbox>
+                    <img ng-src="{{image.url}}" class="img-thumbnail" ng-class="{'increase-width': image.size < 5000 }">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-3">
+                  <button type="submit" class="btn btn-default" ng-click="removeKaryalayPhotos()">Remove</button>
+                </div>
+              </div>
+            </form>
+          </fieldset>
+        </accordion-group>
         <accordion-group is-open="status.openKaryalayAttr">
           <accordion-heading>
             Karyalay Attributes <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayAttr, 'glyphicon-chevron-right': !status.openKaryalayAttr}"></i>

@@ -16,13 +16,20 @@ class KaryalayListsController < ApplicationController
     @karyalay_list = KaryalayList.new
   end
 
+  def fetch_photos
+    @karyalay_list.photos.map do |photo|
+      { id: photo.id, url: photo.gallery.url, size: photo.gallery_file_size }
+    end
+  end
+
   def fetch_karyalay_list_data
     {
       karyalay: @karyalay_list,
       karyalay_attribute: @karyalay_list.karyalay_attribute,
       karyalay_pandits: @karyalay_list.karyalay_pandits,
       karyalay_caterers: @karyalay_list.karyalay_caterers,
-      karyalay_samagris: @karyalay_list.karyalay_samagris
+      karyalay_samagris: @karyalay_list.karyalay_samagris,
+      karyalay_photos: fetch_photos
     }
   end
 
@@ -30,7 +37,8 @@ class KaryalayListsController < ApplicationController
   def edit
     @karyalay_list = KaryalayList
                      .includes(:karyalay_attribute, :karyalay_pandits,
-                               :karyalay_caterers, :karyalay_samagris)
+                               :karyalay_caterers, :karyalay_samagris,
+                               :photos)
                      .where(id: params[:id]).first
     render json: fetch_karyalay_list_data
   end

@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayUpdateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $q) {
+  app.controller('karyalayUpdateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $q, Upload) {
     $scope.karyalay_lists_id = storeKaryalayInfo.getKaryalayInfo();
     $scope.oneAtATime = true;
     $scope.change_pandit = false;
@@ -7,13 +7,15 @@ var app = angular.module('KaryalayApp');
     $scope.karyalayUpdateForm = {};
     $scope.karyalayAttrUpdateForm = {};
     $scope.karyalayAttrDepUpdateForm = {};
+    $scope.karyalayGalleryUpdateForm = {};
     $scope.karyalayAttrInfo = {};
     $scope.radioAppointment = {};
     $scope.animationsEnabled = true;
     $scope.status = {
       openKaryalay: true,
       openKaryalayAttr: false,
-      openKaryalayDependents: false
+      openKaryalayDependents: false,
+      openKaryalayGallery: false
     };
 
     $scope.multipleItmes = {
@@ -216,6 +218,7 @@ var app = angular.module('KaryalayApp');
           $scope.karyalayPandit = response.karyalay_pandits;
           $scope.karyalayCaterer = response.karyalay_caterers;
           $scope.karyalaySamagri = response.karyalay_samagris;
+          $scope.karyalayPhotos = response.karyalay_photos;
           if(!_.isEmpty($scope.karyalayPandit)) {
             $scope.showNewPandit = false;
             $scope.radioAppointment.selected_pandit_type = 1;
@@ -376,6 +379,39 @@ var app = angular.module('KaryalayApp');
       $http.post(url_to_post, data)
         .success(function (response) {
           console.log(response);
+      });
+    };
+
+    $scope.updateKaryalayPhotos = function() {
+      $scope.each($scope.karyalayGalleryUpdateForm.picFile, function(file){
+        var data = {photos_list: {gallery: file, karyalay_list_id: $scope.karyalay_lists_id}}
+        var url_to_post = '/photos';
+        $scope.upload = Upload.upload({
+          url: url_to_post,
+          method: 'POST',
+          fields: data,
+          file: file,
+          fileFormDataName: 'photos_list[gallery]'
+        }).then(function (resp) {
+            if(resp.data && resp.data.id){
+              $scope.karyalayPhotos.push(resp.data);
+              $scope.updateSuccess();
+            }
+        });
+      });
+    };
+
+    $scope.removeKaryalayPhotos = function() {
+      var images_to_remove = $scope.compact($scope.map($scope.karyalayGalleryUpdateForm.selectedImage, function(value, id){
+        if(value == true)
+          return id;
+      }));
+      $scope.each(images_to_remove, function(image_id){
+        var url_to_delete = '/photos/' + image_id
+        $http.delete(url_to_delete)
+          .success(function (response) {
+            $scope.karyalayPhotos = $scope.without($scope.karyalayPhotos, _.findWhere($scope.karyalayPhotos, {id: response.id}));
+          });
       });
     };
   });

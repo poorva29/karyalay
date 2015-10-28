@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, $location) {
+  app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, $location, Upload) {
     $scope.selectPanditDetails = {
       subitems: []
     };
@@ -7,9 +7,11 @@ var app = angular.module('KaryalayApp');
       subitems: []
     };
     $scope.templates = [];
+    $scope.karyalayPhotos = [];
     $scope.karyalayCreateForm = {};
     $scope.karyalayAttrCreateForm = {};
     $scope.karyalayDependentCreateForm = {};
+    $scope.karyalayGalleryCreateForm = {};
     $scope.saveStatus = {
       saveKaryalay: false,
       saveKaryalayAttr: false,
@@ -19,7 +21,8 @@ var app = angular.module('KaryalayApp');
     $scope.status = {
       openKaryalay: true,
       openKaryalayAttr: false,
-      openKaryalayDependents: false
+      openKaryalayDependents: false,
+      openKaryalayGallery: false
     };
 
     $scope.showNewPandit = true;
@@ -138,7 +141,7 @@ var app = angular.module('KaryalayApp');
             $scope.karyalayAttrCreateForm.karyalay_lists_id = $scope.karyalay_lists_id;
             $scope.createSuccess();
             $scope.saveStatus.saveKaryalay = true;
-            $scope.status.openKaryalayAttr = true;
+            $scope.status.openKaryalayGallery = true;
             $scope.addPandit();
             $scope.addCaterer();
           }else{
@@ -263,7 +266,28 @@ var app = angular.module('KaryalayApp');
             $scope.createFailure();
           }
       });
+      $scope.createSuccess();
+      $scope.saveStatus.saveKaryalayDependents = true;
       $location.url('/');
+    };
+
+    $scope.saveKaryalayPhotos = function(){
+      $scope.each($scope.karyalayGalleryCreateForm.picFile, function(file){
+        var data = {photos_list: {gallery: file, karyalay_list_id: $scope.karyalay_lists_id}}
+        var url_to_post = '/photos';
+        $scope.upload = Upload.upload({
+          url: url_to_post,
+          method: 'POST',
+          fields: data,
+          file: file,
+          fileFormDataName: 'photos_list[gallery]'
+        }).then(function (resp) {
+            if(resp.data && resp.data.id){
+              $scope.karyalayPhotos.push(resp.data);
+              $scope.createSuccess();
+            }
+        });
+      });
     };
   });
 

@@ -13,6 +13,8 @@ Karyalay::Application.routes.draw do
 
   resources :karyalay_attributes
 
+  resources :photos
+
   # comfy_route :cms_admin, :path => '/admin'
 
   # Make sure this routeset is defined last
@@ -34,6 +36,7 @@ Karyalay::Application.routes.draw do
 
   post 'caterer_to_keep' => 'karyalay_caterers#caterer_to_keep'
   get 'user_role_name' => 'users#user_role_name'
+
   get '*path' => 'karyalay_lists#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

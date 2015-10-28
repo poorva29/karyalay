@@ -2,6 +2,32 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+
+#karyalayGalleryForm {
+  .checkbox-on-image {
+    position: absolute;
+    left: 11%;
+    top: 1%;
+  }
+
+  .img-thumbnail {
+    max-width: 100%;
+    height: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .increase-width {
+    width: 100%;
+  }
+
+  .karyalay-label {
+    width: 65%;
+    margin-top: 5%;
+  }
+}
+
 // Image for the branch
 .brand-image {
   margin-top: -25%;
@@ -30,6 +56,13 @@
   #karyalayAttrCreateForm {
     .align-checkbox {
       margin-top: 10%;
+    }
+  }
+
+  #karyalayGalleryCreateForm {
+    .karyalay-label {
+      width: 65%;
+      margin-top: 5%;
     }
   }
 

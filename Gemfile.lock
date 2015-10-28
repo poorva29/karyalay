@@ -192,6 +192,7 @@ DEPENDENCIES
   devise
   jbuilder (~> 1.2)
   jquery-rails
+  paperclip (~> 4.3)
   passenger
   pg
   postgres_ext

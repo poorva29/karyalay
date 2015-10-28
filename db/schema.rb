@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020063711) do
+ActiveRecord::Schema.define(version: 20151026070953) do
 
   create_table "comfy_cms_blocks", force: true do |t|
     t.string   "identifier",     null: false
@@ -266,6 +266,18 @@ ActiveRecord::Schema.define(version: 20151020063711) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "photos", force: true do |t|
+    t.integer  "karyalay_list_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "gallery_file_name"
+    t.string   "gallery_content_type"
+    t.integer  "gallery_file_size"
+    t.datetime "gallery_updated_at"
+  end
+
+  add_index "photos", ["karyalay_list_id"], name: "index_photos_on_karyalay_list_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"

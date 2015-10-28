@@ -63,3 +63,6 @@ gem 'bootstrap_form'
 gem 'passenger'
 
 gem 'cancancan', '~> 1.10'
+
+# Upload images and documents
+gem "paperclip", "~> 4.3"
