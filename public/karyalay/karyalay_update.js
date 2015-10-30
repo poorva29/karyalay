@@ -73,8 +73,25 @@ var app = angular.module('KaryalayApp');
     $scope.quantity = 1;
     $scope.quantites = [1, 2, 3, 4, 5]
 
+    $scope.samagriSel = {};
+    $scope.samagriList = [];
+
+    $scope.fetchSamagris = function(){
+      var url_to_get = '/karyalay_samagris';
+      var promise = $http.get(url_to_get)
+        .success(function (response) {
+          if(response){
+            $scope.samagriList = response;
+          }else{
+            // do something
+          }
+      });
+      return promise;
+    };
+    $scope.promise3 = $scope.fetchSamagris();
+
     $scope.refreshTagNames = function(name){
-      if($scope.items){
+      if(!$scope.isEmpty($scope.items)){
         $scope.items[$scope.itemsSize + 1] = {
           id: '-1',
           name: name,
@@ -93,23 +110,47 @@ var app = angular.module('KaryalayApp');
       $scope.extend(item, {quantity: $scope.quantity});
     }
 
+    $scope.removeItem = function(item, model) {
+      if($scope.category.selected && ($scope.category.selected.name == item.category)){
+        if($scope.isEmpty($scope.where($scope.items, {'id':item.id})))
+          $scope.items.push(item);
+      }
+    }
+
     // Fetch Category wise samagri
+
+    $scope.remove_matching_samagri = function(samagri_list){
+      var samagri_list_id = $scope.map($scope.multipleItmes.selectedItem, function(samagri){
+        return $scope.property('id')(samagri)
+      });
+      return $scope.reject(samagri_list, function(samagri) {
+        return $scope.contains(samagri_list_id, samagri.id);
+      });
+    };
+
     $scope.item = {};
     $scope.items = null;
     $scope.fetchTags = function(){
-      $scope.category.hasSelected = true;
-      var data = {category: $scope.category.selected.name};
-      var url_to_post = '/fetch_selected_category';
-      $http.get(url_to_post, {params: data})
-        .success(function (response) {
-          if(response){
-            $scope.items = response;
-            $scope.itemsSize = $scope.items.length;
-          }else{
-
-          }
-      });
+      if(!$scope.isEmpty($scope.category)) {
+        var name = $scope.category.selected.name;
+        var data = {category: name};
+        var url_to_post = '/fetch_selected_category';
+        $http.get(url_to_post, {params: data})
+          .success(function (response) {
+            if(response){
+              $scope.items = $scope.remove_matching_samagri(response);
+              $scope.itemsSize = $scope.items.length;
+              $scope.category.hasSelected = true;
+            }else{
+            }
+        });
+      } else {
+          $scope.items = []
+          $scope.itemsSize = $scope.items.length;
+      }
     };
+
+    $scope.promise4 = $scope.fetchTags();
 
     // For adding/removing and new/existing , pandit/caterer
 
@@ -240,9 +281,9 @@ var app = angular.module('KaryalayApp');
       return promise
     };
 
-    $scope.promise3 = $scope.fetchKaryalayInfo();
+    $scope.promise5 = $scope.fetchKaryalayInfo();
 
-    $q.all([$scope.promise1, $scope.promise3])
+    $q.all([$scope.promise1, $scope.promise5])
       .then(function(results) {
         var pandits = $scope.map($scope.karyalayPandit, function(pandit){
           var pandit_index = $scope.findIndex($scope.panditList, {id: pandit.id});
@@ -252,7 +293,7 @@ var app = angular.module('KaryalayApp');
         $scope.multipleItmes.selectedPeople = pandits;
       });
 
-    $q.all([$scope.promise2, $scope.promise3])
+    $q.all([$scope.promise2, $scope.promise5])
       .then(function(results) {
         var caterers = $scope.map($scope.karyalayCaterer, function(caterer){
           var caterer_index = $scope.findIndex($scope.catererList, {id: caterer.id});
@@ -261,6 +302,19 @@ var app = angular.module('KaryalayApp');
          });
         $scope.multipleItmes.selectedCaterer = caterers;
       });
+
+    $q.all([$scope.promise3, $scope.promise4, $scope.promise5])
+    .then(function(results) {
+      var samagris = $scope.map($scope.karyalaySamagri, function(samagri){
+        var samagri_index = $scope.findIndex($scope.samagriList, {id: samagri.id});
+        if(samagri_index >= 0) {
+         return $scope.samagriList[samagri_index] }
+       });
+      $scope.multipleItmes.selectedItem = samagris;
+      if(samagris.length > 0)
+        $scope.category.hasSelected = true
+      $scope.samagriList = $scope.remove_matching_samagri($scope.samagriList);
+    });
 
     $scope.updateKaryalay = function() {
       var data = {karyalay_list: $scope.karyalayUpdateForm};
@@ -379,6 +433,18 @@ var app = angular.module('KaryalayApp');
       $http.post(url_to_post, data)
         .success(function (response) {
           console.log(response);
+      });
+
+      //add samagri
+      var data = {karyalay_samagri_params: {selected_item: $scope.multipleItmes.selectedItem || [], karyalay_lists_id: $scope.karyalay_lists_id}};
+      var url_to_post = '/update_tags';
+      $http.post(url_to_post, data)
+        .success(function (response) {
+          if(response){
+            $scope.updateSuccess();
+          }else{
+            $scope.updateFailure();
+          }
       });
     };
 

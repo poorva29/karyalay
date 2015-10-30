@@ -299,18 +299,12 @@
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="tags">Add Items:</label>
                     <div class="col-sm-6">
-                      <ui-select multiple ng-model="multipleItmes.selectedItem" ng-disabled="disabled" on-select="selectItem($item, $model)">
-                        <ui-select-match placeholder="Select item...">{{$item.name}} &#40;{{$item.quantity}}&#41;</ui-select-match>
+                      <ui-select multiple ng-model="multipleItmes.selectedItem" ng-disabled="disabled" on-select="selectItem($item, $model)" on-remove="removeItem($item, $model)">
+                        <ui-select-match placeholder="Select item...">{{$item.name}} &#40;{{$item.category}}&#41;</ui-select-match>
                         <ui-select-choices repeat="item in items | propsFilter: {name: $select.search, id: $select.search}" refresh="refreshTagNames($select.search)" refresh-delay="0">
                           <div ng-bind-html="item.name | highlight: $select.search"></div>
                         </ui-select-choices>
                       </ui-select>
-                    </div>
-                    <label class="control-label col-sm-1" for="tags">Quantity:</label>
-                    <div class="col-sm-2">
-                      <div class="btn-group" dropdown keyboard-nav>
-                        <select class="form-control" ng-model="quantity" ng-options="count for count in quantites" ng-change="updateQuantity(quantity)">{{count}}</select>
-                      </div>
                     </div>
                   </div>
                 </div>

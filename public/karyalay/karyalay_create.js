@@ -43,6 +43,16 @@ var app = angular.module('KaryalayApp');
     ];
 
     // Fetch Category wise samagri
+
+    $scope.remove_matching_samagri = function(samagri_list){
+      var samagri_list_id = $scope.map($scope.multipleItmes.selectedItem, function(samagri){
+        return $scope.property('id')(samagri)
+      });
+      return $scope.reject(samagri_list, function(samagri) {
+        return $scope.contains(samagri_list_id, samagri.id);
+      });
+    };
+
     $scope.item = {};
     $scope.items = null;
     $scope.fetchTags = function(){
@@ -52,7 +62,7 @@ var app = angular.module('KaryalayApp');
       $http.get(url_to_post, {params: data})
         .success(function (response) {
           if(response){
-            $scope.items = response;
+            $scope.items = $scope.remove_matching_samagri(response);
             $scope.itemsSize = $scope.items.length;
           }else{
 
@@ -119,6 +129,13 @@ var app = angular.module('KaryalayApp');
       $scope.extend($scope.findWhere($scope.items, {id: item.id}), {quantity: $scope.quantity});
       $scope.extend(item, {quantity: $scope.quantity});
     };
+
+    $scope.removeItem = function(item, model) {
+      if($scope.category.selected && ($scope.category.selected.name == item.category)){
+        if($scope.isEmpty($scope.where($scope.items, {'id':item.id})))
+          $scope.items.push(item);
+      }
+    }
 
     $scope.createSuccess = function () {
       var message = '<strong>Data Saved!</strong> Please proceded to create other attributes.';
@@ -256,8 +273,8 @@ var app = angular.module('KaryalayApp');
       });
 
       //add samagri
-      var data = {karyalay_samagri_params: {selected_item: $scope.multipleItmes.selectedItem, karyalay_lists_id: $scope.karyalay_lists_id}};
-      var url_to_post = '/create_add_tag';
+      var data = {karyalay_samagri_params: {selected_item: $scope.multipleItmes.selectedItem || [], karyalay_lists_id: $scope.karyalay_lists_id}};
+      var url_to_post = '/update_tags';
       $http.post(url_to_post, data)
         .success(function (response) {
           if(response){

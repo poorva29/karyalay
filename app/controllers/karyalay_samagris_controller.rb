@@ -5,6 +5,7 @@ class KaryalaySamagrisController < ApplicationController
   # GET /karyalay_samagris.json
   def index
     @karyalay_samagris = KaryalaySamagri.all
+    render json: @karyalay_samagris
   end
 
   # GET /karyalay_samagris/1
@@ -69,9 +70,9 @@ class KaryalaySamagrisController < ApplicationController
   end
 
   def add_karyalay_tags(kl, ks, quantity)
-    kls = KaryalayListsSamagris.find_by(karyalay_list: kl, karyalay_samagri: ks)
+    kls = KaryalayListsSamagri.find_by(karyalay_list: kl, karyalay_samagri: ks)
     if kls.nil?
-      kls = KaryalayListsSamagris.new
+      kls = KaryalayListsSamagri.new
       kls.karyalay_samagri = ks
       kls.karyalay_list = kl
     end
@@ -81,22 +82,35 @@ class KaryalaySamagrisController < ApplicationController
 
   def find_create_samagri(tag)
     if tag[:id] == '-1'
-      ks = KaryalaySamagri.find_or_create_by(name: tag[:name], category: tag[:category])
+      ks = KaryalaySamagri.find_or_create_by(name: tag[:name],
+                                             category: tag[:category])
     else
       ks = KaryalaySamagri.where(id: tag[:id]).first
     end
     ks
   end
 
-  def create_add_tag
+  def remove_karyalay_tags(karyalay_samagri, to_keep_samagris, karyalay_list_id)
+    to_remove_samagris = karyalay_samagri - to_keep_samagris
+    KaryalayListsSamagri.where(karyalay_list_id: karyalay_list_id,
+                               karyalay_samagri_id: to_remove_samagris)
+      .delete_all
+  end
+
+  def update_tags
     karyalay_lists_id = params[:karyalay_samagri_params][:karyalay_lists_id]
     tag_list =  params[:karyalay_samagri_params][:selected_item]
     kl = KaryalayList.find_by_id(karyalay_lists_id)
     if !kl.nil?
-      tag_list.each do |tag|
+      karyalay_samagri = KaryalayListsSamagri.where(karyalay_list_id: kl.id)
+                         .pluck(:karyalay_samagri_id)
+      to_keep_samagris = tag_list.map do |tag|
         ks = find_create_samagri(tag)
         add_karyalay_tags(kl, ks, tag[:quantity])
+        ks.id
       end
+      # User might remove some tags while updating
+      remove_karyalay_tags(karyalay_samagri, to_keep_samagris, kl.id)
       render json: { id: nil, message: 'Added tags' }
     else
       render json: { id: nil, message: 'Not Created' }

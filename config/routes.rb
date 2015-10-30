@@ -25,7 +25,7 @@ Karyalay::Application.routes.draw do
 
   # Karyalay Samagri's
   get 'fetch_selected_category' => 'karyalay_samagris#fetch_selected_category'
-  post 'create_add_tag' => 'karyalay_samagris#create_add_tag'
+  post 'update_tags' => 'karyalay_samagris#update_tags'
 
   # Karyalay List's
   get 'fetch_karyalay_list' => 'karyalay_lists#fetch_karyalay_list'
@@ -35,6 +35,7 @@ Karyalay::Application.routes.draw do
   post 'pandit_to_keep' => 'karyalay_pandits#pandit_to_keep'
 
   post 'caterer_to_keep' => 'karyalay_caterers#caterer_to_keep'
+
   get 'user_role_name' => 'users#user_role_name'
 
   get '*path' => 'karyalay_lists#index'
