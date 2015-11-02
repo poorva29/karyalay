@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151026070953) do
+ActiveRecord::Schema.define(version: 20151030113056) do
 
   create_table "comfy_cms_blocks", force: true do |t|
     t.string   "identifier",     null: false
@@ -251,6 +251,15 @@ ActiveRecord::Schema.define(version: 20151026070953) do
   add_index "karyalay_packages_pandits", ["karyalay_package_id"], name: "index_karyalay_packages_pandits_on_karyalay_package_id", using: :btree
   add_index "karyalay_packages_pandits", ["karyalay_pandit_id"], name: "index_karyalay_packages_pandits_on_karyalay_pandit_id", using: :btree
 
+  create_table "karyalay_packages_samagris", force: true do |t|
+    t.integer "karyalay_package_id"
+    t.integer "karyalay_samagri_id"
+    t.integer "quantity"
+  end
+
+  add_index "karyalay_packages_samagris", ["karyalay_package_id"], name: "index_karyalay_packages_samagris_on_karyalay_package_id", using: :btree
+  add_index "karyalay_packages_samagris", ["karyalay_samagri_id"], name: "index_karyalay_packages_samagris_on_karyalay_samagri_id", using: :btree
+
   create_table "karyalay_pandits", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -277,7 +286,7 @@ ActiveRecord::Schema.define(version: 20151026070953) do
     t.datetime "gallery_updated_at"
   end
 
-  add_index "photos", ["karyalay_list_id"], name: "index_photos_on_karyalay_list_id", using: :btree
+  add_index "photos", ["karyalay_list_id"], name: "index_photos_on_karyalay_lists_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"

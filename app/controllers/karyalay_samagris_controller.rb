@@ -62,7 +62,17 @@ class KaryalaySamagrisController < ApplicationController
     end
   end
 
-  def fetch_selected_category
+  def fetch_pselected_category
+    category = params[:category]
+    item_list = {}
+    @karyalay_list = KaryalayList.find_by(id: params[:karyalay_lists_id])
+    unless @karyalay_list.nil? && category.nil?
+      item_list =  @karyalay_list.karyalay_samagris.where(category: category)
+    end
+    render json: item_list
+  end
+
+  def fetch_kselected_category
     category = params[:category]
     item_list = {}
     item_list = KaryalaySamagri.where(category: category) unless category.nil?
@@ -90,10 +100,14 @@ class KaryalaySamagrisController < ApplicationController
     ks
   end
 
-  def remove_karyalay_tags(karyalay_samagri, to_keep_samagris, karyalay_list_id)
+  def remove_karyalay_tags(karyalay_samagri, to_keep_samagris, karyalay_list)
     to_remove_samagris = karyalay_samagri - to_keep_samagris
-    KaryalayListsSamagri.where(karyalay_list_id: karyalay_list_id,
+    KaryalayListsSamagri.where(karyalay_list_id: karyalay_list.id,
                                karyalay_samagri_id: to_remove_samagris)
+      .delete_all
+    karyalay_package_ids = karyalay_list.karyalay_packages.pluck(:id)
+    KaryalayPackagesSamagri.where(karyalay_package_id: karyalay_package_ids,
+                                  karyalay_samagri_id: to_remove_samagris)
       .delete_all
   end
 
@@ -110,7 +124,7 @@ class KaryalaySamagrisController < ApplicationController
         ks.id
       end
       # User might remove some tags while updating
-      remove_karyalay_tags(karyalay_samagri, to_keep_samagris, kl.id)
+      remove_karyalay_tags(karyalay_samagri, to_keep_samagris, kl)
       render json: { id: nil, message: 'Added tags' }
     else
       render json: { id: nil, message: 'Not Created' }
@@ -126,6 +140,7 @@ class KaryalaySamagrisController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def karyalay_samagri_params
       params.require(:karyalay_samagri)
-        .permit(:name, :category, :karyalay_lists_id, :quantity , :selected_item)
+        .permit(:name, :category, :karyalay_lists_id,
+                :quantity, :selected_item)
     end
 end

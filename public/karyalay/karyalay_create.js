@@ -58,7 +58,7 @@ var app = angular.module('KaryalayApp');
     $scope.fetchTags = function(){
       $scope.category.hasSelected = true;
       var data = {category: $scope.category.selected.name};
-      var url_to_post = '/fetch_selected_category';
+      var url_to_post = '/fetch_kselected_category';
       $http.get(url_to_post, {params: data})
         .success(function (response) {
           if(response){

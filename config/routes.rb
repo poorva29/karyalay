@@ -24,7 +24,8 @@ Karyalay::Application.routes.draw do
   root to: 'karyalay_lists#index'
 
   # Karyalay Samagri's
-  get 'fetch_selected_category' => 'karyalay_samagris#fetch_selected_category'
+  get 'fetch_pselected_category' => 'karyalay_samagris#fetch_pselected_category'
+  get 'fetch_kselected_category' => 'karyalay_samagris#fetch_kselected_category'
   post 'update_tags' => 'karyalay_samagris#update_tags'
 
   # Karyalay List's

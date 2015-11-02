@@ -17,18 +17,30 @@ class KaryalayPackagesController < ApplicationController
     respond_with(@karyalay_package)
   end
 
+  def fetch_karyalay_samagris
+    ks = @karyalay_package.karyalay_samagri.as_json
+    ks.map do |samagri|
+      kps = KaryalayPackagesSamagri
+            .where(karyalay_package_id: @karyalay_package.id,
+                   karyalay_samagri_id: samagri['id']).first
+      kps.nil? ? nil : samagri.merge(quantity: kps.quantity)
+    end.compact
+  end
+
   def fetch_karyalay_package_data
     {
       karyalay_package: @karyalay_package,
       karyalay_pandits: @karyalay_package.karyalay_pandit,
-      karyalay_caterers: @karyalay_package.karyalay_caterer
+      karyalay_caterers: @karyalay_package.karyalay_caterer,
+      karyalay_samagris: fetch_karyalay_samagris
     }
   end
 
   # GET /karyalay_packages/1/edit
   def edit
     @karyalay_package = KaryalayPackage
-                        .includes(:karyalay_pandit, :karyalay_caterer)
+                        .includes(:karyalay_pandit, :karyalay_caterer,
+                                  :karyalay_samagri)
                         .where(id: params[:id]).first
     render json: fetch_karyalay_package_data
   end
@@ -74,6 +86,41 @@ class KaryalayPackagesController < ApplicationController
     @karyalay_package.karyalay_caterer_ids = to_keep_caterers
   end
 
+  def remove_karyalay_tags(karyalay_samagri, to_keep_samagris,
+                           karyalay_package_id)
+    to_remove_samagris = karyalay_samagri - to_keep_samagris
+    KaryalayPackagesSamagri.where(karyalay_package_id: karyalay_package_id,
+                                  karyalay_samagri_id: to_remove_samagris)
+      .delete_all
+  end
+
+  def add_package_tags(kp, ks, quantity)
+    kls = KaryalayPackagesSamagri
+          .find_by(karyalay_package: kp, karyalay_samagri: ks)
+    if kls.nil?
+      kls = KaryalayPackagesSamagri.new
+      kls.karyalay_samagri = ks
+      kls.karyalay_package = kp
+    end
+    kls.quantity = quantity
+    kls.save
+  end
+
+  def update_package_tags
+    tag_list =  params[:karyalay_package][:selectedItem]
+    karyalay_samagri = KaryalayPackagesSamagri
+                       .where(karyalay_package_id: @karyalay_package.id)
+                       .pluck(:karyalay_samagri_id)
+    to_keep_samagris = tag_list.map do |tag|
+      ks = KaryalaySamagri.find_by(name: tag[:name], category: tag[:category])
+      add_package_tags(@karyalay_package, ks, tag[:quantity])
+      ks.id
+    end
+    # User might remove some tags while updating
+    remove_karyalay_tags(karyalay_samagri, to_keep_samagris,
+                         @karyalay_package.id)
+  end
+
   def create
     @karyalay_package = KaryalayPackage.new(karyalay_package_params)
     kps = @karyalay_package.karyalay_pandit.map(&:id)
@@ -83,7 +130,7 @@ class KaryalayPackagesController < ApplicationController
     add_pandit(kps, karyalay_pandits)
     add_caterer(kcs, karyalay_caterers)
     add_karyalay
-    @karyalay_package.save
+    update_package_tags if @karyalay_package.save
     render json: @karyalay_package
   end
 
@@ -106,6 +153,7 @@ class KaryalayPackagesController < ApplicationController
     if @karyalay_package.update(karyalay_package_params)
       update_pandit
       update_caterer
+      update_package_tags
       @karyalay_package.save
       result = { notice: 'Karyalay list was successfully updated.',
                  status: true }

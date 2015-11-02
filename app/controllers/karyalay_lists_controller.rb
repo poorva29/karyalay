@@ -16,11 +16,6 @@ class KaryalayListsController < ApplicationController
     @karyalay_list = KaryalayList.new
   end
 
-  def fetch_karyalay_samagris
-    ksl = @karyalay_list.karyalay_lists_samagris.pluck(:karyalay_samagri_id)
-    KaryalaySamagri.where(id: ksl)
-  end
-
   def fetch_photos
     @karyalay_list.photos.map do |photo|
       { id: photo.id, url: photo.gallery.url, size: photo.gallery_file_size }
@@ -33,7 +28,7 @@ class KaryalayListsController < ApplicationController
       karyalay_attribute: @karyalay_list.karyalay_attribute,
       karyalay_pandits: @karyalay_list.karyalay_pandits,
       karyalay_caterers: @karyalay_list.karyalay_caterers,
-      karyalay_samagris: fetch_karyalay_samagris,
+      karyalay_samagris: @karyalay_list.karyalay_samagris,
       karyalay_photos: fetch_photos
     }
   end
