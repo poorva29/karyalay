@@ -1,5 +1,9 @@
 var app = angular.module('KaryalayApp');
   app.controller('karyalayListCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $ngBootbox) {
+    $scope.sortType     = ''; // set the default sort type
+    $scope.sortReverse  = false;  // set the default sort order
+    $scope.searchKaryalay   = {};     // set the default search/filter term
+
     $http.get('user_role_name')
     .success(function (response) {
       $scope.is_admin = response.user_role;

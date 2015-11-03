@@ -2,7 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
 #karyalayGalleryForm {
   .checkbox-on-image {
     position: absolute;
@@ -109,6 +108,10 @@
 }
 
 .karyalay-lists {
+  #createKaryalayBtn {
+    margin-top: 0.5%;
+  }
+
   .karyalay-lists-name {
     a:visited {
       color: #337ab7;
