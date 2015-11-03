@@ -189,6 +189,16 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInst
     }
   };
 
+  $scope.removeCaterer = function(item, model) {
+    if($scope.isEmpty($scope.where($scope.catererList, {'id':item.id})))
+      $scope.catererList.push(item);
+  };
+
+  $scope.removePandit = function(item, model) {
+    if($scope.isEmpty($scope.where($scope.panditList, {'id':item.id})))
+      $scope.panditList.push(item);
+  };
+
   $scope.fetchKaryalayInfo = function() {
     var url_to_get = '/karyalay_lists/' + $scope.karyalay_lists_id + '/edit';
     var promise = $http.get(url_to_get)
@@ -220,12 +230,14 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInst
     .then(function(results) {
       var pandits = $scope.map($scope.karyalay_pandits, function(pandit) {
         if($scope.findWhere($scope.panditList, {id: pandit.id})) {
+          $scope.panditList = $scope.without($scope.panditList, $scope.findWhere($scope.panditList, {id: pandit.id}));
          return pandit }
        });
       $scope.packageDetails.selectedPeople = $scope.compact(pandits);
 
       var caterers = $scope.map($scope.karyalay_caterers, function(caterer) {
         if($scope.findWhere($scope.catererList, {id: caterer.id})) {
+          $scope.catererList = $scope.without($scope.catererList, $scope.findWhere($scope.catererList, {id: caterer.id}));
          return caterer }
        });
       $scope.packageDetails.selectedCaterer = $scope.compact(caterers);
@@ -253,7 +265,7 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInst
           label: "Yes",
           className: "btn-success",
           callback: function() {
-            console.log('Confirmed');
+            $modalInstance.close('delete');
           }
         }
       }

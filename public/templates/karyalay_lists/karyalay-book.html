@@ -55,7 +55,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-2" for="pandits">Pandits:</label>
                 <div class="col-sm-10">
-                  <ui-select multiple ng-model="packageDetails.selectedPeople" ng-disabled="disabled">
+                  <ui-select multiple ng-model="packageDetails.selectedPeople" ng-disabled="disabled" on-remove="removePandit($item, $model)">
                     <ui-select-match placeholder="Select pandit...">{{$item.first_name}} {{$item.last_name}}</ui-select-match>
                     <ui-select-choices repeat="person in panditList | propsFilter: {first_name: $select.search, last_name: $select.search}">
                       <div ng-bind-html="person.first_name + ' ' + person.last_name| highlight: $select.search"></div>
@@ -70,7 +70,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-2" for="caterers">Caterers:</label>
                 <div class="col-sm-10">
-                  <ui-select multiple ng-model="packageDetails.selectedCaterer" ng-disabled="disabled">
+                  <ui-select multiple ng-model="packageDetails.selectedCaterer" ng-disabled="disabled" on-remove="removeCaterer($item, $model)">
                     <ui-select-match placeholder="Select caterer...">{{$item.first_name}} {{$item.last_name}}</ui-select-match>
                     <ui-select-choices repeat="catererSel in catererList | propsFilter: {first_name: $select.search, last_name: $select.search}">
                       <div ng-bind-html="catererSel.first_name + ' ' + catererSel.last_name| highlight: $select.search"></div>

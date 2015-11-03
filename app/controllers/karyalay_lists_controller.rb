@@ -71,10 +71,14 @@ class KaryalayListsController < ApplicationController
   # DELETE /karyalay_lists/1
   # DELETE /karyalay_lists/1.json
   def destroy
-    if !@karyalay_list.nil? && @karyalay_list.destroy
-      result = { message: 'Deleted successfully', status: true }
-    else
-      result = { message: 'Please try again later', status: false }
+    result = { message: 'Please try again later', status: false }
+    unless @karyalay_list.nil?
+      @karyalay_list.karyalay_caterers.clear
+      @karyalay_list.karyalay_pandits.clear
+      @karyalay_list.karyalay_samagris.clear
+      if @karyalay_list.destroy
+        result = { message: 'Deleted successfully', status: true }
+      end
     end
     render json: result
   end

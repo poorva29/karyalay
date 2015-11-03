@@ -107,7 +107,7 @@ class KaryalayPackagesController < ApplicationController
   end
 
   def update_package_tags
-    tag_list =  params[:karyalay_package][:selectedItem]
+    tag_list =  params[:karyalay_package][:selectedItem] || []
     karyalay_samagri = KaryalayPackagesSamagri
                        .where(karyalay_package_id: @karyalay_package.id)
                        .pluck(:karyalay_samagri_id)
@@ -148,12 +148,16 @@ class KaryalayPackagesController < ApplicationController
     remove_caterer(existing_caterers, to_add_caterers)
   end
 
+  def update_dependencies
+    update_pandit
+    update_caterer
+    update_package_tags
+  end
+
   # PATCH/PUT /karyalay_packages/1
   def update
     if @karyalay_package.update(karyalay_package_params)
-      update_pandit
-      update_caterer
-      update_package_tags
+      update_dependencies
       @karyalay_package.save
       result = { notice: 'Karyalay list was successfully updated.',
                  status: true }
@@ -164,8 +168,11 @@ class KaryalayPackagesController < ApplicationController
   end
 
   def destroy
+    @karyalay_package.karyalay_pandit.clear
+    @karyalay_package.karyalay_samagri.clear
+    @karyalay_package.karyalay_caterer.clear
     @karyalay_package.destroy
-    respond_with(@karyalay_package)
+    render json: @karyalay_package
   end
 
   private

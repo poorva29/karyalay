@@ -24,6 +24,11 @@ var app = angular.module('KaryalayApp');
       Flash.create('danger', message);
     };
 
+    $scope.deleteSuccess = function() {
+      var message = '<strong>Package Deleted!</strong> All the associated details are removed';
+      Flash.create('danger', message);
+    };
+
     $scope.slotSelected = function(start, end, jsEvent, view){
       if(start.diff(moment()) < 0){
         $scope.createFailure();
@@ -102,7 +107,7 @@ var app = angular.module('KaryalayApp');
         }
       });
 
-      modalInstance.result.then(function (selectedItem) {
+      $scope.createPackage = function(selectedItem) {
         $scope.selected = selectedItem;
         var data = {karyalay_package: $scope.extend($scope.selected, {from_date: moment($scope.selected.from_date).format()})};
         var url_to_post = '/karyalay_packages/' + event.id;
@@ -119,6 +124,24 @@ var app = angular.module('KaryalayApp');
 
             }
         });
+      };
+
+      $scope.removePackage = function(selectedItem) {
+        var url_to_delete = '/karyalay_packages/' + event.id;
+        $http.delete(url_to_delete)
+          .success(function (response) {
+            $('#calendar').fullCalendar('removeEvents',event.id);
+            $scope.events.splice($scope.findIndex($scope.events, {id: event.id}), 1);
+            $scope.deleteSuccess();
+        });
+      };
+
+      modalInstance.result.then(function (selectedItem, to_remove) {
+        if($scope.isObject(selectedItem)) {
+          $scope.createPackage(selectedItem);
+        } else {
+          $scope.removePackage(selectedItem);
+        }
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
       });
