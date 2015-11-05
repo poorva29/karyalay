@@ -37,13 +37,38 @@ var app = angular.module('KaryalayApp');
       }
     };
 
+    $scope.checkNotValidTime = function(start_date){
+      return moment(new Date()).isAfter(start_date);
+    };
+
     $scope.alertOnEventClick = function(event, jsEvent, view) {
-      $scope.openEdit(event, jsEvent, view, 'lg');
+      if(view.name == 'month'){
+        $scope.openPast(event, jsEvent, view, 'lg');
+      }else{
+        if($scope.checkNotValidTime(event.start)){
+          $scope.openPast(event, jsEvent, view, 'lg');
+        }else{
+          $scope.openEdit(event, jsEvent, view, 'lg');
+        }
+      }
+    };
+
+    $scope.updateEventSource = function(event){
+      var eventInSource = $scope.findWhere($scope.events, {id: event.id});
+      if(eventInSource){
+        eventInSource.start = event.start;
+        eventInSource.end = event.end;
+      }
     };
 
     $scope.alertOnEventDrop = function(event, delta, revertFunc) {
-      var start_date = event.start;
+      var start_date = event.start,
+      old_event = $scope.where($scope.events, {id: event.id});
+      var old_start_date = $scope.isEmpty(old_event) ? moment() : $scope.first(old_event).start
       if(start_date.diff(moment()) < 0){
+        revertFunc();
+        $scope.updateFailure();
+      }else if(old_start_date.diff(moment()) < 0) {
         revertFunc();
         $scope.updateFailure();
       }else{
@@ -57,6 +82,7 @@ var app = angular.module('KaryalayApp');
         $http.put(url_to_post, data)
           .success(function (response) {
             $scope.updateSuccess();
+            $scope.updateEventSource(event);
         });
       }
     }
@@ -85,6 +111,32 @@ var app = angular.module('KaryalayApp');
         eventDrop: $scope.alertOnEventDrop,
         eventResize: $scope.alertOnEventDrop
       }
+    };
+
+    $scope.openPast = function (event, jsEvent, view, size) {
+      var modalInstance = $modal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'karyalayPastBooking.html',
+        controller: 'BookPastKaryalayModalInstanceCtrl',
+        size: size,
+        backdrop: 'static',
+        resolve: {
+          items: function () {
+            var items = {
+              'event': event,
+              'jsEvent': jsEvent,
+              'view': view,
+              'karyalay_lists_id': $scope.karyalay_lists_id
+            };
+            return items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem, to_remove) {
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
     };
 
     $scope.openEdit = function (event, jsEvent, view, size) {

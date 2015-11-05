@@ -107,7 +107,8 @@ class KaryalayPackagesController < ApplicationController
   end
 
   def update_package_tags
-    tag_list =  params[:karyalay_package][:selectedItem] || []
+    tag_list =  params[:karyalay_package][:selectedItem]
+    return if tag_list.nil?
     karyalay_samagri = KaryalayPackagesSamagri
                        .where(karyalay_package_id: @karyalay_package.id)
                        .pluck(:karyalay_samagri_id)
@@ -136,14 +137,16 @@ class KaryalayPackagesController < ApplicationController
 
   def update_pandit
     existing_pandits = @karyalay_package.karyalay_pandit.map(&:id)
-    to_add_pandits = params[:karyalay_package][:selectedPeople] || []
+    to_add_pandits = params[:karyalay_package][:selectedPeople]
+    return if to_add_pandits.nil?
     add_pandit(existing_pandits, to_add_pandits)
     remove_pandit(existing_pandits, to_add_pandits)
   end
 
   def update_caterer
     existing_caterers = @karyalay_package.karyalay_caterer.map(&:id)
-    to_add_caterers = params[:karyalay_package][:selectedCaterer] || []
+    to_add_caterers = params[:karyalay_package][:selectedCaterer]
+    return if to_add_caterers.nil?
     add_caterer(existing_caterers, to_add_caterers)
     remove_caterer(existing_caterers, to_add_caterers)
   end
