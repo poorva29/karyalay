@@ -1,6 +1,8 @@
+//starting point of angular application
+//all the angular configurations will be maintained here
 var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 'ui.checkbox', 'angular-underscore',
-                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngRoute', 'ngStorage',
-                                          'ui.calendar', 'dnTimepicker', 'ngBootbox', 'ngFileUpload']);
+                                          'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngStorage',
+                                          'ui.calendar', 'dnTimepicker', 'ngBootbox', 'ngFileUpload', 'ui.router']);
   // ui-select filter
   app.filter('propsFilter', function() {
     return function(items, props) {
@@ -37,30 +39,29 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     AuthProvider.logoutMethod('GET');
   })
 
-  // ng route config
-  app.config(['$routeProvider', '$locationProvider',
-    function($routeProvider, $locationProvider) {
-      $routeProvider.
-        when('/', {
-          templateUrl: 'templates/karyalay_lists/karyalay-list.html'
-        }).
-        when('/karyalay_create', {
-          templateUrl: 'templates/karyalay_lists/karyalay-create.html',
-        }).
-        when('/karyalay_update', {
-          templateUrl: 'templates/karyalay_lists/karyalay-update.html',
-        }).
-        when('/karyalay_book', {
-          templateUrl: 'templates/karyalay_lists/karyalay-book.html',
-          controller: 'karyalayBookCtrl'
-        }).
-        otherwise({
-          redirectTo: function(current, path, search) {
-            if(search.goto) {
-              return '/' + search.goto;
-            }
-            return '/'
-          }
+  // ui route config
+  app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider) {
+      // For any unmatched url, redirect to /karyalay_list
+      $urlRouterProvider.otherwise("/");
+      //
+      // Now set up the states
+      $stateProvider
+        .state('karyalay_list', {
+          url: "/",
+          templateUrl: "templates/karyalay_lists/karyalay-list.html"
+        })
+        .state('karyalay_create', {
+          url: "/karyalay_create",
+          templateUrl: "templates/karyalay_lists/karyalay-create.html"
+        })
+        .state('karyalay_update', {
+          url: "/karyalay_update",
+          templateUrl: "templates/karyalay_lists/karyalay-update.html"
+        })
+        .state('karyalay_book', {
+          url: "/karyalay_book",
+          templateUrl: "templates/karyalay_lists/karyalay-book.html",
         });
 
         // To remove '#' from url use html5Mode (base url is set in <head> tag)

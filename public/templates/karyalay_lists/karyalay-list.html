@@ -15,7 +15,7 @@
         </div>
         <div class="col-xs-8">
           <div class="form-group">
-            <a href="karyalay_create" id="createKaryalayBtn" class="btn btn-success pull-right" role="button">
+            <a ui-sref="karyalay_create" id="createKaryalayBtn" class="btn btn-success pull-right" role="button">
             <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Create Karyalay</a>
           </div>
         </div>
@@ -44,14 +44,14 @@
       </tr></thead>
       <tbody><tr ng-repeat="karyalayInfo in karyalayList | orderBy:sortType:sortReverse | filter:searchKaryalay.searched">
         <td class="text-center karyalay-lists-name">
-          <a href="karyalay_update" class="btn btn-link" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
+          <a ui-sref="karyalay_update" class="btn btn-link" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
           {{karyalayInfo.name}}</span></a>
         </td>
         <td class="text-center">{{ karyalayInfo.email }}</td>
         <td class="text-center">{{ karyalayInfo.phone_number }}</td>
         <td class="text-center">{{ karyalayInfo.address }}</td>
         <td class="text-center karyalay-lists-book">
-          <a href="karyalay_book" class="btn btn-default" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
+          <a ui-sref="karyalay_book" class="btn btn-default" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
           <span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Book</a>
           <a class="btn btn-default" role="button" ng-click="deleteKaryalay(karyalayInfo.id)">
           <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a>

@@ -24,6 +24,7 @@
     "angular-sanitize": "~1.4.5",
     "angular-timepicker": "~1.0.8",
     "angular-ui-calendar": "~1.0.1",
+    "angular-ui-router": "~0.2.15",
     "angular-underscore": "~0.5.0",
     "bootstrap": "~3.3.5",
     "components-font-awesome": "~4.4.0",
