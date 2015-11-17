@@ -30,8 +30,10 @@ Karyalay::Application.routes.draw do
 
   # Karyalay List's
   get 'fetch_karyalay_list' => 'karyalay_lists#fetch_karyalay_list'
+  get 'fetch_all_karyalay_list' => 'karyalay_lists#fetch_all_karyalay_list'
   get 'fetch_karyalay_info' => 'karyalay_lists#fetch_karyalay_info'
   get 'fetch_karyalay_package' => 'karyalay_lists#fetch_karyalay_package'
+  get 'karyalay_list' => 'karyalay_lists#index'
 
   post 'pandit_to_keep' => 'karyalay_pandits#pandit_to_keep'
 

@@ -285,7 +285,7 @@ var app = angular.module('KaryalayApp');
       });
       $scope.createSuccess();
       $scope.saveStatus.saveKaryalayDependents = true;
-      $location.url('/');
+      $location.url('/karyalay_list');
     };
 
     $scope.saveKaryalayPhotos = function(){

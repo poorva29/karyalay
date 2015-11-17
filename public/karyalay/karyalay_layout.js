@@ -75,7 +75,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
       // Routes for admin
       $stateProvider
         .state('karyalay_list', {
-          url: "/",
+          url: "/karyalay_list",
           templateUrl: "templates/karyalay_lists/karyalay-list.html",
           data: {checkUser: true}
         })
@@ -95,6 +95,14 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
           data: {checkUser: true}
         });
 
+        // For all visitors and admin
+        $stateProvider
+        .state('karyalay_show_all', {
+          url: "/",
+          templateUrl: "templates/karyalay_lists/karyalay-show-all.html",
+          data: {checkAdmin: true}
+        })
+
         //Error pages
         $stateProvider
           .state('page403', {
@@ -102,8 +110,8 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
             templateUrl: 'templates/error/403.html'
           })
           .state('page500', {
-          url: '/internalservererror',
-          templateUrl: 'templates/error/500.html'
+            url: '/internalservererror',
+            templateUrl: 'templates/error/500.html'
           });
 
         // To remove '#' from url use html5Mode (base url is set in <head> tag)
@@ -117,30 +125,36 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
   function ($rootScope, $state, $window, $location, $http, storeUserInfo) {
     // on change of state, check if user should be logged in to access the page.
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+      var promiseObj = function(){
+        return $http.get('user_role_name')
+          .success(function (response) {
+            var userRole = response.user_role
+            storeUserInfo.setUserInfo(userRole);
+            $rootScope.is_admin = (userRole == 'Admin' ? true : false);
+            return userRole;
+          });
+      };
+
       if(toState.data && toState.data.checkUser) {
-        console.log(storeUserInfo.getUserInfo());
-        var test = storeUserInfo.getUserInfo();
-        if(test){
-          if(test && test != 'Admin') {
+        var userRole = storeUserInfo.getUserInfo();
+        if(userRole){
+          if(userRole && userRole != 'Admin') {
             $location.path('/forbidden');
           }
         }else {
-          $http.get('user_role_name')
-            .success(function (response) {
-              storeUserInfo.setUserInfo(response.user_role);
-                var userRole = response.user_role;
-                if(userRole && userRole != 'Admin') {
-                  $location.path('/forbidden');
-                }
-            });
+          var userRole = promiseObj();
+          if(userRole && userRole != 'Admin') {
+            $location.path('/forbidden');
+          }
         }
+      }else if(toState.data && toState.data.checkAdmin) {
+        promiseObj();
       }
     });
   }]);
 
   //layout controller
   app.controller('karyalayLayoutCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window) {
-
     $scope.logout = function(){
       var config = {
         headers: {

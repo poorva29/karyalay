@@ -107,6 +107,11 @@ class KaryalayListsController < ApplicationController
     render json: @karyalay_list.karyalay_packages
   end
 
+  # For admins and visitors
+  def fetch_all_karyalay_list
+    render json: KaryalayList.all
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_karyalay_list
