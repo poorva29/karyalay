@@ -4,10 +4,6 @@ var app = angular.module('KaryalayApp');
     $scope.sortReverse  = false;  // set the default sort order
     $scope.searchKaryalay   = {};     // set the default search/filter term
 
-    $http.get('user_role_name')
-    .success(function (response) {
-      $scope.is_admin = response.user_role;
-    });
     $scope.deleteSuccess = function () {
       var message = '<strong>Karyalay Deleted!</strong> karyalay related other attributes are removed.';
       Flash.create('success', message);

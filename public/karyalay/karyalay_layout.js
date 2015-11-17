@@ -31,6 +31,34 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     };
   });
 
+  app.factory('storeKaryalayInfo', function() {
+    var karyalay_id;
+    function setKaryalayInfo(data) {
+      karyalay_id = data;
+    }
+    function getKaryalayInfo() {
+     return karyalay_id;
+    }
+    return {
+     setKaryalayInfo: setKaryalayInfo,
+     getKaryalayInfo: getKaryalayInfo
+    }
+  });
+
+  app.factory('storeUserInfo', function() {
+    var userRole;
+    function setUserInfo(data) {
+      userRole = data;
+    }
+    function getUserInfo() {
+     return userRole;
+    }
+    return {
+     setUserInfo: setUserInfo,
+     getUserInfo: getUserInfo
+    }
+  });
+
   // devise athentication config
   app.config(function(AuthProvider) {
     AuthProvider.loginPath('sign_in.json');
@@ -44,25 +72,39 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     function($stateProvider, $urlRouterProvider, $locationProvider) {
       // For any unmatched url, redirect to /karyalay_list
       $urlRouterProvider.otherwise("/");
-      //
-      // Now set up the states
+      // Routes for admin
       $stateProvider
         .state('karyalay_list', {
           url: "/",
-          templateUrl: "templates/karyalay_lists/karyalay-list.html"
+          templateUrl: "templates/karyalay_lists/karyalay-list.html",
+          data: {checkUser: true}
         })
         .state('karyalay_create', {
           url: "/karyalay_create",
-          templateUrl: "templates/karyalay_lists/karyalay-create.html"
+          templateUrl: "templates/karyalay_lists/karyalay-create.html",
+          data: {checkUser: true}
         })
         .state('karyalay_update', {
           url: "/karyalay_update",
-          templateUrl: "templates/karyalay_lists/karyalay-update.html"
+          templateUrl: "templates/karyalay_lists/karyalay-update.html",
+          data: {checkUser: true}
         })
         .state('karyalay_book', {
           url: "/karyalay_book",
           templateUrl: "templates/karyalay_lists/karyalay-book.html",
+          data: {checkUser: true}
         });
+
+        //Error pages
+        $stateProvider
+          .state('page403', {
+            url: '/forbidden',
+            templateUrl: 'templates/error/403.html'
+          })
+          .state('page500', {
+          url: '/internalservererror',
+          templateUrl: 'templates/error/500.html'
+          });
 
         // To remove '#' from url use html5Mode (base url is set in <head> tag)
         $locationProvider.html5Mode({
@@ -71,23 +113,34 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
         });
     }]);
 
-
-  app.factory('storeKaryalayInfo', function($localStorage) {
-    $storage = $localStorage;$localStorage;
-    function setKaryalayInfo(data) {
-      $storage.karyalay_id = data;
-    }
-    function getKaryalayInfo() {
-     return $localStorage.karyalay_id;
-    }
-    return {
-     setKaryalayInfo: setKaryalayInfo,
-     getKaryalayInfo: getKaryalayInfo
-    }
-  });
+  app.run(["$rootScope", "$state", "$window", "$location", "$http", "storeUserInfo",
+  function ($rootScope, $state, $window, $location, $http, storeUserInfo) {
+    // on change of state, check if user should be logged in to access the page.
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+      if(toState.data && toState.data.checkUser) {
+        console.log(storeUserInfo.getUserInfo());
+        var test = storeUserInfo.getUserInfo();
+        if(test){
+          if(test && test != 'Admin') {
+            $location.path('/forbidden');
+          }
+        }else {
+          $http.get('user_role_name')
+            .success(function (response) {
+              storeUserInfo.setUserInfo(response.user_role);
+                var userRole = response.user_role;
+                if(userRole && userRole != 'Admin') {
+                  $location.path('/forbidden');
+                }
+            });
+        }
+      }
+    });
+  }]);
 
   //layout controller
   app.controller('karyalayLayoutCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window) {
+
     $scope.logout = function(){
       var config = {
         headers: {
