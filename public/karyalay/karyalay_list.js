@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayListCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $ngBootbox) {
+  app.controller('karyalayListCtrl', function ($scope, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $ngBootbox) {
     $scope.sortType     = ''; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
     $scope.searchKaryalay   = {};     // set the default search/filter term

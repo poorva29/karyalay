@@ -1,4 +1,4 @@
-app.controller('BookKaryalayModalInstanceCtrl', function ($scope, $modalInstance, items, $http) {
+app.controller('BookKaryalayModalInstanceCtrl', function ($scope, $uibModalInstance, items, $http) {
   $scope.packageDetails = {
     selectedItem: [],
     selectedPeople: [],
@@ -87,15 +87,15 @@ app.controller('BookKaryalayModalInstanceCtrl', function ($scope, $modalInstance
   $scope.fetchKaryalayInfo();
 
   $scope.ok = function () {
-    $modalInstance.close($scope.packageDetails);
+    $uibModalInstance.close($scope.packageDetails);
   };
 
   $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
+    $uibModalInstance.dismiss('cancel');
   };
 });
 
-app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInstance, items, $http, $q, $ngBootbox) {
+app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $uibModalInstance, items, $http, $q, $ngBootbox) {
   $scope.isEdit = true;
   $scope.packageDetails = {
     selectedItem: [],
@@ -265,7 +265,7 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInst
           label: "Yes",
           className: "btn-success",
           callback: function() {
-            $modalInstance.close('delete');
+            $uibModalInstance.close('delete');
           }
         }
       }
@@ -274,15 +274,15 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $modalInst
   };
 
   $scope.ok = function () {
-    $modalInstance.close($scope.packageDetails);
+    $uibModalInstance.close($scope.packageDetails);
   };
 
   $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
+    $uibModalInstance.dismiss('cancel');
   };
 });
 
-app.controller('BookPastKaryalayModalInstanceCtrl', function ($scope, $modalInstance, items, $http, $q, $ngBootbox) {
+app.controller('BookPastKaryalayModalInstanceCtrl', function ($scope, $uibModalInstance, items, $http, $q, $ngBootbox) {
   $scope.isEdit = true;
   $scope.packageDetails = {
     selectedItem: [],
@@ -452,7 +452,7 @@ app.controller('BookPastKaryalayModalInstanceCtrl', function ($scope, $modalInst
           label: "Yes",
           className: "btn-success",
           callback: function() {
-            $modalInstance.close('delete');
+            $uibModalInstance.close('delete');
           }
         }
       }
@@ -461,6 +461,6 @@ app.controller('BookPastKaryalayModalInstanceCtrl', function ($scope, $modalInst
   };
 
   $scope.ok = function () {
-    $modalInstance.dismiss('cancel');
+    $uibModalInstance.dismiss('cancel');
   };
 });

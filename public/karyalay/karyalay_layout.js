@@ -2,7 +2,8 @@
 //all the angular configurations will be maintained here
 var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 'ui.checkbox', 'angular-underscore',
                                           'ui.select', 'ngSanitize', 'ng.bs.dropdown', 'Devise', 'ngStorage',
-                                          'ui.calendar', 'dnTimepicker', 'ngBootbox', 'ngFileUpload', 'ui.router']);
+                                          'ui.calendar', 'dnTimepicker', 'ngBootbox', 'ngFileUpload', 'ui.router',
+                                          'bootstrapLightbox']);
   // ui-select filter
   app.filter('propsFilter', function() {
     return function(items, props) {
@@ -161,7 +162,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
   }]);
 
   //layout controller
-  app.controller('karyalayLayoutCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window) {
+  app.controller('karyalayLayoutCtrl', function ($scope, $log, $http, Flash, Auth, $window) {
     $scope.logout = function(){
       var config = {
         headers: {

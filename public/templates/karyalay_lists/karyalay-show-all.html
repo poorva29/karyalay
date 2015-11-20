@@ -33,8 +33,10 @@
           </address>
           <div class="row">
             <div class="col-sm-9">
-              <div ng-repeat="image in last(karyalayInfo.karyalay_photos, 2)" class="thumbnail-images">
-                <img ng-src="{{image.thumbnail_url}}" class="img-thumbnail-all">
+              <div ng-repeat="image in first(karyalayInfo.karyalay_photos, 2)" class="thumbnail-images">
+                <a ng-click="openLightboxModal($index, karyalayInfo.karyalay.id)">
+                  <img ng-src="{{image.thumbUrl}}" class="img-thumbnail">
+                </a>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayBookCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo) {
+  app.controller('karyalayBookCtrl', function ($scope, $uibModal, $log, $http, Flash, Auth, $window, storeKaryalayInfo) {
     $scope.karyalay_lists_id = storeKaryalayInfo.getKaryalayInfo();
     $scope.animationsEnabled = true;
     $scope.events = [];
@@ -114,7 +114,7 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.openPast = function (event, jsEvent, view, size) {
-      var modalInstance = $modal.open({
+      var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'karyalayPastBooking.html',
         controller: 'BookPastKaryalayModalInstanceCtrl',
@@ -140,7 +140,7 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.openEdit = function (event, jsEvent, view, size) {
-      var modalInstance = $modal.open({
+      var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'karyalayBooking.html',
         controller: 'BookEditKaryalayModalInstanceCtrl',
@@ -200,7 +200,7 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.open = function (start, end, jsEvent, view, size) {
-      var modalInstance = $modal.open({
+      var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'karyalayBooking.html',
         controller: 'BookKaryalayModalInstanceCtrl',

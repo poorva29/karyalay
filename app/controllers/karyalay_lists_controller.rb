@@ -111,8 +111,8 @@ class KaryalayListsController < ApplicationController
   def fetch_all_karyalay_list
     res = KaryalayList.all.map do |k|
       karyalay_photos = k.photos.map do |kp|
-        { id: kp.id, thumbnail_url: kp.gallery.url(:thumb),
-          size: kp.gallery_file_size }
+        { id: kp.id, thumbUrl: kp.gallery.url(:thumb),
+          url: kp.gallery.url, size: kp.gallery_file_size }
       end
       {
         karyalay: k,

@@ -21,7 +21,7 @@
                 <div class="form-group">
                   <label class="control-label col-sm-2" for="date">Date:</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control datepicker-size" datepicker-popup="{{format}}" ng-model="packageDetails.from_date" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                    <input type="text" class="form-control datepicker-size" uib-datepicker-popup="{{format}}" ng-model="packageDetails.from_date" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -95,7 +95,7 @@
                   </div>
                   <label class="control-label col-sm-2" for="tags">Quantity:</label>
                   <div class="col-sm-3">
-                    <div class="btn-group" dropdown keyboard-nav>
+                    <div class="btn-group" uib-dropdown uib-keyboard-nav>
                       <select class="form-control" ng-model="quantity" ng-options="count for count in quantites" ng-change="updateQuantity(quantity)">{{count}}</select>
                     </div>
                   </div>
@@ -161,7 +161,7 @@
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="date">Date:</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control datepicker-size" datepicker-popup="{{format}}" ng-model="packageDetails.from_date" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                      <input type="text" class="form-control datepicker-size" uib-datepicker-popup="{{format}}" ng-model="packageDetails.from_date" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                       </span>

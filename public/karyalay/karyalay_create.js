@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayCreateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, $location, Upload) {
+  app.controller('karyalayCreateCtrl', function ($scope, $log, $http, Flash, Auth, $window, $location, Upload) {
     $scope.selectPanditDetails = {
       subitems: []
     };

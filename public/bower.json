@@ -32,7 +32,8 @@
     "ngBootbox": "~0.1.1",
     "ngstorage": "~0.3.9",
     "ui-select": "angular-ui-select#~0.12.1",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "angular-bootstrap-lightbox": "~0.10.0"
   },
   "resolutions": {
     "angular": "1.4.4"
