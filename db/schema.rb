@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151030113056) do
+ActiveRecord::Schema.define(version: 20151118095439) do
 
   create_table "comfy_cms_blocks", force: true do |t|
     t.string   "identifier",     null: false
@@ -189,6 +189,8 @@ ActiveRecord::Schema.define(version: 20151030113056) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.string   "state"
+    t.string   "city"
   end
 
   add_index "karyalay_lists", ["user_id"], name: "index_karyalay_lists_on_user_id", using: :btree

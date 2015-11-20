@@ -44,7 +44,7 @@
       </tr></thead>
       <tbody><tr ng-repeat="karyalayInfo in karyalayList | orderBy:sortType:sortReverse | filter:searchKaryalay.searched">
         <td class="text-center karyalay-lists-name">
-          <a ui-sref="karyalay_update" class="btn btn-link" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
+          <a ui-sref="karyalay_update" class="btn btn-link result-title" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
           {{karyalayInfo.name}}</span></a>
         </td>
         <td class="text-center">{{ karyalayInfo.email }}</td>

@@ -109,7 +109,17 @@ class KaryalayListsController < ApplicationController
 
   # For admins and visitors
   def fetch_all_karyalay_list
-    render json: KaryalayList.all
+    res = KaryalayList.all.map do |k|
+      karyalay_photos = k.photos.map do |kp|
+        { id: kp.id, thumbnail_url: kp.gallery.url(:thumb),
+          size: kp.gallery_file_size }
+      end
+      {
+        karyalay: k,
+        karyalay_photos: karyalay_photos
+      }
+    end
+    render json: res.to_json
   end
 
   private
@@ -121,6 +131,7 @@ class KaryalayListsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def karyalay_list_params
       params.require(:karyalay_list)
-        .permit(:name, :address, :description, :location, :phone_number, :email)
+        .permit(:name, :address, :description, :location, :phone_number, :email,
+                :state, :city, :landmark)
     end
 end

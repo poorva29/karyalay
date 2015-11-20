@@ -31,13 +31,15 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     };
   });
 
-  app.factory('storeKaryalayInfo', function() {
+  app.factory('storeKaryalayInfo', function($localStorage) {
+    $storage = $localStorage;
     var karyalay_id;
     function setKaryalayInfo(data) {
       karyalay_id = data;
+      $storage.karyalay_id = data;
     }
     function getKaryalayInfo() {
-     return karyalay_id;
+     return karyalay_id || $storage.karyalay_id;
     }
     return {
      setKaryalayInfo: setKaryalayInfo,
@@ -142,10 +144,15 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
             $location.path('/forbidden');
           }
         }else {
-          var userRole = promiseObj();
-          if(userRole && userRole != 'Admin') {
-            $location.path('/forbidden');
-          }
+          $http.get('user_role_name')
+          .success(function (response) {
+            var userRole = response.user_role
+            storeUserInfo.setUserInfo(userRole);
+            $rootScope.is_admin = (userRole == 'Admin' ? true : false);
+            if(userRole && userRole != 'Admin') {
+              $location.path('/forbidden');
+            }
+          });
         }
       }else if(toState.data && toState.data.checkAdmin) {
         promiseObj();

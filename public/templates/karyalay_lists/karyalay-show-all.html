@@ -1,2 +1,45 @@
-<div ng-controller="karyalayShowAll">
+<div id="karyalayShowAll">
+  <div ng-controller="karyalayShowAll">
+    <div class="container search-result-container">
+      <section>
+        <article ng-repeat="karyalayInfo in karyalayList | orderBy: 'name'" class="search-result">
+          <div class="row">
+            <div class="search_result_info col-sm-8 pr0">
+              <div class="search-name clearfix">
+                <h4 class="top-res-box-name">
+                  <a class="result-title" href="https://www.zomato.com/pune/malaka-spice-baner" title="malaka spice Restaurant, Baner" data-result-type="ResCard_Name">{{karyalayInfo.karyalay.name}}</a>
+                </h4>
+                <div class="chain_link"></div>
+              </div>
+              <a class="search-page-text zblack search_result_subzone" href="https://www.zomato.com/pune/baner-restaurants" title="Restaurants in Baner">{{karyalayInfo.karyalay.location}}</a>
+            </div>
+            <div class="search_result_rating col-sm-4 clearfix">
+              <div data-res-id="6504825" class="res-rating-nf pull-right level-7">4.0</div>
+              <div class="clear"></div>
+              <div class="rating-rank pull-right">
+                <!-- show the vote count only if there's a rating -->
+                <span class="rating-votes-div-6504825">532 votes</span>
+              </div>
+            </div>
+          </div>
+          <address>
+            {{karyalayInfo.karyalay.address}}<br>
+            <abbr title="Phone">P:</abbr> {{karyalayInfo.karyalay.phone_number}}
+          </address>
+
+          <address>
+            <strong>Email</strong><br>
+            <a href="mailto:#">{{karyalayInfo.karyalay.email}}</a>
+          </address>
+          <div class="row">
+            <div class="col-sm-9">
+              <div ng-repeat="image in last(karyalayInfo.karyalay_photos, 2)" class="thumbnail-images">
+                <img ng-src="{{image.thumbnail_url}}" class="img-thumbnail-all">
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </div>
 </div>

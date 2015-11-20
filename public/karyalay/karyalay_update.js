@@ -225,26 +225,30 @@ var app = angular.module('KaryalayApp');
     }
 
     $scope.uncheckedPandit = function() {
-      if($scope.karyalayAttrDepUpdateForm.has_pandit == false && $scope.change_pandit) {
-        var items = {
-                      type: 'pandit',
-                      label: 'Pandit',
-                      message: 'Are you sure you want to remove all associated pandits ?'
-                    };
-        $scope.openModal(items);
+      if($scope.karyalayAttrDepUpdateForm.has_pandit == false) {
+        if($scope.change_pandit) {
+          var items = {
+                        type: 'pandit',
+                        label: 'Pandit',
+                        message: 'Are you sure you want to remove all associated pandits ?'
+                      };
+          $scope.openModal(items);
+        }
       } else {
         $scope.change_pandit = true;
       }
     };
 
     $scope.uncheckedCaterer = function() {
-      if($scope.karyalayAttrDepUpdateForm.has_caterer == false && $scope.change_caterer) {
-        var items = {
-                      type: 'caterer',
-                      label: 'Caterer',
-                      message: 'Are you sure you want to remove all associated caterers ?'
-                    };
-        $scope.openModal(items);
+      if($scope.karyalayAttrDepUpdateForm.has_caterer == false) {
+        if($scope.change_caterer) {
+          var items = {
+                        type: 'caterer',
+                        label: 'Caterer',
+                        message: 'Are you sure you want to remove all associated caterers ?'
+                      };
+          $scope.openModal(items);
+        }
       } else {
         $scope.change_caterer = true;
       }
