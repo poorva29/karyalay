@@ -126,6 +126,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
 
   app.run(["$rootScope", "$state", "$window", "$location", "$http", "storeUserInfo",
   function ($rootScope, $state, $window, $location, $http, storeUserInfo) {
+    $rootScope.$state = $state;
     // on change of state, check if user should be logged in to access the page.
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
       var promiseObj = function(){
@@ -162,7 +163,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
   }]);
 
   //layout controller
-  app.controller('karyalayLayoutCtrl', function ($scope, $log, $http, Flash, Auth, $window) {
+  app.controller('karyalayLayoutCtrl', function ($scope, $rootScope, $log, $http, Flash, Auth, $window) {
     $scope.logout = function(){
       var config = {
         headers: {
@@ -182,6 +183,13 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     }, function(error) {
       // unauthenticated error
     });
+
+    $scope.bodyBackgroundColour = function(){
+      if($rootScope.$state.current.name == 'karyalay_show_all')
+        return 'body-colour';
+      else
+        return ;
+    };
   });
 
   // for adding/removing of caterer/pandit

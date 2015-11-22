@@ -149,60 +149,77 @@
 }
 
 #karyalayShowAll {
-  .thumbnail-images {
-    display: inline;
-    float: left;
-    padding-right: 1%;
-  }
-
-  .result-title {
-    color: #cb202d;
-  }
-
   .search-result-container {
     background: #F8F8F8;
   }
 
-  .search-result {
-    border-bottom: 2px solid #e7e7e7;
-    padding: 1.5% 0 0.75%;
-  }
+  .search-result-all {
+    background-color: white;
+    .thumbnail-images {
+      display: inline;
+      float: left;
+      padding-right: 1%;
+    }
 
-  .res-rating-nf {
-    color: #fff;
-    cursor: default;
-    border-radius: 5px;
-    font-size: 16px;
-    height: 24px;
-    line-height: 24px;
-    font-weight: 700;
-    text-align: center;
-    width: 36px;
-    margin: 0 auto;
-  }
+    .result-title {
+      color: #cb202d;
+    }
 
-  .level-7 {
-    background: #5ba829;
-  }
 
-  .clear {
-    clear: both;
-  }
+    .search-result {
+      border-bottom: 2px solid #e7e7e7;
+      padding: 1.5% 0 0.75%;
+    }
 
-  .rating-rank {
-    font-size: 10px;
-    font-weight: 200;
-    color: #9a9a9a;
-    margin-top: 2px;
-  }
+    .res-rating-nf {
+      color: #fff;
+      cursor: default;
+      border-radius: 5px;
+      font-size: 16px;
+      height: 24px;
+      line-height: 24px;
+      font-weight: 700;
+      text-align: center;
+      width: 36px;
+      margin: 0 auto;
+    }
 
-  .top-res-box-name {
-    margin: 0;
-  }
+    .level-7 {
+      background: #5ba829;
+    }
 
-  .search_result_subzone {
-    font-size: 13px;
+    .clear {
+      clear: both;
+    }
+
+    .rating-rank {
+      font-size: 10px;
+      font-weight: 200;
+      color: #9a9a9a;
+      margin-top: 2px;
+    }
+
+    .top-res-box-name {
+      margin: 0;
+    }
+
+    .search_result_subzone {
+      font-size: 13px;
+    }
+
+    .img-thumbnail-gallery {
+      max-width: 100%;
+      height: auto;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   }
+}
+
+.body-colour {
+  background-color: #ddd;
 }
 
 input::-webkit-outer-spin-button,
