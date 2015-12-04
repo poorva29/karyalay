@@ -3,7 +3,158 @@
     <div class="container">
       <section>
         <div class="row search-result-container">
-          <div class="col-sm-3"></div>
+          <div class="col-sm-3 filter-container">
+            <div class="row">
+              <div class="s-title col-sm-12">
+                <span tabindex="0" role="heading">Filters</span>
+              </div>
+            </div>
+            <div id="filter-sort-html-area">
+              <div class="search-filter-label search-sort-label ">
+                <div class="pb10" title="Filter results by cost for two">Location</div>
+                <div class="clear"></div>
+                <div class="p-relative filter-input-area box-sizing-content">
+                  <input aria-label="Location" role="combobox" aria-owns="filter-locations-html-list" type="text" id="filter-locations" class="search-input-field" data-param_list="" placeholder="Type to filter" autocorrect="off">
+                  <div data-iconr="•" class="search-filter-icon glyphicon glyphicon-chevron-down"></div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <div id="filter-sort-html-area">
+              <div class="search-filter-label search-sort-label ">
+                <div class="pb10" title="Filter results by cost for two">Accomodate People</div>
+                <div class="clear"></div>
+                <div class="p-relative filter-input-area">
+                  <div role="link" data-iconr="•" class="cost-filter-placeholder cost-filter-placeholder-change">Click to choose</div>
+                  <div data-iconr="•" class="search-filter-icon glyphicon glyphicon-chevron-down"></div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <div id="filter-sort-html-area">
+              <div class="search-filter-label search-sort-label ">
+                <div class="pb10" title="Filter results by cost for two">Size In Square Feet</div>
+                <div class="clear"></div>
+                <div class="p-relative filter-input-area">
+                  <div role="link" data-iconr="•" class="cost-filter-placeholder cost-filter-placeholder-change">Click to choose</div>
+                  <div data-iconr="•" class="search-filter-icon glyphicon glyphicon-chevron-down"></div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <div class="row-fluid">
+              <div id="filter-sort-html-area">
+                <div class="search-filter-label search-sort-label ">
+                  <div class="pb10" title="Filter results by cost for two">Karyalay Offers</div>
+                  <div class="clear"></div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.credit_cards"></checkbox>
+                    </div>
+                    <div class="col-sm-7 align-checkbox">
+                      <div class="filter-div">Credit Cards</div>
+                    </div>
+                  </div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.provide_offers" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-7 align-checkbox">
+                      <div class="filter-div">Promotions</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row-fluid">
+              <div id="filter-sort-html-area">
+                <div class="search-filter-label search-sort-label ">
+                  <div class="pb10" title="Filter results by cost for two">More Filters</div>
+                  <div class="clear"></div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.has_floors" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-8 align-checkbox">
+                      <div class="filter-div">Multi Storied</div>
+                    </div>
+                    <div class="col-sm-2 pi5">
+                      <div class="glyphicon glyphicon-home"></div>
+                    </div>
+                  </div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.has_rooms" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-8 align-checkbox">
+                      <div class="filter-div">Rooms</div>
+                    </div>
+                    <div class="col-sm-2 pi5">
+                      <div class="glyphicon glyphicon-th-large"></div>
+                    </div>
+                  </div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.has_garden" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-8 align-checkbox">
+                      <div class="filter-div">Garden</div>
+                    </div>
+                    <div class="col-sm-2 pi5">
+                      <div class="glyphicon glyphicon-tree-conifer"></div>
+                    </div>
+                  </div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.has_ac" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-8 align-checkbox">
+                      <div class="filter-div">A/C</div>
+                    </div>
+                    <div class="col-sm-2 pi5">
+                      <div class="glyphicon glyphicon-off"></div>
+                    </div>
+                  </div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.has_caterer" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-8 align-checkbox">
+                      <div class="filter-div">Caterer</div>
+                    </div>
+                    <div class="col-sm-2 pi5">
+                      <div class="glyphicon glyphicon-cutlery"></div>
+                    </div>
+                  </div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.has_pandit" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-8 align-checkbox">
+                      <div class="filter-div">Pandit</div>
+                    </div>
+                     <div class="col-sm-2 pi5">
+                      <div class="glyphicon glyphicon-bell"></div>
+                    </div>
+                  </div>
+                  <div class="p-relative filter-input-area box-sizing-content">
+                    <div class="col-sm-2 align-checkbox">
+                      <checkbox class="btn-info" ng-model="karyalayAttrCreateForm.has_samagri" ng-click="fetchKaryalayResult()"></checkbox>
+                    </div>
+                    <div class="col-sm-8 align-checkbox">
+                      <div class="filter-div">Samagri</div>
+                    </div>
+                    <div class="col-sm-2 pi5">
+                      <div class="glyphicon glyphicon-oil"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col-sm-6 search-result-all">
             <article ng-repeat="karyalayInfo in karyalayList | orderBy: 'name'" class="search-result">
               <div class="row">
@@ -48,6 +199,17 @@
           <div class="col-sm-3"></div>
         </div>
       </section>
+    </div>
+  </div>
+  <!-- This div is to be replaced with something else -->
+  <div class="wrapper">
+    <div class="ad-bg">
+      <div class="ad-text">ADVERTISEMENT</div>
+      <ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-4990206280108530" data-ad-slot="5611081004" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:970px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:970px;background-color:transparent"><iframe width="970" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins></ins><script type="text/javascript">
+                  (adsbygoogle = window.adsbygoogle || []).push({});
+                  window.onloadScripts = window.onloadScripts || [];
+                  window.onloadScripts.push("//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js");
+              </script> </div>
     </div>
   </div>
 </div>

@@ -49,7 +49,7 @@
         </td>
         <td class="text-center">{{ karyalayInfo.email }}</td>
         <td class="text-center">{{ karyalayInfo.phone_number }}</td>
-        <td class="text-center">{{ karyalayInfo.address }}</td>
+        <td class="text-center">{{ karyalayInfo.address && karyalayInfo.address.length > 30 ? karyalayInfo.address.substr(0,30) + '..' : karyalayInfo.address }}</td>
         <td class="text-center karyalay-lists-book">
           <a ui-sref="karyalay_book" class="btn btn-default" role="button" ng-click="setKaryalayId(karyalayInfo.id)">
           <span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Book</a>

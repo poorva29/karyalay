@@ -84,11 +84,11 @@
       </div>
     </script>
     <div class="row">
-      <accordion close-others="oneAtATime">
-        <accordion-group is-open="status.openKaryalay">
-          <accordion-heading>
+      <uib-accordion close-others="oneAtATime">
+        <uib-accordion-group is-open="status.openKaryalay">
+          <uib-accordion-heading>
             Create Karyalay <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalay, 'glyphicon-chevron-right': !status.openKaryalay}"></i>
-          </accordion-heading>
+          </uib-accordion-heading>
           <fieldset id="karyalayCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalay">
             <form name="karyalayCreateFormValidate" class="form-horizontal" role="form">
               <div class="form-group">
@@ -173,11 +173,11 @@
               </div>
             </form>
           </fieldset>
-        </accordion-group>
-        <accordion-group is-open="status.openKaryalayGallery" ng-show="saveStatus.saveKaryalay">
-          <accordion-heading>
+        </uib-accordion-group>
+        <uib-accordion-group is-open="status.openKaryalayGallery" ng-if="saveStatus.saveKaryalay">
+          <uib-accordion-heading>
             Karyalay Photo Gallery <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayGallery, 'glyphicon-chevron-right': !status.openKaryalayGallery}"></i>
-          </accordion-heading>
+          </uib-accordion-heading>
           <fieldset id="karyalayGalleryCreateForm" class="col-md-11 col-md-offset-2">
             <form name="karyalayCreateGalleryFormValidity" class="form-horizontal" role="form">
               <div class="form-group">
@@ -207,11 +207,11 @@
               </div>
             </form>
           </fieldset>
-        </accordion-group>
-        <accordion-group is-open="status.openKaryalayAttr" ng-show="saveStatus.saveKaryalay">
-          <accordion-heading>
+        </uib-accordion-group>
+        <uib-accordion-group is-open="status.openKaryalayAttr" ng-if="saveStatus.saveKaryalay">
+          <uib-accordion-heading>
             Karyalay Attributes <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayAttr, 'glyphicon-chevron-right': !status.openKaryalayAttr}"></i>
-          </accordion-heading>
+          </uib-accordion-heading>
           <fieldset id="karyalayAttrCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayAttr">
             <form name="karyalayAttrCreateFormValidity" class="form-horizontal" role="form">
               <div class="form-group">
@@ -220,15 +220,6 @@
                   <input type="number" name="number_ppl" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_people" placeholder="People Count">
                   <span class="validation-color" ng-show="karyalayAttrCreateFormValidity.number_ppl.$dirty">
                     <span ng-show="karyalayAttrCreateFormValidity.number_ppl.$error.number"> Please enter a valid number </span>
-                  </span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3" for="pwd">No. Of Rooms:</label>
-                <div class="col-sm-3">
-                  <input type="number" name="number_rooms" class="form-control" id="email" ng-model="karyalayAttrCreateForm.no_of_rooms" placeholder="Room Count">
-                  <span class="validation-color" ng-show="karyalayAttrCreateFormValidity.number_rooms.$dirty">
-                    <span ng-show="karyalayAttrCreateFormValidity.number_rooms.$error.number"> Please enter a valid number </span>
                   </span>
                 </div>
               </div>
@@ -266,11 +257,11 @@
               </div>
             </form>
           </fieldset>
-        </accordion-group>
-        <accordion-group is-open="status.openKaryalayDependents" ng-show="saveStatus.saveKaryalay">
-          <accordion-heading>
+        </uib-accordion-group>
+        <uib-accordion-group is-open="status.openKaryalayDependents" ng-if="saveStatus.saveKaryalay">
+          <uib-accordion-heading>
             Karyalay Dependency <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.openKaryalayDependents, 'glyphicon-chevron-right': !status.openKaryalayDependents}"></i>
-          </accordion-heading>
+          </uib-accordion-heading>
           <fieldset id="karyalayDependentCreateForm" class="col-md-11 col-md-offset-2" ng-disabled="saveStatus.saveKaryalayDependents">
             <form name="karyalayAttrDepCreateFormValidity" class="form-horizontal" role="form">
               <div class="form-group">
@@ -301,6 +292,30 @@
                 <label class="control-label col-sm-3" for="pwd">Has Garden:</label>
                 <div class="col-sm-1">
                   <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_garden"></checkbox>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Has Floors:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_floors"></checkbox>
+                </div>
+                <div ng-show="karyalayDependentCreateForm.has_floors">
+                  <label class="control-label col-sm-3" for="pwd">No Of Floors:</label>
+                  <div class="col-sm-1">
+                    <input type="text" class="form-control" ng-model="karyalayDependentCreateForm.no_of_floors"/>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Has Rooms:</label>
+                <div class="col-sm-1">
+                  <checkbox class="btn-info align-checkbox" ng-model="karyalayDependentCreateForm.has_rooms"></checkbox>
+                </div>
+                <div ng-show="karyalayDependentCreateForm.has_rooms">
+                  <label class="control-label col-sm-3" for="pwd">No Of Rooms:</label>
+                  <div class="col-sm-1">
+                    <input type="text" class="form-control" ng-model="karyalayDependentCreateForm.no_of_rooms"/>
+                  </div>
                 </div>
               </div>
             </form>
@@ -421,8 +436,8 @@
               </div>
             </form>
           </fieldset>
-        </accordion-group>
-      </accordion>
+        </uib-accordion-group>
+      </uib-accordion>
     </div>
   </div>
 </div>

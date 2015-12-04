@@ -113,7 +113,7 @@ class KaryalaySamagrisController < ApplicationController
 
   def update_tags
     karyalay_lists_id = params[:karyalay_samagri_params][:karyalay_lists_id]
-    tag_list =  params[:karyalay_samagri_params][:selected_item]
+    tag_list =  params[:karyalay_samagri_params][:selected_item] || []
     kl = KaryalayList.find_by_id(karyalay_lists_id)
     if !kl.nil?
       karyalay_samagri = KaryalayListsSamagri.where(karyalay_list_id: kl.id)

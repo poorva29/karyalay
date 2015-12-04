@@ -302,6 +302,7 @@ var app = angular.module('KaryalayApp');
             if(resp.data && resp.data.id){
               $scope.karyalayPhotos.push(resp.data);
               $scope.createSuccess();
+              $scope.status.openKaryalayAttr = true;
             }
         });
       });

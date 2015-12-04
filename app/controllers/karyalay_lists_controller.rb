@@ -107,9 +107,8 @@ class KaryalayListsController < ApplicationController
     render json: @karyalay_list.karyalay_packages
   end
 
-  # For admins and visitors
-  def fetch_all_karyalay_list
-    res = KaryalayList.all.map do |k|
+  def fetch_all_karyalay
+    KaryalayList.all.map do |k|
       karyalay_photos = k.photos.map do |kp|
         { id: kp.id, thumbUrl: kp.gallery.url(:thumb),
           url: kp.gallery.url, size: kp.gallery_file_size }
@@ -118,6 +117,32 @@ class KaryalayListsController < ApplicationController
         karyalay: k,
         karyalay_photos: karyalay_photos
       }
+    end
+  end
+
+  def fetch_matching_karyalay(search_by)
+    karyalay_list_ids = KaryalayAttribute
+                        .where(JSON.parse(search_by))
+                        .map(&:karyalay_list_id)
+    KaryalayList.where(id: karyalay_list_ids).map do |k|
+      karyalay_photos = k.photos.map do |kp|
+        { id: kp.id, thumbUrl: kp.gallery.url(:thumb),
+          url: kp.gallery.url, size: kp.gallery_file_size }
+      end
+      {
+        karyalay: k,
+        karyalay_photos: karyalay_photos
+      }
+    end
+  end
+
+  # For admins and visitors
+  def matching_karyalay_list
+    search_by = params[:search_by]
+    if search_by.empty?
+      res = fetch_all_karyalay
+    else
+      res = fetch_matching_karyalay(search_by)
     end
     render json: res.to_json
   end

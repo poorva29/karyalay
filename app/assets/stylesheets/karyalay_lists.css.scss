@@ -152,6 +152,136 @@
   .search-result-container {
     background: #F8F8F8;
   }
+  .filter-container {
+    .cost-filter-placeholder {
+      line-height: 32px;
+      color: #9a9a9a;
+      text-transform: none;
+      font-weight: 400;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .pi5 {
+      padding: 5% 0;
+    }
+
+    .align-checkbox {
+      padding: 3% 0;
+    }
+
+    .filter-div {
+      text-transform: none;
+      font-size: 13.33px;
+      font-weight: normal;
+      padding-top: 2%;
+    }
+
+    .pb5 {
+      padding-top: 5%;
+    }
+
+    .pb10 {
+      padding-top: 10%;
+    }
+
+    .search-input-field {
+      outline:none;
+      font-weight: 400;
+    }
+
+    .s-title {
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      word-spacing: -1px;
+      color: #5d5d5d;
+      text-shadow: 0 1px 1px #fff;
+      margin-top: 5%;
+    }
+
+    .search-filter-label {
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      cursor: pointer;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      color: #2d2d2d;
+      padding-top: 2px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .search-filter-label {
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      cursor: pointer;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      color: #2d2d2d;
+      padding-top: 2px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .filter-input-area {
+      border: 1px solid #f0f0f0;
+      border-width: 1px 0;
+      overflow: hidden;
+    }
+
+    .sort-filter-placeholder.selected {
+      color: #9a9a9a;
+    }
+
+    .sort-filter-placeholder {
+      line-height: 32px;
+      padding: 0 10px 0 0;
+      color: #9a9a9a;
+      text-transform: none;
+      font-weight: 400;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .search-filter-icon {
+      color: #9a9a9a;
+      font-size: 10px;
+      position: absolute;
+      right: 9px;
+      top: 10px;
+      width: 11px;
+    }
+
+    .p-relative {
+      position: relative;
+    }
+
+    #filter-locations {
+      border: none;
+      color: #2d2d2d;
+      background: 0 0;
+      padding: 8px 0 6px;
+      width: 170px;
+      font-size: 14px;
+    }
+  }
 
   .search-result-all {
     background-color: white;
@@ -169,6 +299,7 @@
     .search-result {
       border-bottom: 2px solid #e7e7e7;
       padding: 1.5% 0 0.75%;
+      margin-top: 2%;
     }
 
     .res-rating-nf {

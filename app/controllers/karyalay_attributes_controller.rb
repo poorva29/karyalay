@@ -79,6 +79,7 @@ class KaryalayAttributesController < ApplicationController
         .permit(:no_of_people, :no_of_rooms, :price_half_day,
                 :price_full_day, :size_in_sq, :no_of_floors,
                 :has_floors, :has_garden, :provide_offers,
-                :has_ac, :has_caterer, :has_pandit, :has_samagri)
+                :has_ac, :has_caterer, :has_pandit, :has_samagri,
+                :has_rooms)
     end
 end

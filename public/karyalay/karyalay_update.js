@@ -1,5 +1,5 @@
 var app = angular.module('KaryalayApp');
-  app.controller('karyalayUpdateCtrl', function ($scope, $modal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $q, Upload) {
+  app.controller('karyalayUpdateCtrl', function ($scope, $uibModal, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $q, Upload) {
     $scope.karyalay_lists_id = storeKaryalayInfo.getKaryalayInfo();
     $scope.oneAtATime = true;
     $scope.change_pandit = false;
@@ -196,7 +196,7 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.openModal = function(items){
-      var modalInstance = $modal.open({
+      var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'removeDependency.html',
         controller: 'RemoveDependencyCtrl',
