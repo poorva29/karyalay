@@ -192,26 +192,10 @@ ActiveRecord::Schema.define(version: 20151129142235) do
     t.integer  "user_id"
     t.string   "state"
     t.string   "city"
-    t.string   "landmark",     limit: 100
+    t.string   "landmark"
   end
 
   add_index "karyalay_lists", ["user_id"], name: "index_karyalay_lists_on_user_id", using: :btree
-
-  create_table "karyalay_lists_caterers", force: true do |t|
-    t.integer "karyalay_caterer_id"
-    t.integer "karyalay_list_id"
-  end
-
-  add_index "karyalay_lists_caterers", ["karyalay_caterer_id"], name: "index_karyalay_lists_caterers_on_karyalay_caterer_id", using: :btree
-  add_index "karyalay_lists_caterers", ["karyalay_list_id"], name: "index_karyalay_lists_caterers_on_karyalay_list_id", using: :btree
-
-  create_table "karyalay_lists_karyalay_pandits", force: true do |t|
-    t.integer "karyalay_pandit_id"
-    t.integer "karyalay_list_id"
-  end
-
-  add_index "karyalay_lists_karyalay_pandits", ["karyalay_list_id"], name: "index_karyalay_lists_karyalay_pandits_on_karyalay_list_id", using: :btree
-  add_index "karyalay_lists_karyalay_pandits", ["karyalay_pandit_id"], name: "index_karyalay_lists_karyalay_pandits_on_karyalay_pandit_id", using: :btree
 
   create_table "karyalay_lists_pandits", force: true do |t|
     t.integer "karyalay_pandit_id"
@@ -290,7 +274,7 @@ ActiveRecord::Schema.define(version: 20151129142235) do
     t.datetime "gallery_updated_at"
   end
 
-  add_index "photos", ["karyalay_list_id"], name: "index_photos_on_karyalay_lists_id", using: :btree
+  add_index "photos", ["karyalay_list_id"], name: "index_photos_on_karyalay_list_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"

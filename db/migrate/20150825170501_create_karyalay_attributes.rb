@@ -1,5 +1,5 @@
 class CreateKaryalayAttributes < ActiveRecord::Migration
-  belongs_to :karyalay_lists
+  # belongs_to :karyalay_lists
   def change
     create_table :karyalay_attributes do |t|
       t.integer :no_of_people
