@@ -187,6 +187,6 @@ class KaryalayPackagesController < ApplicationController
       params[:karyalay_package]
         .permit(:subject, :from_date, :from_time,
                 :to_time, :has_ac, :has_garden, :num_rooms,
-                :ref_name, :ref_phone_number)
+                :ref_name, :ref_phone_number, :all_day)
     end
 end

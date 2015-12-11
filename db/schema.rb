@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151129142235) do
+ActiveRecord::Schema.define(version: 20151209060332) do
 
   create_table "comfy_cms_blocks", force: true do |t|
     t.string   "identifier",     null: false
@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(version: 20151129142235) do
     t.integer  "karyalay_list_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "all_day",          default: false
   end
 
   add_index "karyalay_packages", ["karyalay_list_id"], name: "index_karyalay_packages_on_karyalay_list_id", using: :btree

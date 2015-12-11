@@ -24,6 +24,7 @@ app.controller('BookKaryalayModalInstanceCtrl', function ($scope, $uibModalInsta
     var from_date = items.start;
     var from_time = items.start;
     var to_time = items.end;
+    $scope.packageDetails.all_day = items.start.hasTime() && items.end.hasTime() ? false : true;
     $scope.packageDetails.from_date = from_date.toDate();
     $scope.packageDetails.from_time = from_time.toDate();
     $scope.packageDetails.to_time = to_time.toDate();
@@ -119,12 +120,16 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $uibModalI
   };
 
   $scope.selectedSlot = function() {
-    var from_date = items.event.start;
-    var from_time = items.event.start;
-    var to_time = items.event.end;
+    var from_date = items.event.start,
+    from_time = items.event.start,
+    end_time = items.event.end
+    to_time;
+    if(!end_time)
+      to_time = new moment(from_time);
+    $scope.packageDetails.all_day = items.event.start.hasTime() && end_time && end_time.hasTime() ? false : true;
     $scope.packageDetails.from_date = from_date.toDate();
     $scope.packageDetails.from_time = from_time.toDate();
-    $scope.packageDetails.to_time = to_time.toDate();
+    $scope.packageDetails.to_time = end_time.toDate();
   };
   $scope.selectedSlot();
 

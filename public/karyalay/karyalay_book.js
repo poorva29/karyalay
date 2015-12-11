@@ -56,14 +56,22 @@ var app = angular.module('KaryalayApp');
     $scope.updateEventSource = function(event){
       var eventInSource = $scope.findWhere($scope.events, {id: event.id});
       if(eventInSource){
-        eventInSource.start = event.start;
-        eventInSource.end = event.end;
+        $('#calendar').fullCalendar( 'updateEvent', event);
+        $scope.extend(eventInSource, event);
       }
     };
 
     $scope.alertOnEventDrop = function(event, delta, revertFunc) {
-      var start_date = event.start,
+      var start_date = event.start, end_date = event.end,
       old_event = $scope.where($scope.events, {id: event.id});
+      event.all_day = event.allDay;
+      if(!end_date) {
+        end_date = event.end = event._end = new moment(event.start);
+        $scope.extend(event.end, {  _ambigTime: false,
+                                    _ambigZone: false,
+                                    _fullCalendar: true });
+        end_date.add(2, 'hours');
+      }
       var old_start_date = $scope.isEmpty(old_event) ? moment() : $scope.first(old_event).start
       if(start_date.diff(moment()) < 0){
         revertFunc();
@@ -72,12 +80,13 @@ var app = angular.module('KaryalayApp');
         revertFunc();
         $scope.updateFailure();
       }else{
-        var change_dates = {
+        var change_data = {
           from_date: start_date.format(),
           from_time: start_date.toDate(),
-          to_time: event.end.toDate()
+          to_time: end_date.toDate(),
+          all_day: event.allDay
         }
-        var data = {karyalay_package: change_dates};
+        var data = {karyalay_package: change_data};
         var url_to_post = '/karyalay_packages/' + event.id;
         $http.put(url_to_post, data)
           .success(function (response) {
@@ -159,7 +168,7 @@ var app = angular.module('KaryalayApp');
         }
       });
 
-      $scope.createPackage = function(selectedItem) {
+      $scope.updatePackage = function(selectedItem) {
         $scope.selected = selectedItem;
         var data = {karyalay_package: $scope.extend($scope.selected, {from_date: moment($scope.selected.from_date).format()})};
         var url_to_post = '/karyalay_packages/' + event.id;
@@ -167,8 +176,9 @@ var app = angular.module('KaryalayApp');
           .success(function (response) {
             if(response.status){
               if($scope.selected.subject){
-                event.title = $scope.selected.subject
+                event.title = $scope.selected.subject;
               }
+              event.allDay = $scope.selected.all_day;
               event.start = moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.from_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm'),
               event.end = moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.to_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm')
               $('#calendar').fullCalendar('updateEvent', event);
@@ -190,7 +200,7 @@ var app = angular.module('KaryalayApp');
 
       modalInstance.result.then(function (selectedItem, to_remove) {
         if($scope.isObject(selectedItem)) {
-          $scope.createPackage(selectedItem);
+          $scope.updatePackage(selectedItem);
         } else {
           $scope.removePackage(selectedItem);
         }
@@ -244,6 +254,7 @@ var app = angular.module('KaryalayApp');
       $scope.extend(event,{
                             id: event.id,
                             title: event.subject,
+                            allDay: event.all_day,
                             stick: true,
                             start: moment(moment(event.from_date).format('YYYY-MM-DD') + 'T' + moment(event.from_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm'),
                             end: moment(moment(event.from_date).format('YYYY-MM-DD') + 'T' + moment(event.to_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm')
