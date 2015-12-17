@@ -122,7 +122,7 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $uibModalI
   $scope.selectedSlot = function() {
     var from_date = items.event.start,
     from_time = items.event.start,
-    end_time = items.event.end
+    end_time = items.event.end,
     to_time;
     if(!end_time)
       to_time = new moment(from_time);
