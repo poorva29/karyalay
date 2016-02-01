@@ -1,5 +1,6 @@
 var app = angular.module('KaryalayApp');
   app.controller('karyalayShowAll', function ($scope, $log, $http, Flash, Auth, $window, $ngBootbox, Lightbox) {
+    $scope.karyalayAttrCreateForm = {};
     $scope.openLightboxModal = function (index, karyalay_id) {
       var selected_karyalay = $scope.filter($scope.images, function(imageInfo) {
         if(imageInfo.id == karyalay_id)
