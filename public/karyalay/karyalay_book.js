@@ -99,6 +99,7 @@ var app = angular.module('KaryalayApp');
     $scope.uiConfig = {
       calendar:{
         firstDay: new Date().getDay(),
+        allDayDefault: false,
         defaultView: 'agendaWeek',
         height: 'auto',
         slotDuration: '01:00:00',
@@ -170,22 +171,32 @@ var app = angular.module('KaryalayApp');
 
       $scope.updatePackage = function(selectedItem) {
         $scope.selected = selectedItem;
-        var data = {karyalay_package: $scope.extend($scope.selected, {from_date: moment($scope.selected.from_date).format()})};
-        var url_to_post = '/karyalay_packages/' + event.id;
-        $http.put(url_to_post, data)
-          .success(function (response) {
-            if(response.status){
-              if($scope.selected.subject){
-                event.title = $scope.selected.subject;
+        var start_date = new moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.from_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm');
+        old_event = $scope.where($scope.events, {id: $scope.selected.id});
+        var old_start_date = $scope.isEmpty(old_event) ? moment() : $scope.first(old_event).start
+        if(start_date.diff(moment()) < 0){
+          $scope.updateFailure();
+        }else if(old_start_date.diff(moment()) < 0) {
+          $scope.updateFailure();
+        }else{
+          var data = {karyalay_package: $scope.extend($scope.selected, {from_date: moment($scope.selected.from_date).format()})};
+          var url_to_post = '/karyalay_packages/' + event.id;
+          $http.put(url_to_post, data)
+            .success(function (response) {
+              if(response.status){
+                if($scope.selected.subject)
+                  event.title = $scope.selected.subject;
+                event.allDay = event._allDay = event.all_day = $scope.selected.all_day;
+                event.start = event._start = start_date,
+                event.start._fullCalendar = true;
+                event.end = event._end = new moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.to_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm')
+                event.end._fullCalendar = true;
+                $scope.updateEventSource(event);
+                $scope.updateSuccess();
+              }else{
               }
-              event.allDay = $scope.selected.all_day;
-              event.start = moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.from_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm'),
-              event.end = moment(moment($scope.selected.from_date).format('YYYY-MM-DD') + 'T' + moment($scope.selected.to_time).format('HH:mm'), 'YYYY-MM-DDTHH:mm')
-              $('#calendar').fullCalendar('updateEvent', event);
-            }else{
-
-            }
-        });
+          });
+        }
       };
 
       $scope.removePackage = function(selectedItem) {

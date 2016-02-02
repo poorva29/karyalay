@@ -123,13 +123,13 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $uibModalI
     var from_date = items.event.start,
     from_time = items.event.start,
     end_time = items.event.end,
-    to_time;
+    to_time = end_time;
     if(!end_time)
       to_time = new moment(from_time);
     $scope.packageDetails.all_day = items.event.start.hasTime() && end_time && end_time.hasTime() ? false : true;
     $scope.packageDetails.from_date = from_date.toDate();
     $scope.packageDetails.from_time = from_time.toDate();
-    $scope.packageDetails.to_time = end_time.toDate();
+    $scope.packageDetails.to_time = to_time.toDate();
   };
   $scope.selectedSlot();
 
@@ -285,6 +285,16 @@ app.controller('BookEditKaryalayModalInstanceCtrl', function ($scope, $uibModalI
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
+
+  $scope.setAllDay = function () {
+    console.log($scope.packageDetails.all_day);
+    if(!$scope.packageDetails.all_day) {
+      $scope.packageDetails.from_time = new moment($scope.packageDetails.from_time).add(1, 'h').toDate();
+      $scope.packageDetails.from_date = new moment($scope.packageDetails.from_time).add(0, 'h').toDate();
+      $scope.packageDetails.to_time = new moment($scope.packageDetails.from_time).add(3, 'h').toDate();
+      $scope.packageDetails.to_date = new moment($scope.packageDetails.from_time).add(3, 'h').toDate();
+    }
+  };
 });
 
 app.controller('BookPastKaryalayModalInstanceCtrl', function ($scope, $uibModalInstance, items, $http, $q, $ngBootbox) {
@@ -311,9 +321,12 @@ app.controller('BookPastKaryalayModalInstanceCtrl', function ($scope, $uibModalI
   };
 
   $scope.selectedSlot = function() {
-    var from_date = items.event.start;
-    var from_time = items.event.start;
-    var to_time = items.event.end;
+    var end_time = items.event.end,
+    from_date = items.event.start,
+    from_time = items.event.start,
+    to_time = end_time;
+    if(!end_time)
+      to_time = new moment(from_time);
     $scope.packageDetails.from_date = from_date.toDate();
     $scope.packageDetails.from_time = from_time.toDate();
     $scope.packageDetails.to_time = to_time.toDate();

@@ -29,13 +29,17 @@
                 </div>
                 <div class="form-group timepicker-div">
                   <label class="control-label col-sm-2" for="name">Time:</label>
-                  <div class="col-sm-4">
+                  <div class="col-sm-3" ng-class="{'tpad': packageDetails.to_time.getHours() > 9 }">
                     <input type="text" class="form-control" placeholder="Time from" dn-timepicker ng-model="packageDetails.from_time"/>
                   </div>
-                  <label class="text-align-to control-label col-sm-2">To</label>
-                  <div class="col-sm-4">
+                  <label class="text-align-to control-label col-sm-1">To</label>
+                  <div class="col-sm-3" ng-class="{'tpad': packageDetails.to_time.getHours() > 9 }">
                     <input type="text" class="form-control" placeholder="Time upto" dn-timepicker ng-model="packageDetails.to_time"/>
                   </div>
+                  <div class="col-sm-1" uib-tooltip="All Day" tooltip-placement="right">
+                    <checkbox class="btn-info align-checkbox" ng-model="packageDetails.all_day" ng-change="setAllDay()"></checkbox>
+                  </div>
+                  <div class="col-sm-2 checkbox-label"> (All Day) </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-2" for="pwd">A/C:</label>
@@ -169,13 +173,17 @@
                   </div>
                   <div class="form-group timepicker-div">
                     <label class="control-label col-sm-2" for="name">Time:</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3" ng-class="{'tpad': packageDetails.to_time.getHours() > 9 }">
                       <input type="text" class="form-control" placeholder="Time from" dn-timepicker ng-model="packageDetails.from_time"/>
                     </div>
-                    <label class="text-align-to control-label col-sm-2">To</label>
-                    <div class="col-sm-4">
+                    <label class="text-align-to control-label col-sm-1">To</label>
+                    <div class="col-sm-3" ng-class="{'tpad': packageDetails.to_time.getHours() > 9 }">
                       <input type="text" class="form-control" placeholder="Time upto" dn-timepicker ng-model="packageDetails.to_time"/>
                     </div>
+                    <div class="col-sm-1">
+                      <checkbox class="btn-info align-checkbox" ng-model="packageDetails.all_day" ng-change="setAllDay()"></checkbox>
+                    </div>
+                    <div class="col-sm-2 checkbox-label"> (All Day) </div>
                   </div>
                   <div class="form-group">
                     <label class="control-label col-sm-2" for="pwd">A/C:</label>
