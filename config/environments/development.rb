@@ -29,4 +29,13 @@ Karyalay::Application.configure do
 
   # Path for paperclip ImageMagick utility
   Paperclip.options[:command_path] = '/usr/bin/'
+
+  config.mandrill_mailer.default_url_options = { host: 'localhost' }
+
+  config.before_configuration do
+    env_file = File.join(Rails.root, 'config', 'local_env.yml')
+    YAML.load(File.open(env_file)).each do |key, value|
+      ENV[key.to_s] = value
+    end if File.exist?(env_file)
+  end
 end
