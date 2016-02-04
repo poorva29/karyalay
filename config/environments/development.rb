@@ -27,10 +27,12 @@ Karyalay::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  config.active_record.raise_in_transactional_callbacks = true
   # Path for paperclip ImageMagick utility
   Paperclip.options[:command_path] = '/usr/bin/'
 
   config.mandrill_mailer.default_url_options = { host: 'localhost' }
+  config.action_mailer.default_url_options = { host: 'localhost' }
 
   config.before_configuration do
     env_file = File.join(Rails.root, 'config', 'local_env.yml')

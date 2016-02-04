@@ -1,5 +1,5 @@
 class UserMailer < MandrillMailer::MessageMailer
-  default from: 'poorva.mahajan@vertisinfotech.com'
+  default from: ENV['MANDRILL_USERNAME']
 
   def send_new_user_message(user)
     mandrill_mail subject: 'Confimation Email',
