@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  skip_before_filter :authenticate_user!, only: [:user_role_name]
 
   respond_to :html
 
   def user_role_name
-    render json: { user_role: current_user.role.name }
+    user_role = current_user ? current_user.role.name : 'Visitor'
+    render json: { user_role: user_role }
   end
 
   def index

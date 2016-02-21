@@ -80,22 +80,22 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
         .state('karyalay_list', {
           url: "/karyalay_list",
           templateUrl: "templates/karyalay_lists/karyalay-list.html",
-          data: {checkUser: true}
+          data: {checkAdmin: true}
         })
         .state('karyalay_create', {
           url: "/karyalay_create",
           templateUrl: "templates/karyalay_lists/karyalay-create.html",
-          data: {checkUser: true}
+          data: {checkAdmin: true}
         })
         .state('karyalay_update', {
           url: "/karyalay_update",
           templateUrl: "templates/karyalay_lists/karyalay-update.html",
-          data: {checkUser: true}
+          data: {checkAdmin: true}
         })
         .state('karyalay_book', {
           url: "/karyalay_book",
           templateUrl: "templates/karyalay_lists/karyalay-book.html",
-          data: {checkUser: true}
+          data: {checkAdmin: true}
         });
 
         // For all visitors and admin
@@ -103,7 +103,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
         .state('karyalay_show_all', {
           url: "/",
           templateUrl: "templates/karyalay_lists/karyalay-show-all.html",
-          data: {checkAdmin: true}
+          data: {checkUser: true}
         })
 
         //Error pages
@@ -125,45 +125,35 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     }]);
 
   app.run(["$rootScope", "$state", "$window", "$location", "$http", "storeUserInfo",
-  function ($rootScope, $state, $window, $location, $http, storeUserInfo) {
-    $rootScope.$state = $state;
-    // on change of state, check if user should be logged in to access the page.
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-      var promiseObj = function(){
-        return $http.get('user_role_name')
-          .success(function (response) {
-            var userRole = response.user_role
-            storeUserInfo.setUserInfo(userRole);
-            $rootScope.is_admin = (userRole == 'Admin' ? true : false);
-            return userRole;
-          });
-      };
-
-      if(toState.data && toState.data.checkUser) {
-        var userRole = storeUserInfo.getUserInfo();
-        if(userRole){
-          if(userRole && userRole != 'Admin') {
-            $location.path('/forbidden');
-          }
-        }else {
-          $http.get('user_role_name')
-          .success(function (response) {
-            var userRole = response.user_role
-            storeUserInfo.setUserInfo(userRole);
-            $rootScope.is_admin = (userRole == 'Admin' ? true : false);
+    function ($rootScope, $state, $window, $location, $http, storeUserInfo) {
+      $rootScope.$state = $state;
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+        if(toState.data && toState.data.checkAdmin) {
+          var userRole = storeUserInfo.getUserInfo();
+          if(userRole){
             if(userRole && userRole != 'Admin') {
               $location.path('/forbidden');
             }
-          });
+          }else {
+            $http.get('user_role_name')
+            .success(function (response) {
+              var userRole = response.user_role
+              storeUserInfo.setUserInfo(userRole);
+              $rootScope.is_admin = (userRole == 'Admin' ? true : false);
+              if(userRole && userRole != 'Admin') {
+                $location.path('/forbidden');
+              }
+            });
+          }
         }
-      }else if(toState.data && toState.data.checkAdmin) {
-        promiseObj();
-      }
-    });
+      });
   }]);
 
   //layout controller
-  app.controller('karyalayLayoutCtrl', function ($scope, $rootScope, $log, $http, Flash, Auth, $window) {
+  app.controller('karyalayLayoutCtrl', function ($scope, $rootScope, $log, $http, Flash, Auth, $window, storeUserInfo) {
+    $scope.user_signed_in = false;
+    $scope.userToShow = '';
+
     $scope.logout = function(){
       var config = {
         headers: {
@@ -171,6 +161,7 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
         }
       };
       Auth.logout(config).then(function(oldUser) {
+        storeUserInfo.setUserInfo('Visitor');
         $window.location = '/sign_out';
       }, function(error) {
         // An error occurred logging out.
@@ -178,10 +169,20 @@ var app = angular.module('KaryalayApp', [ 'ui.bootstrap', 'ngAnimate', 'flash', 
     }
 
     Auth.currentUser().then(function(user) {
-      $scope.user = user;
-      $scope.userToShow = user.first_name + ' ' + user.last_name
+      if(!$scope.isEmpty(user.email)) {
+        $scope.user = user;
+        $scope.userToShow = user.first_name + ' ' + user.last_name
+        $scope.user_signed_in = true;
+        $http.get('user_role_name')
+          .success(function (response) {
+            var userRole = response.user_role
+            storeUserInfo.setUserInfo(userRole);
+            $rootScope.is_admin = (userRole == 'Admin' ? true : false);
+          });
+      }
     }, function(error) {
       // unauthenticated error
+      $scope.user_signed_in = false;
     });
 
     $scope.bodyBackgroundColour = function(){

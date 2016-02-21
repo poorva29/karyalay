@@ -1,5 +1,6 @@
 class KaryalayListsController < ApplicationController
   before_action :set_karyalay_list, only: [:show, :edit, :update, :destroy]
+  skip_before_filter :authenticate_user!, only: [:index, :fetch_karyalay_list, :matching_karyalay_list]
 
   # GET /karyalay_lists
   # GET /karyalay_lists.json
