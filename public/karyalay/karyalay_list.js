@@ -1,4 +1,15 @@
 var app = angular.module('KaryalayApp');
+  app.directive('integer', function(){
+    return {
+      require: 'ngModel',
+      link: function(scope, ele, attr, ctrl){
+        ctrl.$parsers.unshift(function(viewValue){
+          return parseInt(viewValue, 10);
+        });
+      }
+    };
+  });
+
   app.controller('karyalayListCtrl', function ($scope, $log, $http, Flash, Auth, $window, storeKaryalayInfo, $ngBootbox) {
     $scope.sortType     = ''; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
