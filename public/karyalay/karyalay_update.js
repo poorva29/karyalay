@@ -91,7 +91,7 @@ var app = angular.module('KaryalayApp');
     $scope.promise3 = $scope.fetchSamagris();
 
     $scope.refreshTagNames = function(name){
-      if(!$scope.isEmpty($scope.items)){
+      if($scope.category.selected){
         $scope.items[$scope.itemsSize + 1] = {
           id: '-1',
           name: name,
@@ -361,6 +361,7 @@ var app = angular.module('KaryalayApp');
     };
 
     $scope.updateKaryalayDependency = function() {
+      var that = this;
       if($scope.isEmpty($scope.karyalayAttrInfo)) {
         var url_to_post = '/karyalay_attributes',
         data = $scope.extend($scope.karyalayAttrDepUpdateForm, {karyalay_lists_id: $scope.karyalay_lists_id});
@@ -384,25 +385,29 @@ var app = angular.module('KaryalayApp');
           });
       }
       // add pandit
-      var merged_pandits = $scope.union($scope.selectPanditDetails.subitems, $scope.multipleItmes.selectedPeople);
-      merged_pandits = $scope.reject(merged_pandits, function(x){ return $scope.isEmpty(x)});
-      merged_pandits = $scope.map(merged_pandits, function(o) {
+      this.merged_pandits = $scope.union($scope.selectPanditDetails.subitems, $scope.multipleItmes.selectedPeople);
+      this.merged_pandits = $scope.reject(this.merged_pandits, function(x){ return $scope.isEmpty(x)});
+      this.merged_pandits = $scope.map(this.merged_pandits, function(o) {
         return $scope.omit(o, 'created_at', 'updated_at', '$$hashKey');
       });
-      $scope.each(merged_pandits, function(pandit){
+      $scope.each(this.merged_pandits, function(pandit){
         var data = {karyalay_pandit_params: $scope.extend(pandit, {karyalay_lists_id: $scope.karyalay_lists_id})};
         var url_to_post = '/karyalay_pandits';
         $http.post(url_to_post, data)
           .success(function (response) {
             if(response){
+              that.merged_pandits.push(response)
+              $scope.multipleItmes.selectedPeople.push(response)
               $scope.updateSuccess();
             }else{
               $scope.createFailure();
             }
         });
       });
+      $scope.selectPanditDetails.subitems = [];
+      $scope.addPandit({});
 
-      var pandit_to_keep = $scope.pluck(merged_pandits, 'id'),
+      var pandit_to_keep = $scope.pluck(this.merged_pandits, 'id'),
       data = { karyalay_pandit_params: {karyalay_lists_id: $scope.karyalay_lists_id },
                pandit_to_keep: pandit_to_keep},
       url_to_post = '/pandit_to_keep';
@@ -412,25 +417,29 @@ var app = angular.module('KaryalayApp');
       });
 
       //add caterer
-      var merged_caterers = $scope.union($scope.selectCatererDetails.subitems, $scope.multipleItmes.selectedCaterer);
-      merged_caterers = $scope.reject(merged_caterers, function(x){ return $scope.isEmpty(x)});
-      merged_caterers = $scope.map(merged_caterers, function(o) {
+      this.merged_caterers = $scope.union($scope.selectCatererDetails.subitems, $scope.multipleItmes.selectedCaterer);
+      this.merged_caterers = $scope.reject(this.merged_caterers, function(x){ return $scope.isEmpty(x)});
+      this.merged_caterers = $scope.map(this.merged_caterers, function(o) {
         return $scope.omit(o, 'created_at', 'updated_at', '$$hashKey');
       });
-      $scope.each(merged_caterers, function(caterer){
+      $scope.each(this.merged_caterers, function(caterer){
         var data = {karyalay_caterer_params: $scope.extend(caterer, {karyalay_lists_id: $scope.karyalay_lists_id})};
         var url_to_post = '/karyalay_caterers';
         $http.post(url_to_post, data)
           .success(function (response) {
             if(response){
+              that.merged_caterers.push(response)
+              $scope.multipleItmes.selectedCaterer.push(response)
               $scope.updateSuccess();
             }else{
               $scope.createFailure();
             }
         });
       });
+      $scope.selectCatererDetails.subitems = [];
+      $scope.addCaterer({});
 
-      var caterer_to_keep = $scope.pluck(merged_caterers, 'id'),
+      var caterer_to_keep = $scope.pluck(this.merged_caterers, 'id'),
       data = { karyalay_caterer_params: {karyalay_lists_id: $scope.karyalay_lists_id },
                caterer_to_keep: caterer_to_keep},
       url_to_post = '/caterer_to_keep';
