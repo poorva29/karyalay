@@ -10,7 +10,7 @@ var app = angular.module('KaryalayApp');
       Lightbox.keyboardNavEnabled = true;
     };
 
-    $scope.fetchAllKaryalayList = function(data) {
+    $scope.filteredKaryalayList = function(data) {
       var url_to_get = '/matching_karyalay_list';
       var search_params = {};
       $http.get(url_to_get, {params: {search_by: $scope.isEmpty(data) ? '' : data}})
@@ -25,7 +25,7 @@ var app = angular.module('KaryalayApp');
           }
       });
     };
-    $scope.fetchAllKaryalayList({});
+    $scope.filteredKaryalayList({});
 
     $scope.fetchKaryalayResult = function(){
       var data = {}
@@ -37,7 +37,12 @@ var app = angular.module('KaryalayApp');
         }
       });
       if(!$scope.isEmpty(data)) {
-        $scope.fetchAllKaryalayList(data);
+        $scope.filteredKaryalayList(data);
+      }else{
+        var all_false = $scope.find($scope.karyalayAttrCreateForm, function(val, key) { return val == true});
+        if(!all_false){
+          $scope.filteredKaryalayList(data);
+        }
       }
     };
   });
